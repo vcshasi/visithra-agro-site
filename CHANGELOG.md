@@ -2,6 +2,13 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.1.1] — 2026-09-15
+
+- Reduced the hero heading and the Contact section heading so both feel proportionate to the rest of the page instead of oversized; hero heading now sizes in line with the About/Products headings.
+- Tightened vertical spacing throughout: section padding, the gap between the About text block and the principles row, and the gap between the Contact intro and the contact-details block, which was reading as cluttered.
+- Shrunk the "Sourced with care ✦ supplied with confidence ✦ built for partnership" tagline band so it reads as one line on desktop/tablet instead of wrapping (still wraps gracefully on small phones).
+- Updated the hero headline to "Rooted with care. Ready to trade." and refreshed copy in the hero intro, About section, and the three "principles" cards to foreground direct-from-farm sourcing, freshness, and quality.
+
 ## [1.1.0] — 2026-09-15
 
 - Gave the hero illustration ("the image above the About Us section") the same fixed 4:3 framed-box treatment as the product galleries, instead of a panel that stretched to match the hero text's height.
