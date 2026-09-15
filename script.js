@@ -69,30 +69,25 @@ document.querySelectorAll('.carousel-button').forEach((button) => {
 });
 track.addEventListener('scroll', () => window.requestAnimationFrame(syncProductIndex), { passive: true });
 
-// Product image catalogue — each gallery renders exactly the images present in its `photos` array.
-// Image files are left untouched here; replace or add entries once corrected photos are supplied.
+// Product image catalogue — one gallery per main product family (not per sub-product).
+// Each gallery renders exactly the images present in its `photos` array, as a horizontal
+// scroll. Sub-products are listed as plain text next to the family gallery; they no longer
+// have their own images or links. How many photos each family ends up with will grow once
+// improved photos are ready. Image files themselves are left untouched here.
 const productGalleries = {
   gloriosa: {
-    seeds: {
-      name: 'Gloriosa Superba Seeds',
-      photos: [
-        { src: 'assets/gloriossa-superba-seeds.jpg', alt: 'Gloriosa Superba flowering plants', caption: 'Gloriosa Superba Seeds' },
-        { src: 'assets/gloriossa-superba-seeds-field.jpg', alt: 'Gloriosa Superba flowers in the growing field', caption: 'Gloriosa Superba Seeds — field view' },
-      ],
-    },
-    tuber: {
-      name: 'Gloriosa Superba Tuber',
-      photos: [{ src: 'assets/gloriossa-superba-tuber-enhanced.png', alt: 'Gloriosa Superba tubers prepared for trade', caption: 'Gloriosa Superba Tuber' }],
-    },
+    name: 'Gloriosa Superba Products',
+    photos: [
+      { src: 'assets/gloriossa-superba-seeds.jpg', alt: 'Gloriosa Superba flowering plants', caption: 'Gloriosa Superba Seeds' },
+      { src: 'assets/gloriossa-superba-seeds-field.jpg', alt: 'Gloriosa Superba flowers in the growing field', caption: 'Gloriosa Superba Seeds — field view' },
+      { src: 'assets/gloriossa-superba-tuber-enhanced.png', alt: 'Gloriosa Superba tubers prepared for trade', caption: 'Gloriosa Superba Tuber' },
+    ],
   },
   coconut: {
-    'with-husk': {
-      name: 'Coconut with Husk',
-      photos: [{ src: 'assets/coconut-with-husk.jpg', alt: 'Fresh coconuts with husk at the farm', caption: 'Coconut with Husk' }],
-    },
-    desiccated: { name: 'Desiccated Coconut', photos: [] },
-    copra: { name: 'Coconut Copra', photos: [] },
-    oil: { name: 'Fresh Coconut Oil', photos: [] },
+    name: 'Coconut Products',
+    photos: [
+      { src: 'assets/coconut-with-husk.jpg', alt: 'Fresh coconuts with husk at the farm', caption: 'Coconut with Husk' },
+    ],
   },
 };
 
@@ -100,16 +95,15 @@ function updateGalleryStatus(family) {
   const scroll = document.querySelector(`[data-gallery-scroll="${family}"]`);
   const count = document.querySelector(`[data-gallery-count="${family}"]`);
   const caption = document.querySelector(`[data-gallery-caption="${family}"]`);
-  const activeButton = document.querySelector(`[data-gallery-family="${family}"].active`);
-  const data = productGalleries[family][activeButton.dataset.subproduct];
-  if (!data.photos.length) return;
-  const index = Math.min(Math.max(Math.round(scroll.scrollLeft / scroll.clientWidth), 0), data.photos.length - 1);
-  count.textContent = `${String(index + 1).padStart(2, '0')} / ${String(data.photos.length).padStart(2, '0')}`;
-  caption.textContent = data.photos[index].caption;
+  const { photos } = productGalleries[family];
+  if (!photos.length || !scroll.clientWidth) return;
+  const index = Math.min(Math.max(Math.round(scroll.scrollLeft / scroll.clientWidth), 0), photos.length - 1);
+  count.textContent = `${String(index + 1).padStart(2, '0')} / ${String(photos.length).padStart(2, '0')}`;
+  caption.textContent = photos[index].caption;
 }
 
-function showGalleryImage(family, product) {
-  const data = productGalleries[family][product];
+function renderGallery(family) {
+  const data = productGalleries[family];
   const scroll = document.querySelector(`[data-gallery-scroll="${family}"]`);
   const emptyState = document.querySelector(`[data-gallery-empty="${family}"]`);
   const count = document.querySelector(`[data-gallery-count="${family}"]`);
@@ -117,11 +111,8 @@ function showGalleryImage(family, product) {
   const panel = document.querySelector(`[data-gallery-panel="${family}"]`);
   const prevButton = document.querySelector(`[data-gallery-prev="${family}"]`);
   const nextButton = document.querySelector(`[data-gallery-next="${family}"]`);
-  const selectedSubproduct = document.querySelector(`[data-gallery-family="${family}"][data-subproduct="${product}"]`);
-  const summary = selectedSubproduct.querySelector('[data-gallery-summary]');
 
   panel.querySelector('.gallery-stage').setAttribute('aria-label', `${data.name} photo gallery`);
-  summary.textContent = `${summary.dataset.gallerySummary} · ${data.photos.length ? `${data.photos.length} photo${data.photos.length === 1 ? '' : 's'}` : 'images coming soon'}`;
 
   scroll.innerHTML = '';
   scroll.scrollLeft = 0;
@@ -148,26 +139,14 @@ function showGalleryImage(family, product) {
   }
 }
 
-document.querySelectorAll('.subproduct').forEach((button) => {
-  button.addEventListener('click', () => {
-    const { galleryFamily: family, subproduct: product } = button.dataset;
-    document.querySelectorAll(`[data-gallery-family="${family}"]`).forEach((item) => {
-      const isSelected = item === button;
-      item.classList.toggle('active', isSelected);
-      item.setAttribute('aria-pressed', String(isSelected));
-    });
-    showGalleryImage(family, product);
-  });
-});
-
-Object.entries(productGalleries).forEach(([family, subproducts]) => {
+Object.keys(productGalleries).forEach((family) => {
   const scroll = document.querySelector(`[data-gallery-scroll="${family}"]`);
   const prevButton = document.querySelector(`[data-gallery-prev="${family}"]`);
   const nextButton = document.querySelector(`[data-gallery-next="${family}"]`);
   scroll.addEventListener('scroll', () => window.requestAnimationFrame(() => updateGalleryStatus(family)), { passive: true });
   prevButton.addEventListener('click', () => scroll.scrollBy({ left: -scroll.clientWidth, behavior: 'smooth' }));
   nextButton.addEventListener('click', () => scroll.scrollBy({ left: scroll.clientWidth, behavior: 'smooth' }));
-  showGalleryImage(family, Object.keys(subproducts)[0]);
+  renderGallery(family);
 });
 
 document.getElementById('year').textContent = new Date().getFullYear();

@@ -2,6 +2,14 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.1.0] — 2026-09-15
+
+- Gave the hero illustration ("the image above the About Us section") the same fixed 4:3 framed-box treatment as the product galleries, instead of a panel that stretched to match the hero text's height.
+- Removed per-sub-product photo galleries and their click-to-switch buttons/hyperlinks. Each main product family (Gloriosa Superba Products, Coconut Products) now has a single combined photo gallery — still a horizontal scroll with prev/next arrows when there is more than one photo.
+  - Gloriosa Superba's gallery currently combines the seed and tuber photos (3 total); Coconut's currently shows the one available photo. Exact photo counts per family will change once improved photos are supplied.
+- Sub-products are now listed as plain, non-interactive text (name + short description) next to each family's gallery — no images, links, or buttons attached to them anymore.
+- Hardened the gallery status code against a zero-width edge case (e.g. a gallery measured before it is laid out) so one family's gallery can no longer fail silently and block the other family's from initialising.
+
 ## [1.0.1] — 2026-09-15
 
 - Fixed a real, pre-existing bug found while previewing v1.0.0: the `[hidden]` attribute on the "Images coming soon" gallery placeholder was losing to the `.gallery-empty { display: flex; }` rule in the CSS cascade (same specificity, later source order), so the placeholder could paint on top of a sub-product's real photos instead of staying hidden. This affected every version back to v0.6.0, not just this release.
