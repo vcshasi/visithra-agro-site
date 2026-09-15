@@ -2,6 +2,12 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.1.2] — 2026-09-15
+
+- Added the business's heritage to the About Us section: family-led, based in southern India, now in its second generation (chosen over a specific decade count, since "generations" pairs naturally with "family-led" and doesn't require claiming an exact founding year).
+- Added a new paragraph noting the existing track record supplying local businesses and the capacity to expand the supplier network further.
+- Updated the page `<meta name="description">` to carry the same heritage framing for search/social previews.
+
 ## [1.1.1] — 2026-09-15
 
 - Reduced the hero heading and the Contact section heading so both feel proportionate to the rest of the page instead of oversized; hero heading now sizes in line with the About/Products headings.
