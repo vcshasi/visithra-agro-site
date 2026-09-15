@@ -2,6 +2,14 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.2.0] — 2026-09-15
+
+- Made every contact form field required: name, company, email, phone, location, message, and "Product(s) of interest" (previously company, phone, location, and product selection were optional).
+- Added inline UI validation instead of relying only on the browser's default popups (the form already used `novalidate`, so previously empty required fields were not actually being blocked from submitting): each field shows its own error message beneath it, invalid/valid fields get a coloured underline via `:user-invalid`/`:user-valid` once the visitor has interacted with them, and the phone field checks a basic valid-characters pattern.
+- Added custom "select at least one" validation for the product checkboxes, since native HTML `required` cannot express that for a group of same-named checkboxes.
+- Submitting with any field left invalid now focuses the first problem field, shows all the relevant error messages, and shows a summary message near the submit button — no submission (email or mailto) is attempted until every field passes.
+- Added a small "All fields are required." note at the top of the form and removed the now-inaccurate "(optional)" wording from the Company field's placeholder.
+
 ## [1.1.2] — 2026-09-15
 
 - Added the business's heritage to the About Us section: family-led, based in southern India, now in its second generation (chosen over a specific decade count, since "generations" pairs naturally with "family-led" and doesn't require claiming an exact founding year).

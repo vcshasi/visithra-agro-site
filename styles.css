@@ -153,11 +153,16 @@ h1 em, h2 em { font-weight: 600; color: var(--rust); font-style: italic; }
 .contact-direct a, .contact-direct address { font-weight: 600; font-style: normal; transition: color .2s; }
 .contact-direct a:hover, .contact-direct a:focus-visible { color: var(--rust); }
 .contact-form { padding-top: .4rem; }
+.form-required-note { margin: 0 0 1.2rem; color: #6d8577; font: .68rem var(--mono); letter-spacing: .04em; text-transform: uppercase; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
 .contact-form label { display: block; margin-bottom: 1.4rem; font: .7rem var(--mono); letter-spacing: .06em; text-transform: uppercase; color: #486454; }
 .contact-form input, .contact-form textarea { display: block; width: 100%; margin-top: .6rem; padding: .65rem 0; border: 0; border-bottom: 1px solid rgba(21,60,49,.38); outline: 0; background: transparent; color: var(--ink); font: 500 .92rem var(--sans); text-transform: none; letter-spacing: normal; resize: vertical; transition: border-color .2s, box-shadow .2s; }
 .contact-form input:focus, .contact-form textarea:focus { border-color: var(--rust); box-shadow: 0 6px 14px -10px rgba(217,92,49,.6); }
 .contact-form input::placeholder, .contact-form textarea::placeholder { color: #85978a; }
+.contact-form input:user-invalid, .contact-form textarea:user-invalid { border-color: var(--rust-dark); }
+.contact-form input:user-valid, .contact-form textarea:user-valid { border-color: #5c8a6e; }
+.field-error { display: block; min-height: 1em; margin-top: .35rem; font: .68rem var(--mono); color: var(--rust-dark); text-transform: none; letter-spacing: normal; }
+.field-error:empty { margin-top: 0; min-height: 0; }
 .interest-field { border: 0; padding: 0; margin: 0 0 1.4rem; }
 .interest-field legend { padding: 0; margin-bottom: .8rem; font: .7rem var(--mono); letter-spacing: .06em; text-transform: uppercase; color: #486454; }
 .chip-select { display: flex; flex-wrap: wrap; gap: .55rem; }
@@ -167,6 +172,7 @@ h1 em, h2 em { font-weight: 600; color: var(--rust); font-style: italic; }
 .chip input:checked + span { background: var(--ink); border-color: var(--ink); color: var(--cream); }
 .chip input:focus-visible + span { outline: 2px solid var(--rust); outline-offset: 2px; }
 .chip:hover span { border-color: var(--rust); }
+.interest-field .field-error { margin-top: .6rem; }
 .form-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1.2rem; align-items: center; margin-top: .3rem; }
 .form-footer p, .form-status { margin: 0; color: #557063; font-size: .72rem; line-height: 1.4; }
 .form-status { min-height: 1.2em; margin-top: 1rem; color: #557063; }

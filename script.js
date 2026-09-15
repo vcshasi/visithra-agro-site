@@ -171,6 +171,71 @@ function setFormStatus(message, state) {
   if (state) formStatus.classList.add(`is-${state}`);
 }
 
+// ===== Contact form validation — every field is required =====
+const FIELD_ERROR_MESSAGES = {
+  name: { valueMissing: 'Please enter your name.' },
+  company: { valueMissing: 'Please enter your company name.' },
+  email: { valueMissing: 'Please enter your email address.', typeMismatch: 'Enter a valid email address, e.g. you@company.com.' },
+  phone: { valueMissing: 'Please enter a phone number.', patternMismatch: 'Enter a valid phone number (digits, spaces, +, - only).' },
+  location: { valueMissing: 'Please enter your city, region, or country.' },
+  message: { valueMissing: 'Please tell us what you need.' },
+};
+
+function fieldErrorMessage(field) {
+  const { validity } = field;
+  if (validity.valid) return '';
+  const messages = FIELD_ERROR_MESSAGES[field.name] || {};
+  if (validity.valueMissing) return messages.valueMissing || 'This field is required.';
+  if (validity.typeMismatch) return messages.typeMismatch || 'Please enter a valid value.';
+  if (validity.patternMismatch) return messages.patternMismatch || 'Please match the requested format.';
+  return field.validationMessage || 'Please check this field.';
+}
+
+function validateField(field) {
+  field.checkValidity();
+  const errorEl = document.getElementById(`err-${field.name}`);
+  const message = fieldErrorMessage(field);
+  if (errorEl) errorEl.textContent = message;
+  field.setAttribute('aria-invalid', String(!field.validity.valid));
+  return field.validity.valid;
+}
+
+const textFields = [...form.querySelectorAll('input:not([type="checkbox"]), textarea')];
+textFields.forEach((field) => {
+  field.addEventListener('blur', () => validateField(field));
+  field.addEventListener('input', () => {
+    if (field.getAttribute('aria-invalid') === 'true') validateField(field);
+  });
+});
+
+// Native `required` doesn't support "at least one of a group" for checkboxes,
+// so the first checkbox carries a custom validity message for the whole group.
+const productCheckboxes = [...document.querySelectorAll('.chip-select input[type="checkbox"]')];
+const productsError = document.getElementById('err-products');
+
+function validateProducts(showError) {
+  const anyChecked = productCheckboxes.some((checkbox) => checkbox.checked);
+  productCheckboxes[0].setCustomValidity(anyChecked ? '' : 'Select at least one product you are interested in.');
+  if (showError) productsError.textContent = anyChecked ? '' : productCheckboxes[0].validationMessage;
+  return anyChecked;
+}
+
+productCheckboxes.forEach((checkbox) => {
+  checkbox.addEventListener('change', () => validateProducts(true));
+});
+validateProducts(false);
+
+function validateForm() {
+  let firstInvalid = null;
+  textFields.forEach((field) => {
+    const isValid = validateField(field);
+    if (!isValid && !firstInvalid) firstInvalid = field;
+  });
+  const productsValid = validateProducts(true);
+  if (!productsValid && !firstInvalid) firstInvalid = productCheckboxes[0];
+  return firstInvalid;
+}
+
 function sendByMailto(values, products) {
   const body = [
     `Name: ${values.get('name')}`,
@@ -191,6 +256,13 @@ form.addEventListener('submit', async (event) => {
 
   // Honeypot: real visitors never fill this hidden field in.
   if (form.elements.botcheck.checked) return;
+
+  const firstInvalid = validateForm();
+  if (firstInvalid) {
+    firstInvalid.focus();
+    setFormStatus('Please fill in the highlighted fields before sending.', 'error');
+    return;
+  }
 
   const values = new FormData(form);
   const products = values.getAll('products');
