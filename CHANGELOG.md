@@ -2,6 +2,15 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.3.0] — 2026-09-15
+
+- Added the final, curated photo set (8 files from `visithra-agro-photos-enhanced-v2/choosen photos/`) to the product galleries: Gloriosa Superba's gallery grew from 3 to 8 photos (flowering-field, flower-cluster, and tuber-harvest shots), Coconut's grew from 1 to 3 (two more harvest-pile shots). The oversized original tuber photo was also replaced in place with a properly resized version (2.7MB → 1.3MB, same filename, same content).
+- Removed the fixed 4:3 cropped frame from the product galleries — it was called out as "just temporary." Each photo now displays at its own natural aspect ratio within a shared height, so nothing gets cropped; the gallery strip's height flexes with the viewport instead of being locked to a ratio.
+- Rewrote the gallery's "which photo is showing" and prev/next logic to work with these variable-width photos (previously it assumed every photo was exactly the frame's width) — same approach the outer product-family carousel already used (position-based, not width-based).
+- Rebalanced the product card so the gallery and the text detail get equal width (was gallery-light, text-heavy), giving photos more room now that they're the real, final images.
+
+Earlier in this same release, a first pass added a smaller, differently-curated set of photos sourced directly from the original WhatsApp export before the properly enhanced/curated folder was pointed out — those were swapped out for the set described above before anything was committed.
+
 ## [1.2.0] — 2026-09-15
 
 - Made every contact form field required: name, company, email, phone, location, message, and "Product(s) of interest" (previously company, phone, location, and product selection were optional).

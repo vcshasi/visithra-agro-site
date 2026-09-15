@@ -72,32 +72,59 @@ track.addEventListener('scroll', () => window.requestAnimationFrame(syncProductI
 // Product image catalogue — one gallery per main product family (not per sub-product).
 // Each gallery renders exactly the images present in its `photos` array, as a horizontal
 // scroll. Sub-products are listed as plain text next to the family gallery; they no longer
-// have their own images or links. How many photos each family ends up with will grow once
-// improved photos are ready. Image files themselves are left untouched here.
+// have their own images or links. More photos can be added the same way as new ones arrive.
 const productGalleries = {
   gloriosa: {
     name: 'Gloriosa Superba Products',
     photos: [
-      { src: 'assets/gloriossa-superba-seeds.jpg', alt: 'Gloriosa Superba flowering plants', caption: 'Gloriosa Superba Seeds' },
-      { src: 'assets/gloriossa-superba-seeds-field.jpg', alt: 'Gloriosa Superba flowers in the growing field', caption: 'Gloriosa Superba Seeds — field view' },
+      { src: 'assets/gloriossa-superba-seeds.jpg', alt: 'Gloriosa Superba flowering plants under palm trees', caption: 'Gloriosa Superba Seeds' },
+      { src: 'assets/gloriossa-superba-seeds-field.jpg', alt: 'Close-up of vivid red and yellow Gloriosa Superba flowers', caption: 'Gloriosa Superba Seeds — field view' },
+      { src: 'assets/gloriosa-superba-field-landscape.jpg', alt: 'Wide landscape view of the Gloriosa Superba growing field with coconut palms in the background', caption: 'Gloriosa Superba — flowering field' },
+      { src: 'assets/gloriosa-superba-flower-cluster-closeup-1.jpg', alt: 'Close-up cluster of vivid red and yellow Gloriosa Superba flowers', caption: 'Gloriosa Superba Seeds — flower cluster' },
+      { src: 'assets/gloriosa-superba-flower-cluster-closeup-2.jpg', alt: 'Another close-up cluster of Gloriosa Superba flowers in bloom', caption: 'Gloriosa Superba Seeds — flower cluster' },
+      { src: 'assets/gloriosa-superba-flowers-ground-level.jpg', alt: 'Ground-level view of flowering Gloriosa Superba plants across the field', caption: 'Gloriosa Superba Seeds — flowering field' },
       { src: 'assets/gloriossa-superba-tuber-enhanced.png', alt: 'Gloriosa Superba tubers prepared for trade', caption: 'Gloriosa Superba Tuber' },
+      { src: 'assets/gloriosa-superba-tuber-drying-shed-2.jpg', alt: 'Rows of freshly harvested Gloriosa Superba tubers drying at the storage shed', caption: 'Gloriosa Superba Tuber — harvested' },
     ],
   },
   coconut: {
     name: 'Coconut Products',
     photos: [
-      { src: 'assets/coconut-with-husk.jpg', alt: 'Fresh coconuts with husk at the farm', caption: 'Coconut with Husk' },
+      { src: 'assets/coconut-with-husk.jpg', alt: 'Fresh coconuts with husk piled at the farm', caption: 'Coconut with Husk' },
+      { src: 'assets/coconut-harvest-pile-wall-wide.jpg', alt: 'A large pile of freshly harvested coconuts with husk beside a stone wall', caption: 'Coconut with Husk — farm harvest' },
+      { src: 'assets/coconut-harvest-sorting-workers.jpg', alt: 'Freshly harvested coconuts with husk being sorted at the farm', caption: 'Coconut with Husk — harvest day' },
     ],
   },
 };
+
+// Slides are sized to each photo's own aspect ratio (no fixed/cropped frame), so a slide's
+// width varies photo to photo. Finding "the current slide" and scrolling to "the next slide"
+// therefore work off each slide's actual position, the same way the outer product carousel does.
+function closestGallerySlideIndex(scroll) {
+  const slides = [...scroll.querySelectorAll('.gallery-slide')];
+  if (!slides.length) return 0;
+  const scrollLeft = scroll.getBoundingClientRect().left;
+  return slides.reduce((best, slide, index) => {
+    const distance = Math.abs(slide.getBoundingClientRect().left - scrollLeft);
+    return distance < best.distance ? { index, distance } : best;
+  }, { index: 0, distance: Infinity }).index;
+}
+
+// Scrolls only the inner gallery strip to a slide — not element.scrollIntoView(), which would
+// also walk up and scroll the outer product carousel that this gallery is nested inside.
+function scrollGalleryToSlide(scroll, slide) {
+  if (!slide) return;
+  const delta = slide.getBoundingClientRect().left - scroll.getBoundingClientRect().left;
+  scroll.scrollTo({ left: scroll.scrollLeft + delta, behavior: 'smooth' });
+}
 
 function updateGalleryStatus(family) {
   const scroll = document.querySelector(`[data-gallery-scroll="${family}"]`);
   const count = document.querySelector(`[data-gallery-count="${family}"]`);
   const caption = document.querySelector(`[data-gallery-caption="${family}"]`);
   const { photos } = productGalleries[family];
-  if (!photos.length || !scroll.clientWidth) return;
-  const index = Math.min(Math.max(Math.round(scroll.scrollLeft / scroll.clientWidth), 0), photos.length - 1);
+  if (!photos.length) return;
+  const index = closestGallerySlideIndex(scroll);
   count.textContent = `${String(index + 1).padStart(2, '0')} / ${String(photos.length).padStart(2, '0')}`;
   caption.textContent = photos[index].caption;
 }
@@ -144,8 +171,14 @@ Object.keys(productGalleries).forEach((family) => {
   const prevButton = document.querySelector(`[data-gallery-prev="${family}"]`);
   const nextButton = document.querySelector(`[data-gallery-next="${family}"]`);
   scroll.addEventListener('scroll', () => window.requestAnimationFrame(() => updateGalleryStatus(family)), { passive: true });
-  prevButton.addEventListener('click', () => scroll.scrollBy({ left: -scroll.clientWidth, behavior: 'smooth' }));
-  nextButton.addEventListener('click', () => scroll.scrollBy({ left: scroll.clientWidth, behavior: 'smooth' }));
+  prevButton.addEventListener('click', () => {
+    const slides = [...scroll.querySelectorAll('.gallery-slide')];
+    scrollGalleryToSlide(scroll, slides[Math.max(closestGallerySlideIndex(scroll) - 1, 0)]);
+  });
+  nextButton.addEventListener('click', () => {
+    const slides = [...scroll.querySelectorAll('.gallery-slide')];
+    scrollGalleryToSlide(scroll, slides[Math.min(closestGallerySlideIndex(scroll) + 1, slides.length - 1)]);
+  });
   renderGallery(family);
 });
 
