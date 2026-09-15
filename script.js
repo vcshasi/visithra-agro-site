@@ -309,10 +309,16 @@ form.addEventListener('submit', async (event) => {
   submitButton.disabled = true;
   setFormStatus('Sending your enquiry…', null);
 
+  // Web3Forms can hang on a stalled connection; without a timeout the button
+  // would stay disabled and "Sending…" would show indefinitely with no way out.
+  const submitTimeout = new AbortController();
+  const timeoutId = setTimeout(() => submitTimeout.abort(), 15000);
+
   try {
     const response = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      signal: submitTimeout.signal,
       body: JSON.stringify({
         access_key: CONFIG.web3FormsKey,
         subject: 'New enquiry — Visithra Agro Traders',
@@ -330,12 +336,17 @@ form.addEventListener('submit', async (event) => {
     if (result.success) {
       setFormStatus('Thank you — your enquiry has been sent. We will be in touch soon.', 'success');
       form.reset();
+      validateProducts(false);
     } else {
       throw new Error(result.message || 'Something went wrong.');
     }
   } catch (error) {
-    setFormStatus(`Sorry, something went wrong sending your enquiry. Please email us directly at ${CONFIG.businessEmail}.`, 'error');
+    const message = error.name === 'AbortError'
+      ? `Sorry, sending your enquiry is taking too long. Please try again, or email us directly at ${CONFIG.businessEmail}.`
+      : `Sorry, something went wrong sending your enquiry. Please email us directly at ${CONFIG.businessEmail}.`;
+    setFormStatus(message, 'error');
   } finally {
+    clearTimeout(timeoutId);
     submitButton.disabled = false;
   }
 });

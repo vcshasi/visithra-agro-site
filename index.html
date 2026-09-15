@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Visithra Agro Traders — a family-led agricultural trading business from southern India, now in its second generation, supplying responsibly sourced coconut and Gloriosa superba products." />
     <meta name="theme-color" content="#0b2b22" />
-    <meta name="version" content="1.3.0" />
+    <meta name="version" content="1.3.1" />
     <title>Visithra Agro Traders | From Our Fields to Your Business</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -166,15 +166,15 @@
               <label>Contact number<input required name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="Phone or WhatsApp" pattern="^[0-9+\-\s()]{7,20}$" aria-describedby="err-phone" /><span class="field-error" id="err-phone" aria-live="polite"></span></label>
             </div>
             <label>Location<input required name="location" type="text" autocomplete="address-level2" placeholder="City, region or country" aria-describedby="err-location" /><span class="field-error" id="err-location" aria-live="polite"></span></label>
-            <fieldset class="interest-field">
+            <fieldset class="interest-field" aria-describedby="err-products">
               <legend>Product(s) of interest</legend>
               <div class="chip-select">
-                <label class="chip"><input type="checkbox" name="products" value="Gloriosa Superba Seeds" /><span>Gloriosa Superba Seeds</span></label>
-                <label class="chip"><input type="checkbox" name="products" value="Gloriosa Superba Tuber" /><span>Gloriosa Superba Tuber</span></label>
-                <label class="chip"><input type="checkbox" name="products" value="Coconut with Husk" /><span>Coconut with Husk</span></label>
-                <label class="chip"><input type="checkbox" name="products" value="Desiccated Coconut" /><span>Desiccated Coconut</span></label>
-                <label class="chip"><input type="checkbox" name="products" value="Coconut Copra" /><span>Coconut Copra</span></label>
-                <label class="chip"><input type="checkbox" name="products" value="Fresh Coconut Oil" /><span>Fresh Coconut Oil</span></label>
+                <label class="chip"><input type="checkbox" name="products" value="Gloriosa Superba Seeds" aria-describedby="err-products" /><span>Gloriosa Superba Seeds</span></label>
+                <label class="chip"><input type="checkbox" name="products" value="Gloriosa Superba Tuber" aria-describedby="err-products" /><span>Gloriosa Superba Tuber</span></label>
+                <label class="chip"><input type="checkbox" name="products" value="Coconut with Husk" aria-describedby="err-products" /><span>Coconut with Husk</span></label>
+                <label class="chip"><input type="checkbox" name="products" value="Desiccated Coconut" aria-describedby="err-products" /><span>Desiccated Coconut</span></label>
+                <label class="chip"><input type="checkbox" name="products" value="Coconut Copra" aria-describedby="err-products" /><span>Coconut Copra</span></label>
+                <label class="chip"><input type="checkbox" name="products" value="Fresh Coconut Oil" aria-describedby="err-products" /><span>Fresh Coconut Oil</span></label>
               </div>
               <span class="field-error" id="err-products" aria-live="polite"></span>
             </fieldset>
@@ -190,7 +190,7 @@
     <footer class="site-footer">
       <a class="brand" href="#home"><span class="brand-mark" aria-hidden="true">V</span><span>VISITHRA<span>AGRO</span></span></a>
       <p>Quality products. Considered trade.</p>
-      <p>© <span id="year"></span> Visithra Agro Traders. All rights reserved. <span class="site-version">v1.3.0</span></p>
+      <p>© <span id="year"></span> Visithra Agro Traders. All rights reserved. <span class="site-version">v1.3.1</span></p>
     </footer>
     <script src="script.js"></script>
   </body>

@@ -2,6 +2,13 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.3.1] — 2026-09-15
+
+- Fixed the contact form's Web3Forms submission getting stuck indefinitely (disabled button, "Sending…" shown forever) on a stalled network connection — it now times out after 15 seconds with a clear, actionable error message.
+- Fixed a stale validity state on the product-interest checkboxes after a successful submission resets the form.
+- Linked the product-interest checkboxes' error message via `aria-describedby` so screen reader users get it announced when focusing the group, not only at the moment it changes.
+- Corrected `README.md`'s title, which had read "v1.0.0" since that release despite every version since bumping the footer and `<meta name="version">`.
+
 ## [1.3.0] — 2026-09-15
 
 - Added the final, curated photo set (8 files from `visithra-agro-photos-enhanced-v2/choosen photos/`) to the product galleries: Gloriosa Superba's gallery grew from 3 to 8 photos (flowering-field, flower-cluster, and tuber-harvest shots), Coconut's grew from 1 to 3 (two more harvest-pile shots). The oversized original tuber photo was also replaced in place with a properly resized version (2.7MB → 1.3MB, same filename, same content).
