@@ -3,7 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Visithra Agro Traders — responsibly sourced coconut and Gloriosa superba products." />
+    <meta name="description" content="Visithra Agro Traders — responsibly sourced coconut and Gloriosa superba products for trade supply." />
+    <meta name="theme-color" content="#0b2b22" />
+    <meta name="version" content="1.0.0" />
     <title>Visithra Agro Traders | From Our Fields to Your Business</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,6 +14,8 @@
   </head>
   <body>
     <div class="grain" aria-hidden="true"></div>
+    <div class="scroll-progress" aria-hidden="true"><span id="scroll-progress-bar"></span></div>
+
     <header class="site-header">
       <a class="brand" href="#home" aria-label="Visithra Agro Traders home">
         <span class="brand-mark" aria-hidden="true">V</span>
@@ -35,8 +39,8 @@
           <h1>Rooted in care.<br /><em>Ready for trade.</em></h1>
           <p class="intro">We connect carefully sourced agricultural products with businesses that value freshness, quality, and dependable supply.</p>
           <div class="hero-actions">
-            <a class="button button-dark" href="#products">Explore our products <b>↓</b></a>
-            <a class="text-link" href="#contact">Start a conversation <b>↗</b></a>
+            <a class="button button-dark" href="#products">Explore our products <b aria-hidden="true">↓</b></a>
+            <a class="text-link" href="#contact">Start a conversation <b aria-hidden="true">↗</b></a>
           </div>
         </div>
         <div class="hero-art reveal" aria-label="Stylised illustration of a coconut palm landscape" role="img">
@@ -47,7 +51,7 @@
           <div class="palm palm-two"><span class="trunk"></span><span class="leaves"></span></div>
           <p>HARVESTED<br />WITH PURPOSE</p>
         </div>
-        <a class="scroll-cue" href="#about">Scroll to discover <span>↓</span></a>
+        <a class="scroll-cue" href="#about">Scroll to discover <span aria-hidden="true">↓</span></a>
       </section>
 
       <section class="about section section-padded" id="about">
@@ -57,7 +61,7 @@
           <div class="about-copy reveal">
             <p class="lead">Visithra Agro Traders is a family-led agricultural distribution business, built around honest relationships and products we are proud to stand behind.</p>
             <p>From the field to your business, we focus on responsible sourcing, careful handling, and dependable communication. Our goal is simple: make quality agricultural products easier to source with confidence.</p>
-            <a class="text-link" href="#contact">Work with us <b>↗</b></a>
+            <a class="text-link" href="#contact">Work with us <b aria-hidden="true">↗</b></a>
           </div>
         </div>
         <div class="principles reveal">
@@ -79,31 +83,30 @@
           <button class="carousel-button" type="button" data-direction="next" aria-label="Next product">→</button>
         </div>
         <div class="product-track" id="product-track" tabindex="0" aria-label="Our product families">
-          <article class="product-card product-card-gallery gloriossa-card">
-            <div class="product-gallery" data-gallery-panel="gloriossa">
+          <article class="product-card product-card-gallery gloriosa-card">
+            <div class="product-gallery" data-gallery-panel="gloriosa">
               <div class="gallery-stage">
-                <div class="gallery-scroll" data-gallery-scroll="gloriossa"></div>
-                <div class="gallery-empty" data-gallery-empty="gloriossa" hidden>
+                <div class="gallery-scroll" data-gallery-scroll="gloriosa"></div>
+                <div class="gallery-empty" data-gallery-empty="gloriosa" hidden>
                   <span>✦</span><strong>Images coming soon</strong><small>New product photos will appear here as they are added.</small>
                 </div>
-                <button class="gallery-nav gallery-nav-prev" type="button" data-gallery-prev="gloriossa" aria-label="Previous photo" hidden>‹</button>
-                <button class="gallery-nav gallery-nav-next" type="button" data-gallery-next="gloriossa" aria-label="Next photo" hidden>›</button>
-                <span class="gallery-count" data-gallery-count="gloriossa">01 / 01</span>
-                <div class="gallery-gloss" aria-hidden="true"></div>
-                <p class="gallery-caption" data-gallery-caption="gloriossa">Gloriossa Superba Seeds</p>
+                <button class="gallery-nav gallery-nav-prev" type="button" data-gallery-prev="gloriosa" aria-label="Previous photo" hidden>‹</button>
+                <button class="gallery-nav gallery-nav-next" type="button" data-gallery-next="gloriosa" aria-label="Next photo" hidden>›</button>
+                <span class="gallery-count" data-gallery-count="gloriosa">01 / 01</span>
+                <p class="gallery-caption" data-gallery-caption="gloriosa">Gloriosa Superba Seeds</p>
               </div>
               <p class="gallery-hint">Select a sub-product to view its available photos.</p>
             </div>
             <div class="product-detail">
               <p class="product-number">01 — Product family</p>
-              <h3>Gloriossa<br />Superba Products</h3>
+              <h3>Gloriosa<br />Superba Products</h3>
               <p>A specialist botanical range supplied for regulated trade requirements. <em>Gloriosa superba</em> is recognised as a natural source of colchicine-related alkaloids used in pharmaceutical research and processing; regulated colchicine medicines are prescribed for conditions including gout.</p>
               <p class="safety-note">Trade supply only — not for direct consumption or self-medication.</p>
-              <div class="subproduct-list" aria-label="Gloriossa Superba sub-products">
-                <button class="subproduct active" type="button" data-gallery-family="gloriossa" data-subproduct="seeds" aria-pressed="true"><span>Gloriossa Superba Seeds<small data-gallery-summary="Flowering crop">Flowering crop</small></span><b>↗</b></button>
-                <button class="subproduct" type="button" data-gallery-family="gloriossa" data-subproduct="tuber" aria-pressed="false"><span>Gloriossa Superba Tuber<small data-gallery-summary="Carefully handled botanical stock">Carefully handled botanical stock</small></span><b>↗</b></button>
+              <div class="subproduct-list" aria-label="Gloriosa Superba sub-products">
+                <button class="subproduct active" type="button" data-gallery-family="gloriosa" data-subproduct="seeds" aria-pressed="true"><span>Gloriosa Superba Seeds<small data-gallery-summary="Flowering crop">Flowering crop</small></span><b aria-hidden="true">↗</b></button>
+                <button class="subproduct" type="button" data-gallery-family="gloriosa" data-subproduct="tuber" aria-pressed="false"><span>Gloriosa Superba Tuber<small data-gallery-summary="Carefully handled botanical stock">Carefully handled botanical stock</small></span><b aria-hidden="true">↗</b></button>
               </div>
-              <a class="text-link" href="#contact">Ask about Gloriossa <b>↗</b></a>
+              <a class="text-link" href="#contact">Ask about Gloriosa Superba <b aria-hidden="true">↗</b></a>
             </div>
           </article>
           <article class="product-card product-card-gallery coconut-card">
@@ -116,7 +119,6 @@
                 <button class="gallery-nav gallery-nav-prev" type="button" data-gallery-prev="coconut" aria-label="Previous photo" hidden>‹</button>
                 <button class="gallery-nav gallery-nav-next" type="button" data-gallery-next="coconut" aria-label="Next photo" hidden>›</button>
                 <span class="gallery-count" data-gallery-count="coconut">01 / 01</span>
-                <div class="gallery-gloss" aria-hidden="true"></div>
                 <p class="gallery-caption" data-gallery-caption="coconut">Coconut with Husk</p>
               </div>
               <p class="gallery-hint">Select a sub-product to view its available photos.</p>
@@ -126,12 +128,12 @@
               <h3>Coconut<br />Products</h3>
               <p>Homegrown coconut products, carefully sourced and handled for freshness, consistency, and dependable trade supply. From whole coconuts to prepared ingredients, every option is ready for your requirements.</p>
               <div class="subproduct-list" aria-label="Coconut sub-products">
-                <button class="subproduct active" type="button" data-gallery-family="coconut" data-subproduct="with-husk" aria-pressed="true"><span>Coconut with Husk<small data-gallery-summary="Fresh, natural form">Fresh, natural form</small></span><b>↗</b></button>
-                <button class="subproduct" type="button" data-gallery-family="coconut" data-subproduct="desiccated" aria-pressed="false"><span>Desiccated Coconut<small data-gallery-summary="Prepared coconut ingredient">Prepared coconut ingredient</small></span><b>↗</b></button>
-                <button class="subproduct" type="button" data-gallery-family="coconut" data-subproduct="copra" aria-pressed="false"><span>Coconut Copra<small data-gallery-summary="Dried coconut kernel">Dried coconut kernel</small></span><b>↗</b></button>
-                <button class="subproduct" type="button" data-gallery-family="coconut" data-subproduct="oil" aria-pressed="false"><span>Fresh Coconut Oil<small data-gallery-summary="Purely extracted">Purely extracted</small></span><b>↗</b></button>
+                <button class="subproduct active" type="button" data-gallery-family="coconut" data-subproduct="with-husk" aria-pressed="true"><span>Coconut with Husk<small data-gallery-summary="Fresh, natural form">Fresh, natural form</small></span><b aria-hidden="true">↗</b></button>
+                <button class="subproduct" type="button" data-gallery-family="coconut" data-subproduct="desiccated" aria-pressed="false"><span>Desiccated Coconut<small data-gallery-summary="Prepared coconut ingredient">Prepared coconut ingredient</small></span><b aria-hidden="true">↗</b></button>
+                <button class="subproduct" type="button" data-gallery-family="coconut" data-subproduct="copra" aria-pressed="false"><span>Coconut Copra<small data-gallery-summary="Dried coconut kernel">Dried coconut kernel</small></span><b aria-hidden="true">↗</b></button>
+                <button class="subproduct" type="button" data-gallery-family="coconut" data-subproduct="oil" aria-pressed="false"><span>Fresh Coconut Oil<small data-gallery-summary="Purely extracted">Purely extracted</small></span><b aria-hidden="true">↗</b></button>
               </div>
-              <a class="text-link" href="#contact">Ask about coconut <b>↗</b></a>
+              <a class="text-link" href="#contact">Ask about coconut <b aria-hidden="true">↗</b></a>
             </div>
           </article>
         </div>
@@ -142,26 +144,44 @@
       </section>
 
       <section class="contact section section-padded" id="contact">
-        <div class="contact-intro reveal">
-          <div class="section-label"><span>03</span> Get in touch</div>
-          <h2>Let’s grow a<br /><em>good partnership.</em></h2>
-          <p>Tell us what you are looking for. We will get back to you to discuss product availability and your requirements.</p>
-        </div>
-        <form class="contact-form reveal" id="contact-form" name="business-enquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-          <input type="hidden" name="form-name" value="business-enquiry" />
-          <p class="hidden"><label>Don’t fill this out: <input name="bot-field" /></label></p>
-          <div class="form-row">
-            <label>Your name<input required name="name" type="text" autocomplete="name" placeholder="Full name" /></label>
-            <label>Contact number<input required name="phone" type="tel" autocomplete="tel" placeholder="Phone or WhatsApp" /></label>
+        <div class="contact-grid">
+          <div class="contact-intro reveal">
+            <div class="section-label"><span>03</span> Get in touch</div>
+            <h2>Let’s grow a<br /><em>good partnership.</em></h2>
+            <p>Tell us what you are looking for — product, quantity, and destination. We will get back to you to discuss availability and a quote.</p>
+            <div class="contact-direct">
+              <div><span>Email</span><a id="contact-email" href="#">—</a></div>
+              <div><span>Phone / WhatsApp</span><a id="contact-phone" href="#">—</a></div>
+              <div><span>Address</span><address id="contact-address">—</address></div>
+            </div>
           </div>
-          <div class="form-row">
-            <label>Company<input name="company" type="text" autocomplete="organization" placeholder="Company name (optional)" /></label>
+          <form class="contact-form reveal" id="contact-form" novalidate>
+            <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" />
+            <div class="form-row">
+              <label>Your name<input required name="name" type="text" autocomplete="name" placeholder="Full name" /></label>
+              <label>Company<input name="company" type="text" autocomplete="organization" placeholder="Company name (optional)" /></label>
+            </div>
+            <div class="form-row">
+              <label>Email<input required name="email" type="email" autocomplete="email" placeholder="you@company.com" /></label>
+              <label>Contact number<input name="phone" type="tel" autocomplete="tel" placeholder="Phone or WhatsApp" /></label>
+            </div>
             <label>Location<input name="location" type="text" autocomplete="address-level2" placeholder="City, region or country" /></label>
-          </div>
-          <label>How can we help?<textarea required name="message" rows="4" placeholder="Tell us about the product and quantity you need."></textarea></label>
-          <div class="form-footer"><p>We’ll use these details only to respond to your enquiry.</p><button class="button button-dark" type="submit">Send enquiry <b>↗</b></button></div>
-          <p class="form-status" id="form-status" aria-live="polite"></p>
-        </form>
+            <fieldset class="interest-field">
+              <legend>Product(s) of interest</legend>
+              <div class="chip-select">
+                <label class="chip"><input type="checkbox" name="products" value="Gloriosa Superba Seeds" /><span>Gloriosa Superba Seeds</span></label>
+                <label class="chip"><input type="checkbox" name="products" value="Gloriosa Superba Tuber" /><span>Gloriosa Superba Tuber</span></label>
+                <label class="chip"><input type="checkbox" name="products" value="Coconut with Husk" /><span>Coconut with Husk</span></label>
+                <label class="chip"><input type="checkbox" name="products" value="Desiccated Coconut" /><span>Desiccated Coconut</span></label>
+                <label class="chip"><input type="checkbox" name="products" value="Coconut Copra" /><span>Coconut Copra</span></label>
+                <label class="chip"><input type="checkbox" name="products" value="Fresh Coconut Oil" /><span>Fresh Coconut Oil</span></label>
+              </div>
+            </fieldset>
+            <label>How can we help?<textarea required name="message" rows="4" placeholder="Tell us about the product and quantity you need."></textarea></label>
+            <div class="form-footer"><p>We’ll use these details only to respond to your enquiry.</p><button class="button button-dark" type="submit">Send enquiry <b aria-hidden="true">↗</b></button></div>
+            <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
       </section>
 
     </main>
@@ -169,7 +189,7 @@
     <footer class="site-footer">
       <a class="brand" href="#home"><span class="brand-mark" aria-hidden="true">V</span><span>VISITHRA<span>AGRO</span></span></a>
       <p>Quality products. Considered trade.</p>
-      <p>© <span id="year"></span> Visithra Agro Traders. All rights reserved. <span class="site-version">v0.6.0</span></p>
+      <p>© <span id="year"></span> Visithra Agro Traders. All rights reserved. <span class="site-version">v1.0.0</span></p>
     </footer>
     <script src="script.js"></script>
   </body>

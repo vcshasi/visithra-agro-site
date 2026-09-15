@@ -1,3 +1,13 @@
+// ===== Site settings — edit these before launch =====
+const CONFIG = {
+  businessEmail: 'YOUR-BUSINESS-EMAIL@example.com', // shown in the contact section and used as the enquiry recipient
+  phone: '+91 00000 00000', // shown as the phone / WhatsApp contact
+  address: 'Street, Town, District, State, PIN, India', // shown as the postal address
+  // Free form-delivery service — see README.md "Sending enquiries by email" for setup steps.
+  // Leave the placeholder below and the form will fall back to opening the visitor's email app instead.
+  web3FormsKey: 'YOUR-WEB3FORMS-ACCESS-KEY',
+};
+
 const menuButton = document.querySelector('.menu-toggle');
 const menu = document.querySelector('.site-menu');
 const menuLinks = document.querySelectorAll('.site-menu a');
@@ -26,6 +36,16 @@ const revealObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.12 });
 document.querySelectorAll('.reveal').forEach((element) => revealObserver.observe(element));
 
+// Slim progress bar that fills as the visitor scrolls the single page.
+const scrollProgressBar = document.getElementById('scroll-progress-bar');
+function updateScrollProgress() {
+  const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+  scrollProgressBar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+}
+window.addEventListener('scroll', () => window.requestAnimationFrame(updateScrollProgress), { passive: true });
+updateScrollProgress();
+
 const track = document.getElementById('product-track');
 const productIndex = document.getElementById('product-index');
 const cards = [...track.querySelectorAll('.product-card')];
@@ -50,18 +70,19 @@ document.querySelectorAll('.carousel-button').forEach((button) => {
 track.addEventListener('scroll', () => window.requestAnimationFrame(syncProductIndex), { passive: true });
 
 // Product image catalogue — each gallery renders exactly the images present in its `photos` array.
+// Image files are left untouched here; replace or add entries once corrected photos are supplied.
 const productGalleries = {
-  gloriossa: {
+  gloriosa: {
     seeds: {
-      name: 'Gloriossa Superba Seeds',
+      name: 'Gloriosa Superba Seeds',
       photos: [
-        { src: 'assets/gloriossa-superba-seeds.jpg', alt: 'Gloriossa Superba flowering plants', caption: 'Gloriossa Superba Seeds' },
-        { src: 'assets/gloriossa-superba-seeds-field.jpg', alt: 'Gloriossa Superba flowers in the growing field', caption: 'Gloriossa Superba Seeds — field view' },
+        { src: 'assets/gloriossa-superba-seeds.jpg', alt: 'Gloriosa Superba flowering plants', caption: 'Gloriosa Superba Seeds' },
+        { src: 'assets/gloriossa-superba-seeds-field.jpg', alt: 'Gloriosa Superba flowers in the growing field', caption: 'Gloriosa Superba Seeds — field view' },
       ],
     },
     tuber: {
-      name: 'Gloriossa Superba Tuber',
-      photos: [{ src: 'assets/gloriossa-superba-tuber-enhanced.png', alt: 'Gloriossa Superba tubers prepared for trade', caption: 'Gloriossa Superba Tuber' }],
+      name: 'Gloriosa Superba Tuber',
+      photos: [{ src: 'assets/gloriossa-superba-tuber-enhanced.png', alt: 'Gloriosa Superba tubers prepared for trade', caption: 'Gloriosa Superba Tuber' }],
     },
   },
   coconut: {
@@ -116,6 +137,8 @@ function showGalleryImage(family, product) {
       img.className = 'gallery-slide';
       img.src = photo.src;
       img.alt = photo.alt;
+      img.loading = 'lazy';
+      img.decoding = 'async';
       scroll.append(img);
     });
     updateGalleryStatus(family);
@@ -149,22 +172,86 @@ Object.entries(productGalleries).forEach(([family, subproducts]) => {
 
 document.getElementById('year').textContent = new Date().getFullYear();
 
+// ===== Contact details — filled in from CONFIG above =====
+const emailLink = document.getElementById('contact-email');
+emailLink.textContent = CONFIG.businessEmail;
+emailLink.href = `mailto:${CONFIG.businessEmail}`;
+const phoneLink = document.getElementById('contact-phone');
+phoneLink.textContent = CONFIG.phone;
+phoneLink.href = `tel:${CONFIG.phone.replace(/\s/g, '')}`;
+document.getElementById('contact-address').textContent = CONFIG.address;
+
+// ===== Contact form =====
 const form = document.getElementById('contact-form');
 const formStatus = document.getElementById('form-status');
+const submitButton = form.querySelector('button[type="submit"]');
+
+function setFormStatus(message, state) {
+  formStatus.textContent = message;
+  formStatus.classList.remove('is-success', 'is-error');
+  if (state) formStatus.classList.add(`is-${state}`);
+}
+
+function sendByMailto(values, products) {
+  const body = [
+    `Name: ${values.get('name')}`,
+    `Company: ${values.get('company') || '—'}`,
+    `Email: ${values.get('email')}`,
+    `Phone: ${values.get('phone') || '—'}`,
+    `Location: ${values.get('location') || '—'}`,
+    `Product(s) of interest: ${products.length ? products.join(', ') : '—'}`,
+    '',
+    `Message: ${values.get('message')}`,
+  ].join('\n');
+  window.location.href = `mailto:${CONFIG.businessEmail}?subject=${encodeURIComponent('New Visithra Agro enquiry')}&body=${encodeURIComponent(body)}`;
+  setFormStatus('Email sending isn’t configured yet, so your email app should open with the enquiry ready to send.', null);
+}
+
 form.addEventListener('submit', async (event) => {
-  // Netlify captures this form automatically after deployment. Locally, it opens an email draft instead.
-  if (window.location.hostname === 'localhost' || window.location.protocol === 'file:') {
-    event.preventDefault();
-    const values = new FormData(form);
-    const body = [
-      `Name: ${values.get('name')}`,
-      `Contact: ${values.get('phone')}`,
-      `Company: ${values.get('company') || '—'}`,
-      `Location: ${values.get('location') || '—'}`,
-      '',
-      `Message: ${values.get('message')}`,
-    ].join('\n');
-    window.location.href = `mailto:YOUR-BUSINESS-EMAIL@example.com?subject=${encodeURIComponent('New Visithra Agro enquiry')}&body=${encodeURIComponent(body)}`;
-    formStatus.textContent = 'Your email app should open with the enquiry ready to send.';
+  event.preventDefault();
+
+  // Honeypot: real visitors never fill this hidden field in.
+  if (form.elements.botcheck.checked) return;
+
+  const values = new FormData(form);
+  const products = values.getAll('products');
+  const isConfigured = CONFIG.web3FormsKey && CONFIG.web3FormsKey !== 'YOUR-WEB3FORMS-ACCESS-KEY';
+
+  if (!isConfigured) {
+    sendByMailto(values, products);
+    return;
+  }
+
+  submitButton.disabled = true;
+  setFormStatus('Sending your enquiry…', null);
+
+  try {
+    const response = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        access_key: CONFIG.web3FormsKey,
+        subject: 'New enquiry — Visithra Agro Traders',
+        from_name: 'Visithra Agro Traders website',
+        name: values.get('name'),
+        email: values.get('email'),
+        phone: values.get('phone') || 'Not provided',
+        company: values.get('company') || 'Not provided',
+        location: values.get('location') || 'Not provided',
+        'Product(s) of interest': products.length ? products.join(', ') : 'Not specified',
+        message: values.get('message'),
+      }),
+    });
+    const result = await response.json();
+    if (result.success) {
+      setFormStatus('Thank you — your enquiry has been sent. We will be in touch soon.', 'success');
+      form.reset();
+    } else {
+      throw new Error(result.message || 'Something went wrong.');
+    }
+  } catch (error) {
+    setFormStatus(`Sorry, something went wrong sending your enquiry. Please email us directly at ${CONFIG.businessEmail}.`, 'error');
+  } finally {
+    submitButton.disabled = false;
   }
 });

@@ -1,6 +1,19 @@
 # Changelog
 
-All notable website updates are tracked here using semantic versions.
+All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
+
+## [1.0.0] — 2026-09-15
+
+- **Redesign** (major): reworked the visual direction toward a cleaner, more spacious "single scrollable page" feel (inspired by modern product-launch pages), while keeping the existing brand, palette, content structure, and section order.
+- Corrected the "Gloriossa" misspelling to the correct botanical spelling "Gloriosa" everywhere it appears in visible text, headings, and internal code identifiers (image files themselves are untouched — see below).
+- Compacted the product photo galleries to a contained, fixed-aspect frame (4:3) instead of a tall full-height panel, so photos sit at a more elegant, proportionate size.
+- Rebuilt the contact section with a two-column layout: business contact details (email, phone/WhatsApp, address) alongside the enquiry form, plus a multi-select "Product(s) of interest" chip picker covering all six sub-products.
+- Wired the contact form to send real emails via Web3Forms (a free form-delivery service) with a graceful fallback to opening the visitor's email app until a free access key is configured. See README.md for setup.
+- Fixed several accessibility and consistency issues: decorative arrow glyphs are now hidden from screen readers, focus-visible states were added to buttons and links that previously relied on browser defaults, `scroll-padding-top` now matches the actual header height at every breakpoint, and the enquiry status message now changes color for success vs. error instead of always showing as a warning.
+- Added a thin scroll-progress indicator at the top of the page and lazy-loading on gallery photos for a lighter, faster mobile experience.
+- Added an extra responsive breakpoint (980px) so the product cards and contact layout adapt more gracefully on tablets, not just phones.
+- Initialised git version control for this project (previously tracked only via `requests/` briefs and this changelog) so any point in history can be reverted to directly.
+- Product photo files are unchanged — replace them in `assets/` once corrected/higher-resolution versions are available.
 
 ## [0.6.0] — 2026-09-15
 
