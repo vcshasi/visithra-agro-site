@@ -20,6 +20,7 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 12px); }
 body { margin: 0; background: radial-gradient(ellipse at 83% -10%, rgba(206,231,219,.85), transparent 37%), radial-gradient(ellipse at 8% 38%, rgba(244,213,198,.36), transparent 33%), var(--cream); color: var(--ink); font-family: var(--sans); overflow-x: hidden; }
 body.menu-open { overflow: hidden; }
