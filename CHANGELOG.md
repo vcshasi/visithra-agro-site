@@ -2,6 +2,12 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.4.1] — 2026-09-16
+
+- Put "02 Our range" and "Naturally versatile. Carefully supplied." back on the same line (side by side, baseline-aligned), instead of v1.4.0's stacked/centered block — the label itself is unchanged, only its position relative to the heading.
+- Fixed the inner per-photo gallery-nav buttons (‹ ›) sometimes being hard to see against busy or light photo backgrounds — v1.4.0 had made them translucent/subtle by default to reduce clutter, which went too far. They're back to a solid, high-contrast look (dark background, blur, border, shadow) at all times, not just on hover.
+- Moved the product-family prev/next buttons off the centered row below the card and back onto the card's left/right edges, vertically centered — this is what "the side of the frame" meant, not the bottom row v1.3.6/v1.4.0 had settled on. To avoid the overlap with the inner gallery-nav buttons that caused the move away from this position in the first place, the buttons now sit further out from the card edge (`-1.5rem` vs. the `-.5rem` used before), which was verified to leave a clean ~22px gap from the inner buttons at desktop widths and ~10px on mobile — no overlap either way. The "01/02" index stays as a small label below the card, without buttons attached to it.
+
 ## [1.4.0] — 2026-09-16
 
 - **Products heading**: removed the supporting paragraph ("Scroll through our current product families...") entirely; the "02 Our range" label and the "Naturally versatile. Carefully supplied." heading are now centered on the page as a simple stacked block, with clear spacing above and below both.
