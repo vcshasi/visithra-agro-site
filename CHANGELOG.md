@@ -2,6 +2,10 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.4.4] — 2026-09-16
+
+- Moved the product-family prev/next buttons off the card's left/right edges and into a single row below the card, together with the "01 / 02" page indicator (prev arrow, index, next arrow — centered, evenly spaced). Same click behaviour as always. This also freed up the mobile card padding that had been added only to keep those side buttons clear of the inner per-photo gallery-nav buttons.
+
 ## [1.4.3] — 2026-09-16
 
 - Restored "02 Our range"'s original position: a narrow left-hand column, bottom-aligned against the heading's last line, with "Naturally versatile. Carefully supplied." following in a wider column to its right — the grid layout used through v1.3.6 (`.products-heading` had been switched to a centered flex row in v1.4.0). Confirmed against a screenshot of the earlier version. The Products section still fits the viewport as it did in v1.4.2 — this only changed how the two pieces of text are arranged, not their size or the section's overall height.

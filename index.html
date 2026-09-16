@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Visithra Agro Traders — a family-led agricultural trading business from southern India, now in its second generation, supplying responsibly sourced coconut and Gloriosa superba products." />
     <meta name="theme-color" content="#0b2b22" />
-    <meta name="version" content="1.4.3" />
+    <meta name="version" content="1.4.4" />
     <title>Visithra Agro Traders | From Our Fields to Your Business</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -78,7 +78,6 @@
           <h2 class="reveal">Naturally versatile. <em>Carefully supplied.</em></h2>
         </div>
         <div class="product-carousel">
-          <button class="carousel-button carousel-button-prev" type="button" data-direction="prev" aria-label="Previous product family">←</button>
           <div class="product-track" id="product-track" tabindex="0" aria-label="Our product families">
           <article class="product-card product-card-gallery gloriosa-card">
             <div class="product-gallery" data-gallery-panel="gloriosa">
@@ -132,9 +131,12 @@
             </div>
           </article>
           </div>
-          <button class="carousel-button carousel-button-next" type="button" data-direction="next" aria-label="Next product family">→</button>
         </div>
-        <p class="product-index-label reveal"><b id="product-index">01</b> / 02</p>
+        <div class="product-pagination reveal">
+          <button class="carousel-button" type="button" data-direction="prev" aria-label="Previous product family">←</button>
+          <span class="product-index-label"><b id="product-index">01</b> / 02</span>
+          <button class="carousel-button" type="button" data-direction="next" aria-label="Next product family">→</button>
+        </div>
       </section>
 
       <section class="supply section">
@@ -189,7 +191,7 @@
     <footer class="site-footer">
       <a class="brand" href="#home"><span class="brand-mark" aria-hidden="true">V</span><span>VISITHRA<span>AGRO</span></span></a>
       <p>Quality products. Considered trade.</p>
-      <p>© <span id="year"></span> Visithra Agro Traders. All rights reserved. <span class="site-version">v1.4.3</span></p>
+      <p>© <span id="year"></span> Visithra Agro Traders. All rights reserved. <span class="site-version">v1.4.4</span></p>
     </footer>
     <script src="script.js"></script>
   </body>
