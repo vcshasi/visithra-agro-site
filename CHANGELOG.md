@@ -2,6 +2,10 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.6.3] — 2026-09-16
+
+- Sped up the Products autoplay pace: `AUTOPLAY_INTERVAL_MS` changed from 3500ms to 2500ms. Chosen after previewing 2.0s/2.5s/3.0s side by side in a standalone comparison artifact built from the site's own photos.
+
 ## [1.6.2] — 2026-09-16
 
 - "Products" in the header no longer navigates on its own click — it's a label for the dropdown now; only choosing a family from the submenu (or waiting to hover it) goes anywhere.

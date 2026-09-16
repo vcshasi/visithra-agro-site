@@ -244,7 +244,7 @@ Object.keys(productGalleries).forEach((family) => {
 // site stops it — but only for the current visit to the section: scrolling away and back
 // (or picking a family from the header) gives autoplay a fresh start from wherever it left
 // off, rather than disabling it for the rest of the page visit.
-const AUTOPLAY_INTERVAL_MS = 3500;
+const AUTOPLAY_INTERVAL_MS = 2500;
 const productFamilies = Object.keys(productGalleries);
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 let autoplayFamilyIndex = 0;
