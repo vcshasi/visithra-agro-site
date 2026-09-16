@@ -36,13 +36,21 @@ button { cursor: pointer; -webkit-appearance: none; appearance: none; }
 .sr-only, .hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 .site-header { height: var(--header-h); display: flex; align-items: center; justify-content: space-between; padding: 0 var(--edge); border-bottom: 1px solid rgba(255,255,255,.82); position: fixed; z-index: 20; top: 0; left: 0; right: 0; background: linear-gradient(115deg, rgba(255,255,255,.93), rgba(234,246,235,.75) 52%, rgba(247,224,211,.6)); box-shadow: 0 10px 28px -10px rgba(11,43,34,.18), inset 0 1px 0 rgba(255,255,255,.85); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); }
-.brand { display: inline-flex; align-items: center; gap: .6rem; font: 700 .8rem/1 var(--sans); letter-spacing: .08em; }
-.brand > span:last-child span { display: block; color: var(--leaf); letter-spacing: .15em; font-size: .51rem; margin-top: .14rem; }
-.brand-mark { width: 27px; height: 27px; border: 1px solid currentColor; border-radius: 50%; display: grid; place-items: center; font: 600 1.05rem/1 var(--serif); color: var(--rust); box-shadow: 0 3px 10px rgba(217,92,49,.24); }
+.brand { display: inline-flex; align-items: center; gap: .7rem; font: 700 .96rem/1 var(--sans); letter-spacing: .07em; }
+.brand > span:last-child span { display: block; color: var(--leaf); letter-spacing: .14em; font-size: .58rem; margin-top: .16rem; }
+.brand-mark { width: 34px; height: 34px; border: 1px solid currentColor; border-radius: 50%; display: grid; place-items: center; font: 600 1.3rem/1 var(--serif); color: var(--rust); box-shadow: 0 3px 10px rgba(217,92,49,.24); }
 .site-menu { display: flex; gap: 2rem; align-items: center; font: 500 .76rem var(--mono); text-transform: uppercase; letter-spacing: .07em; }
 .site-menu a { position: relative; padding: .4rem 0; }
 .site-menu a::after { content: ""; position: absolute; height: 1px; left: 0; right: 0; bottom: 0; background: var(--rust); transform: scaleX(0); transform-origin: right; transition: transform .3s ease; }
 .site-menu a:hover::after, .site-menu a:focus-visible::after { transform: scaleX(1); transform-origin: left; }
+.nav-item { position: relative; display: flex; align-items: center; }
+.submenu { position: absolute; top: calc(100% + 14px); left: 50%; transform: translate(-50%, -6px); min-width: 220px; margin: 0; padding: .6rem; list-style: none; border-radius: var(--radius-m); background: linear-gradient(150deg, #fffdf7, #edf4e9); box-shadow: 0 20px 40px -16px rgba(11,43,34,.4), inset 0 1px 0 rgba(255,255,255,.9); opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .2s ease, transform .2s ease, visibility .2s; z-index: 25; }
+.nav-item:hover .submenu, .nav-item:focus-within .submenu { opacity: 1; visibility: visible; pointer-events: auto; transform: translate(-50%, 0); }
+.submenu li + li { margin-top: .15rem; }
+.submenu a { display: block; padding: .5rem .7rem; border-radius: var(--radius-s); color: var(--ink); font: 500 .74rem var(--sans); text-transform: none; letter-spacing: 0; transition: background .2s, color .2s; }
+.submenu a::after { content: none; }
+.submenu a:hover, .submenu a:focus-visible { background: var(--sand); color: var(--rust-dark); }
+.submenu-note { padding: .5rem .7rem; font: 500 .66rem var(--mono); text-transform: uppercase; letter-spacing: .04em; color: #8a988e; }
 .menu-toggle { display: none; background: transparent; border: 0; padding: .6rem 0 .6rem .6rem; width: 42px; }
 .menu-toggle i { display: block; height: 1px; margin: 5px 0; background: var(--ink); transition: transform .25s ease; }
 
@@ -206,10 +214,19 @@ h1 em, h2 em { font-weight: 600; color: var(--rust); font-style: italic; }
 
 @media (max-width: 760px) {
   :root { --header-h: var(--header-h-mobile); }
+  /* backdrop-filter makes .site-header a containing block for its position:fixed
+     .site-menu descendant, shrinking the fullscreen mobile overlay down to the header's
+     own box instead of the viewport — drop it at this breakpoint so the overlay works. */
+  .site-header { -webkit-backdrop-filter: none; backdrop-filter: none; }
   .menu-toggle { display: block; z-index: 2; }
-  .site-menu { position: fixed; inset: 0; padding: 6rem 8vw 2rem; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1.6rem; background: var(--forest); color: var(--cream); font: 600 2.1rem var(--serif); transform: translateX(100%); transition: transform .35s ease; z-index: 15; }
+  .site-menu { position: fixed; inset: 0; padding: 6rem 8vw 2rem; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1.6rem; background: var(--forest); color: var(--cream); font: 600 2.1rem var(--serif); transform: translateX(100%); transition: transform .35s ease; z-index: 15; overflow-y: auto; }
   .site-menu a::after { background: var(--lime); }
   .site-menu.open { transform: none; }
+  .nav-item { flex-direction: column; align-items: flex-start; width: 100%; }
+  .submenu { position: static; opacity: 1; visibility: visible; pointer-events: auto; transform: none; box-shadow: none; background: transparent; margin-top: .7rem; padding: 0 0 0 1.3rem; min-width: 0; }
+  .submenu a { color: var(--cream); font: 500 1.1rem var(--sans); padding: .35rem 0; }
+  .submenu a:hover, .submenu a:focus-visible { background: transparent; color: var(--lime); }
+  .submenu-note { color: rgba(228,237,204,.55); padding: .35rem 0; }
   .menu-toggle[aria-expanded="true"] i { background: var(--cream); }
   .menu-toggle[aria-expanded="true"] i:first-of-type { transform: translateY(3px) rotate(45deg); }
   .menu-toggle[aria-expanded="true"] i:last-of-type { transform: translateY(-3px) rotate(-45deg); }

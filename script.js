@@ -60,6 +60,7 @@ function syncProductIndex() {
 
 document.querySelectorAll('.carousel-button').forEach((button) => {
   button.addEventListener('click', () => {
+    stopAutoplay();
     const current = Number(productIndex.textContent) - 1;
     const next = button.dataset.direction === 'next'
       ? Math.min(current + 1, cards.length - 1)
@@ -68,6 +69,20 @@ document.querySelectorAll('.carousel-button').forEach((button) => {
   });
 });
 track.addEventListener('scroll', () => window.requestAnimationFrame(syncProductIndex), { passive: true });
+track.addEventListener('pointerdown', stopAutoplay);
+track.addEventListener('keydown', stopAutoplay);
+
+// Header "Products" submenu — jump straight to a family's card in the carousel.
+document.querySelectorAll('[data-family-link]').forEach((link) => {
+  link.addEventListener('click', (event) => {
+    event.preventDefault();
+    stopAutoplay();
+    const index = cards.findIndex((card) => card.dataset.family === link.dataset.familyLink);
+    if (index === -1) return;
+    document.getElementById('products').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    cards[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+  });
+});
 
 // Product image catalogue — one gallery per main product family (not per sub-product).
 // Each gallery renders exactly the images present in its `photos` array, as a horizontal
@@ -168,16 +183,82 @@ Object.keys(productGalleries).forEach((family) => {
   const prevButton = document.querySelector(`[data-gallery-prev="${family}"]`);
   const nextButton = document.querySelector(`[data-gallery-next="${family}"]`);
   scroll.addEventListener('scroll', () => window.requestAnimationFrame(() => updateGalleryStatus(family)), { passive: true });
+  scroll.addEventListener('pointerdown', stopAutoplay);
   prevButton.addEventListener('click', () => {
+    stopAutoplay();
     const slides = [...scroll.querySelectorAll('.gallery-slide')];
     scrollGalleryToSlide(scroll, slides[Math.max(closestGallerySlideIndex(scroll) - 1, 0)]);
   });
   nextButton.addEventListener('click', () => {
+    stopAutoplay();
     const slides = [...scroll.querySelectorAll('.gallery-slide')];
     scrollGalleryToSlide(scroll, slides[Math.min(closestGallerySlideIndex(scroll) + 1, slides.length - 1)]);
   });
   renderGallery(family);
 });
+
+// ===== Product section autoplay =====
+// Once the Products section is visible, automatically step through the current family's
+// photos one at a time; when a family's photos are exhausted, advance to the next family
+// (looping back to the first after the last), and keep repeating. Pauses while the section
+// is scrolled out of view, and stops for good the moment the visitor manually interacts with
+// the carousel (nav buttons, dragging/scrolling a gallery or the family track, arrow keys).
+const AUTOPLAY_INTERVAL_MS = 3500;
+const productFamilies = Object.keys(productGalleries);
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let autoplayFamilyIndex = 0;
+let autoplayTimer = null;
+let autoplayStopped = prefersReducedMotion;
+
+function stopAutoplay() {
+  autoplayStopped = true;
+  if (autoplayTimer) {
+    clearInterval(autoplayTimer);
+    autoplayTimer = null;
+  }
+  autoplayVisibilityObserver.disconnect();
+}
+
+function autoplayStep() {
+  if (autoplayStopped) return;
+  const family = productFamilies[autoplayFamilyIndex];
+  const scroll = document.querySelector(`[data-gallery-scroll="${family}"]`);
+  const slides = scroll ? [...scroll.querySelectorAll('.gallery-slide')] : [];
+  const currentIndex = scroll ? closestGallerySlideIndex(scroll) : 0;
+
+  if (slides.length > 1 && currentIndex < slides.length - 1) {
+    scrollGalleryToSlide(scroll, slides[currentIndex + 1]);
+    return;
+  }
+
+  autoplayFamilyIndex = (autoplayFamilyIndex + 1) % productFamilies.length;
+  const nextFamily = productFamilies[autoplayFamilyIndex];
+  cards[autoplayFamilyIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+  const nextScroll = document.querySelector(`[data-gallery-scroll="${nextFamily}"]`);
+  const nextSlides = nextScroll ? [...nextScroll.querySelectorAll('.gallery-slide')] : [];
+  if (nextScroll && nextSlides.length) scrollGalleryToSlide(nextScroll, nextSlides[0]);
+}
+
+function startAutoplay() {
+  if (autoplayStopped || autoplayTimer) return;
+  autoplayTimer = setInterval(autoplayStep, AUTOPLAY_INTERVAL_MS);
+}
+
+function pauseAutoplay() {
+  if (autoplayTimer) {
+    clearInterval(autoplayTimer);
+    autoplayTimer = null;
+  }
+}
+
+const autoplayVisibilityObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) startAutoplay();
+    else pauseAutoplay();
+  });
+}, { threshold: 0.4 });
+
+if (!autoplayStopped) autoplayVisibilityObserver.observe(document.getElementById('products'));
 
 document.getElementById('year').textContent = new Date().getFullYear();
 
