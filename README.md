@@ -1,4 +1,4 @@
-# Visithra Agro Traders website — v1.8.0
+# Visithra Agro Traders website — v1.8.1
 
 **Live at:** https://www.visithra-agro.workers.dev
 
@@ -72,6 +72,10 @@ Existing image files in `assets/` are untouched by this release (including their
 ## Security
 
 Response headers, self-hosted fonts, form hardening, and what's still needed before any future payment feature: **[SECURITY.md](SECURITY.md)**.
+
+## Upcoming
+
+Planned work not yet started: **[TODO.md](TODO.md)**.
 
 ## Versioning
 

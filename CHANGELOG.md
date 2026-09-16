@@ -2,6 +2,10 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.8.1] — 2026-09-16
+
+Added `TODO.md` tracking three planned items: restricting the Web3Forms key to the live domain (already flagged in `SECURITY.md`; a dashboard action, not a code change), a feasibility analysis for live chat (WhatsApp click-to-chat vs. the WhatsApp Business API vs. a hosted chatbot widget — not scoped yet, just the options worth weighing when it's picked up), and replacing the homepage's CSS-drawn hero illustration with a practical photo. Linked from `README.md`; excluded from the public deploy via `.assetsignore`, matching the other internal docs.
+
 ## [1.8.0] — 2026-09-16
 
 Security hardening pass, working through a peer review's findings (items 1–5 and 8; items 6–7 are account-level/blocked-on-a-custom-domain and were deliberately held back):
