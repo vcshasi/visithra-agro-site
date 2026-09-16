@@ -2,6 +2,12 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.5.3] — 2026-09-16
+
+- Moved the family-switcher prev/next buttons from their own line above "02 Our range" to sit on the same line, to its right — between the label and "Naturally versatile...". Buttons and index text shrunk a little to sit proportionately next to the small label.
+- With that row gone, used part of the freed-up height to grow the product card itself (`min-width: 1140px` → `1200px`, both columns wider) — the photo frame grows from 527×395 to 557×418 via its existing aspect ratio, and the wider text column tends to wrap to fewer lines too.
+- Verified the section still fits comfortably across the same spread of viewport heights as before: 32px to spare at 700px, 146px+ at 816px and up — smaller margins than v1.5.2 (since the frame is now intentionally bigger), but still a real, non-knife-edge fit, not just barely making it.
+
 ## [1.5.2] — 2026-09-16
 
 - Fit the Products section to the screen without touching the photo frame or image size at all (both are pixel-identical to v1.4.5/v1.5.1) — per explicit instruction, the space was found elsewhere instead:
