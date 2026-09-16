@@ -2,6 +2,11 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.3.4] — 2026-09-16
+
+- Moved the product-family carousel's prev/next controls from a small "← 01/02 →" bar above the cards to full-size circular buttons on the left and right edges of the product-card frame itself, vertically centered — a more familiar, discoverable carousel pattern than a corner control bar. The "01/02" position indicator stays as a small label above the cards. No change to the underlying navigation logic — same buttons, same click behaviour, just repositioned.
+- (Not a site change, but worth recording: confirmed the v1.3.3 frame-height fix was correct on disk the whole time — what looked like it "still" not working was the local preview server caching the old `styles.css`. Added `Cache-Control: no-store` to the throwaway local preview server so this can't cause confusion again.)
+
 ## [1.3.3] — 2026-09-16
 
 - Gave the Gloriosa Superba gallery its own taller frame (`clamp(340px, 64vw, 700px)` vs. Coconut's unchanged `clamp(260px, 46vw, 560px)`), so its portrait-oriented photos fill the frame edge-to-edge left-to-right, with the (now expected, matching Coconut's own look) empty space landing at top and bottom instead of on the sides. `object-fit: contain` alone can't do this — which side gets the empty space is decided by comparing the *frame's* own aspect ratio to the photo's, not by the `object-fit` value, so a portrait photo needed a taller frame, not a CSS tweak to the image itself. Coconut's frame and photos are unchanged.

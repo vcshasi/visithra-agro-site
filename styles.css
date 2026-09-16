@@ -105,10 +105,14 @@ h1 em, h2 em { font-weight: 600; color: var(--rust); font-style: italic; }
 .products .section-label { color: #d1e7ac; }
 .products-heading { display: grid; grid-template-columns: .7fr 1.25fr .8fr; gap: 2rem; align-items: end; }
 .products-heading > p { color: #c5d8c2; margin: 0 0 .3rem; line-height: 1.65; font-size: .9rem; }
-.product-controls { display: flex; align-items: center; justify-content: flex-end; gap: .75rem; margin: 2rem 0 1.2rem; color: #c3d5c0; font: .68rem var(--mono); letter-spacing: .08em; }
-.product-controls span b { color: var(--lime); font-weight: 400; }
-.carousel-button { height: 38px; width: 38px; border-radius: 50%; border: 1px solid rgba(255,255,255,.3); color: var(--cream); background: rgba(255,255,255,.08); font-size: 1.1rem; transition: background .2s, color .2s, transform .2s; }
-.carousel-button:hover, .carousel-button:focus-visible { color: var(--forest); background: var(--lime); transform: translateY(-2px); }
+.product-index-label { margin: 2rem 0 1.2rem; text-align: right; color: #c3d5c0; font: .68rem var(--mono); letter-spacing: .08em; }
+.product-index-label b { color: var(--lime); font-weight: 400; }
+.product-carousel { position: relative; }
+.carousel-button { height: 44px; width: 44px; border-radius: 50%; border: 1px solid rgba(255,255,255,.3); color: var(--cream); background: rgba(15,61,43,.55); backdrop-filter: blur(4px); font-size: 1.2rem; transition: background .2s, color .2s, transform .2s; }
+.carousel-button:hover, .carousel-button:focus-visible { color: var(--forest); background: var(--lime); transform: translateY(-50%) scale(1.06); }
+.carousel-button-prev, .carousel-button-next { position: absolute; top: 50%; transform: translateY(-50%); z-index: 4; }
+.carousel-button-prev { left: -.5rem; }
+.carousel-button-next { right: -.5rem; }
 
 .product-track { display: flex; gap: 1.8rem; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 1rem; }
 .product-track::-webkit-scrollbar { display: none; }
@@ -216,7 +220,10 @@ h1 em, h2 em { font-weight: 600; color: var(--rust); font-style: italic; }
   .principles article, .principles article + article { border-right: 0; border-bottom: 1px solid rgba(21,60,49,.18); padding: 1.4rem 0; }
   .principles article:last-child { border-bottom: 0; }
   .principles h3 { margin-top: 1.2rem; }
-  .product-controls { margin-top: 1.6rem; }
+  .product-index-label { margin-top: 1.6rem; }
+  .carousel-button { height: 38px; width: 38px; font-size: 1.05rem; }
+  .carousel-button-prev { left: -.25rem; }
+  .carousel-button-next { right: -.25rem; }
   .product-card { min-width: 90vw; }
   .gallery-stage { height: clamp(220px, 62vw, 380px); }
   .gloriosa-card .gallery-stage { height: clamp(280px, 84vw, 480px); }
