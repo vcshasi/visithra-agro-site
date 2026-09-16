@@ -2,6 +2,15 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.6.8] — 2026-09-16
+
+Four issues found by the user testing very narrow browser windows, with screenshots:
+
+- **Product card overflowing to the right at narrow widths** (shrinking/asymmetric margin, a clipped-looking rounded corner, and clipped text — all the same underlying cause). `.product-card`'s mobile `min-width: 90vw` sized against the *raw viewport width*, but the card sits inside a section that already has its own horizontal padding — so the card needed more room than was actually available and overflowed rightward, worse the narrower the window got (confirmed directly: at 250px wide, the outer margin was 17.5px on the left vs. just 7px on the right, and shrinking further below that). Changed to `min-width: 90%`, which sizes against `.product-track`'s own already-padded width instead, so the card can never ask for more room than it actually has, at any width.
+- **No visible way to close the mobile fullscreen menu without picking a link.** `.menu-toggle` (the hamburger/close button) had `z-index: 2` while `.site-menu`'s fullscreen overlay had `z-index: 15` — both children of the same `position: fixed` header, so once the menu opened, its full-viewport overlay visually buried the toggle button underneath itself. The button was still there and still technically clickable if you knew exactly where to tap, but invisible — there was no way to see it, let alone recognize it as a close control. Raised `.menu-toggle` to `z-index: 16` so it stays on top of the open overlay; it already had a cream "✕" styling for the open state (`.menu-toggle[aria-expanded="true"]`), which was simply never able to be seen before this fix.
+
+Verified: at 250px viewport width, the card now sits with a clean, non-overflowing margin on both sides, no horizontal page overflow, and no clipped text (checked both the Gloriosa and Coconut cards). Confirmed via `elementFromPoint` that the toggle button is now the topmost element at its own position while the menu is open (previously the overlay was), and that clicking it closes the menu correctly. No console errors.
+
 ## [1.6.7] — 2026-09-16
 
 Follow-up to v1.6.6: the user reported the header Products submenu was still not landing correctly on their device — a screenshot showed the destination card overlapping with odd, misplaced-looking content mid-transition.

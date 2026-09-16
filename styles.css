@@ -260,7 +260,10 @@ h1 em, h2 em { font-weight: 600; color: var(--rust); font-style: italic; }
      .site-menu descendant, shrinking the fullscreen mobile overlay down to the header's
      own box instead of the viewport — drop it at this breakpoint so the overlay works. */
   .site-header { -webkit-backdrop-filter: none; backdrop-filter: none; }
-  .menu-toggle { display: block; z-index: 2; }
+  /* Higher than .site-menu's z-index (15): the toggle sits *behind* the fullscreen nav
+     overlay otherwise, once open — it's still there and still clickable-if-you-could-see-it,
+     but visually hidden, leaving no obvious way to close the menu without picking a link. */
+  .menu-toggle { display: block; z-index: 16; }
   .site-menu { position: fixed; inset: 0; padding: 6rem 8vw 2rem; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1.6rem; background: var(--forest); color: var(--cream); font: 600 2.1rem var(--serif); transform: translateX(100%); transition: transform .35s ease; z-index: 15; overflow-y: auto; }
   .site-menu a::after { background: var(--lime); }
   .site-menu.open { transform: none; }
@@ -283,7 +286,12 @@ h1 em, h2 em { font-weight: 600; color: var(--rust); font-style: italic; }
   .principles article:last-child { border-bottom: 0; }
   .principles h3 { margin-top: 1.2rem; }
   .carousel-button, .gallery-nav { height: 38px; width: 38px; font-size: 1.05rem; }
-  .product-card { min-width: 90vw; }
+  /* 90% of .product-track's own (already edge-padded) width, not 90vw of the raw viewport —
+     90vw ignores the section's horizontal padding entirely, so the card needed more room
+     than was actually available and overflowed off the right edge, growing worse the
+     narrower the screen: shrinking/asymmetric outer margin, a clipped rounded corner, and
+     clipped text, since the whole card (image and text alike) sat shifted rightward. */
+  .product-card { min-width: 90%; }
   .products h2 { white-space: normal; }
   .form-row { grid-template-columns: 1fr; gap: 0; }
   .form-footer { align-items: flex-start; flex-direction: column; }
