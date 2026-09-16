@@ -130,7 +130,20 @@ npx wrangler versions list      # version IDs
 
 Rollback itself is done from the Cloudflare dashboard: **Workers & Pages → (this project) → Deployments → select an earlier version → Rollback**. There's no rollback subcommand in this Wrangler version for this deploy path — use the dashboard.
 
-## 7. Reference
+## 7. Renaming the project or the `*.workers.dev` URL
+
+The live URL is `<project-name>.<account-subdomain>.workers.dev` — two independent pieces, changed two different ways:
+
+**Changing the project name** (the first segment): there is no in-place rename. Workers are identified by name, so changing it creates a **new, separate** worker rather than renaming the existing one:
+1. Edit `"name"` in `wrangler.jsonc`.
+2. `npx wrangler deploy` — this deploys the *new* name as its own worker, live immediately.
+3. Run the full verification checklist from §5 against the new name before doing anything else.
+4. Only once that's confirmed working, delete the old one so it doesn't linger as an unused duplicate: `npx wrangler delete <old-project-name> --force`.
+5. Update the "Live at" URL in `README.md`.
+
+**Changing the account's `workers.dev` subdomain** (the second segment): this is account-wide (affects every Worker on the account, not just this one) and is **dashboard-only** — Wrangler has no CLI command for it (confirmed: `wrangler --help` has no `subdomain` entry). Go to `https://dash.cloudflare.com/<account-id>/workers/subdomain`, signed in as the account owner. No redeploy is needed afterward — the new subdomain applies immediately to all existing workers' URLs, including any that were renamed before the subdomain change.
+
+## 8. Reference
 
 | File | Purpose |
 |---|---|

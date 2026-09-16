@@ -2,6 +2,14 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.7.3] — 2026-09-16
+
+Renamed the Cloudflare project from `visithra-agro-site` to `www`, in preparation for a cleaner combined URL once the account's `workers.dev` subdomain is also changed to `visithra-agro` (dashboard-only, not something Wrangler's CLI exposes — pending the user's action). Live at `https://www.visithra-agro-site.workers.dev` for now; will automatically become `https://www.visithra-agro.workers.dev` the moment the subdomain change is made, with no redeploy needed.
+
+Since Workers have no in-place rename, this meant deploying `www` as a genuinely new worker, verifying it in full against the same checklist as any other deploy (real site loads, `.git`/internal docs still correctly excluded, security headers present, correct version), and only then deleting the old `visithra-agro-site` worker — confirmed gone afterward (`404`) rather than assumed.
+
+Documented the rename procedure itself in `DEPLOYMENT.md` (§7) for reuse, since project/subdomain renames are exactly the kind of infrequent operation worth having written down precisely rather than re-derived each time.
+
 ## [1.7.2] — 2026-09-16
 
 Added `DEPLOYMENT.md` — "Manual Deployment Procedure": the full step-by-step process for deploying this site to Cloudflare by hand (one-time machine setup, the fact this project has no build step and what "artifact-ready" means for it instead, the exact `wrangler deploy` command, a post-deploy verification checklist), and a dedicated section documenting the v1.7.1 `.git`-exposure incident in full — what happened, the root cause (`.gitignore` is never read by Wrangler's asset upload; only `.assetsignore` is, and the two must be kept in sync by hand), and the standing rule this creates: anything added to `.gitignore` for a reason that also matters for deployment must be added to `.assetsignore` too, as a separate, deliberate edit. Linked from `README.md`'s hosting section.

@@ -1,6 +1,6 @@
-# Visithra Agro Traders website — v1.7.2
+# Visithra Agro Traders website — v1.7.3
 
-**Live at:** https://visithra-agro-site.visithra-agro-site.workers.dev
+**Live at:** https://www.visithra-agro-site.workers.dev (will become `www.visithra-agro.workers.dev` once the account's `workers.dev` subdomain is changed — see `DEPLOYMENT.md`)
 
 A responsive, dependency-free single-page business website. Open `index.html` in a browser to preview it.
 
