@@ -2,6 +2,13 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.4.0] — 2026-09-16
+
+- **Products heading**: removed the supporting paragraph ("Scroll through our current product families...") entirely; the "02 Our range" label and the "Naturally versatile. Carefully supplied." heading are now centered on the page as a simple stacked block, with clear spacing above and below both.
+- **Product photo galleries — new approach, replacing every earlier attempt this session**: every photo in a gallery, whatever its original orientation, now displays in one uniform 4:3 frame using `object-fit: cover` (filling the frame completely, cropped as needed) instead of `contain` (which was trying to show the whole photo uncropped and needed a differently-shaped frame per photo orientation to avoid empty space — the source of several rounds of back-and-forth this session). This is simpler, uniform across both product families and every photo regardless of size or orientation, and — freed from needing the frame tall enough to avoid empty space — dramatically more compact: the whole product card is now ~570-600px tall (was ~570-900px depending on family) and fits fully inside a typical browser window with no scrolling needed to see the whole card.
+- **Contact form**: every required field's label now shows a `*`, plus a small "* Required field" legend at the top of the form (previously only the legend existed, saying "All fields are required.").
+- **Carousel controls**: kept the centered pagination row (prev arrow / "01 / 02" / next arrow) below the whole product card from v1.3.6. To reduce visual clutter when it's on screen together with the inner per-photo prev/next buttons, the inner buttons are now smaller and more subtle by default (fuller opacity/color only on hover), reading clearly as a secondary, photo-level control rather than competing with the primary family-switcher below the card.
+
 ## [1.3.6] — 2026-09-16
 
 - Reverted v1.3.5's viewport-height cap on the product gallery frames — it directly undid v1.3.3's fix for portrait photos filling their frame edge-to-edge (both changes were fighting over the same `height` property for opposite reasons), so photos briefly went back to pillarboxing ("cluttered") for both families. Gallery frame heights and product-card padding/text spacing are back to their v1.3.4 sizing — confirmed by measuring every current photo again: all 8 render width-constrained (edge-to-edge, letterboxed top/bottom) like before.

@@ -1,4 +1,4 @@
-# Visithra Agro Traders website — v1.3.6
+# Visithra Agro Traders website — v1.4.0
 
 A responsive, dependency-free single-page business website. Open `index.html` in a browser to preview it.
 
@@ -47,7 +47,7 @@ Any static host works — this site is plain HTML/CSS/JS with no build step. Rec
 
 ## Product galleries
 
-Each product sub-category has a photo gallery. To add product photos later, edit the `productGalleries` object in `script.js`: add an object with `src`, `alt`, and `caption` to the relevant `photos` list. The gallery renders only the images available for that sub-product, in a compact framed box, with prev/next arrows appearing automatically when more than one photo is present.
+Each main product family (Gloriosa Superba Products, Coconut Products) has one photo gallery. To add product photos later, edit the `productGalleries` object in `script.js`: add an object with `src`, `alt`, and `caption` to the relevant `photos` list. Every photo displays in a uniform 4:3 frame (cropped to fill, whatever its original orientation) so the gallery looks consistent regardless of source photo size, with prev/next arrows appearing automatically when more than one photo is present.
 
 Existing image files in `assets/` are untouched by this release (including their `gloriossa-*` filenames) — only the on-page text was corrected to "Gloriosa". Replace the files directly once corrected/higher-resolution photos are available; file names can stay the same or be updated to match, just keep the `src` paths in `script.js` in sync.
 
