@@ -2,6 +2,10 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.5.1] — 2026-09-16
+
+- Reverted v1.5.0 in full: the user was not satisfied with it. `styles.css` restored exactly to its v1.4.5 content — the viewport-height-aware gallery frame sizing, the compact chip-style sub-product list, and the rebalanced product-card columns are all undone. The site now looks and behaves exactly as v1.4.5 did (only the version number is new, since v1.4.5's tag already points to the earlier commit). `git checkout v1.4.5` still works and reaches the same result directly, if ever needed.
+
 ## [1.5.0] — 2026-09-16
 
 - **Found and fixed the real reason the Products section kept overflowing despite earlier trimming**: the photo frame's height had been purely *width*-driven (`aspect-ratio: 4/3`) ever since v1.4.0's switch to a uniform cropped-photo treatment — it had no awareness of the viewport's actual *height* at all. On a wide-but-short browser window, it never shrank no matter how little vertical room was left, which is exactly what the screenshot showed. Replaced it with `height: min(40vw, 28svh)`, so the frame now scales down on short screens the same way the hero section's own sizing does, instead of staying a fixed size regardless.
