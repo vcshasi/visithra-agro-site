@@ -2,6 +2,16 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.7.0] — 2026-09-16
+
+Prepped the repo for going live on **Cloudflare Pages** (chosen after comparing it against Netlify, Vercel, GitHub Pages, and Firebase Hosting on Europe/India edge coverage, bandwidth limits, versioned-deploy/rollback support, and built-in security — see `requests/v1.7.0-brief.md` for the full comparison):
+
+- Added `.gitignore` — excludes `.claude/` (a leftover git worktree from an earlier peer-review session, never meant to be part of the deployed site) and common OS junk files, so they don't end up pushed to GitHub or deployed.
+- Added `_headers`, which Cloudflare Pages reads automatically to apply security headers at the edge: a strict Content-Security-Policy (no `unsafe-inline`, no wildcard origins — verified safe by confirming the site has no inline `<script>`/`<style>` and no external origins beyond Google Fonts and the Web3Forms API), plus `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`, and HSTS.
+- Documented the actual deployment steps (GitHub connection, Cloudflare Pages build settings, versioned-deploy/rollback workflow) in `README.md`'s hosting section, replacing the earlier "here are some options" text now that a host is decided.
+
+Verified the CSP doesn't break anything before relying on it: temporarily mirrored the same headers on the local test server, loaded the site fresh, and confirmed Google Fonts still resolve (computed `font-family` correctly shows "Playfair Display", not a fallback) and a real end-to-end contact-form submission through Web3Forms still succeeds — with the strict CSP in place, `connect-src`/`form-action` correctly permit the request. No console errors, no CSP violations.
+
 ## [1.6.9] — 2026-09-16
 
 - **Contact form now delivers real email**, via Web3Forms (chosen after comparing it against Formspree, EmailJS, Netlify Forms, and a custom serverless-function + Resend approach — host-agnostic, already wired into the code, and the most generous free tier of the no-backend options; see `requests/v1.6.9-brief.md` for the full comparison). Filled in `CONFIG.businessEmail`, `CONFIG.phone`, `CONFIG.address`, and `CONFIG.web3FormsKey` in `script.js` with live values, replacing the placeholders.

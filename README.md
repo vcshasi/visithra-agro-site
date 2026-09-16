@@ -1,4 +1,4 @@
-# Visithra Agro Traders website — v1.6.9
+# Visithra Agro Traders website — v1.7.0
 
 A responsive, dependency-free single-page business website. Open `index.html` in a browser to preview it.
 
@@ -34,15 +34,22 @@ Other free options, if you'd rather switch services:
 | **[Netlify Forms](https://www.netlify.com/products/forms/)** | Free and built-in, but only works if you host on Netlify — add `data-netlify="true"` back to the `<form>` and deploy there instead of using Web3Forms. |
 | **[EmailJS](https://www.emailjs.com)** | Sends straight from your own Gmail/Outlook account client-side; more setup (service + template IDs) but no third-party inbox in the middle. |
 
-## Hosting for free, with your own domain
+## Hosting — Cloudflare Pages
 
-Any static host works — this site is plain HTML/CSS/JS with no build step. Recommended free options:
+This project is deployed on **[Cloudflare Pages](https://pages.cloudflare.com)** — free tier, no build step needed (this is plain HTML/CSS/JS), unlimited bandwidth, strong Europe/India edge coverage, and built-in DDoS/WAF protection on the free plan. A free `<project-name>.pages.dev` subdomain with automatic HTTPS is included; no separate domain purchase is required to go live.
 
-1. **[Cloudflare Pages](https://pages.cloudflare.com)** — generous free tier, fast global CDN, free `yoursite.pages.dev` subdomain, and straightforward custom-domain support. Good default choice.
-2. **[GitHub Pages](https://pages.github.com)** — free, simple, works well if the code already lives in a GitHub repo (this project is now a git repo — see `VERSIONING.md`).
-3. **[Netlify](https://www.netlify.com)** — also free, and adds built-in form handling as an alternative to Web3Forms (see table above).
+**Deploying:**
 
-**Getting a real domain name:** truly free domains (e.g. `.tk`/`.ml`) are unreliable and can look untrustworthy for a business, so they aren't recommended. A `.com`/`.in` domain typically costs $8–15/year from a registrar such as [Porkbun](https://porkbun.com), [Namecheap](https://www.namecheap.com), or [Cloudflare Registrar](https://www.cloudflare.com/products/registrar/) (at-cost pricing). Point its DNS at whichever free host you choose above — all three support custom domains on their free tiers. If you want to stay at zero cost for now, use the free subdomain the host gives you (e.g. `visithra-agro.pages.dev`) and add a custom domain later.
+1. Push this repo to GitHub (Cloudflare Pages deploys from a connected Git repo).
+2. In the Cloudflare dashboard: **Workers & Pages → Create → Pages → Connect to Git**, authorize the GitHub App, and select this repo.
+3. Build settings: **Framework preset: None**, **Build command:** (leave blank), **Build output directory:** `/`.
+4. Deploy. Cloudflare assigns a `*.pages.dev` URL immediately.
+
+**Versioned deploys:** every push gets its own preview URL, and the dashboard's Deployments tab lets you roll back to any previous deploy with one click — this pairs naturally with the git-tag versioning below (a tag marks a point in history; its corresponding Cloudflare deployment stays available to re-promote).
+
+**Security headers:** the `_headers` file in this repo (Cloudflare Pages reads it automatically) sets a strict Content-Security-Policy plus `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, and HSTS. It only allows the origins this site actually uses (Google Fonts, the Web3Forms API) — verified against a local test server before being relied on in production.
+
+**Adding a real domain later:** truly free domains (e.g. `.tk`/`.ml`) are unreliable and can look untrustworthy for a business, so they aren't recommended. A `.com`/`.in` domain typically costs $8–15/year from a registrar such as [Porkbun](https://porkbun.com), [Namecheap](https://www.namecheap.com), or [Cloudflare Registrar](https://www.cloudflare.com/products/registrar/) (at-cost pricing) — Cloudflare Pages supports adding a custom domain for free once you have one, no migration needed.
 
 ## Product galleries
 

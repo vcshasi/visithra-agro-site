@@ -1,0 +1,6 @@
+# Editor/tool scratch state — not part of the deployed site
+.claude/
+
+# OS junk files
+.DS_Store
+Thumbs.db
