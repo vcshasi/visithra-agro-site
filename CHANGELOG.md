@@ -2,6 +2,15 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.6.4] — 2026-09-16
+
+Cross-viewport responsiveness audit of the whole site, prompted by the Products section breaking on browser resize. Tested widths from 320px to 3440px and heights from 568px to 1440px. Found and fixed two real bugs, both specific to large monitors:
+
+- **Gallery frame distorted into a tall, narrow strip on large/wide monitors.** `.product-card` stops growing past 1200px wide (so the photo frame's own column plateaus at ~549px), but `.gallery-stage`'s height kept scaling with `60svh` regardless — at 1920×1080 the frame came out 549×648px (aspect 0.85), and at 2560×1440 it was 549×864px (aspect 0.64, more than half again as tall as it is wide). Fixed by making `.product-gallery` a CSS container (`container-type: inline-size`) and adding a third term to the height formula, `100cqw` — 100% of the gallery's own rendered width — so the frame can still grow taller on tall screens (unchanged at every previously-tuned size, e.g. still exactly 420px at 1366×700 and 489.6px at 1366×816) but never past square. Confirmed both 1920×1080 and 2560×1440 now render a clean 1:1 square frame, and 3440×1440 too.
+- **The whole page could scroll horizontally**, not just the product carousel — `body` had `overflow-x: hidden` but `html` didn't, so `html`'s own `overflow-x` stayed at the default `visible`. Found this by watching `document.documentElement.scrollWidth` balloon by hundreds of pixels (and `window.scrollX` end up non-zero) after resizing the window while a card other than the first was in view — an ancestor-walking scroll (`scrollIntoView({inline:'start'})`, used throughout the Products carousel) was able to scroll the *document* horizontally instead of just the intended inner track. Added `overflow-x: hidden` to `html` as well, closing the gap.
+
+Also re-verified: header nav doesn't wrap or overlap the logo anywhere from 761px (just above the mobile breakpoint) up; `.products h2` and `.supply-line`'s `white-space: nowrap` don't clip their text at any width down to the mobile breakpoint where they're allowed to wrap; mobile fullscreen nav still fills the viewport correctly (from v1.6.0); no horizontal overflow anywhere in the full width matrix; no console errors.
+
 ## [1.6.3] — 2026-09-16
 
 - Sped up the Products autoplay pace: `AUTOPLAY_INTERVAL_MS` changed from 3500ms to 2500ms. Chosen after previewing 2.0s/2.5s/3.0s side by side in a standalone comparison artifact built from the site's own photos.
