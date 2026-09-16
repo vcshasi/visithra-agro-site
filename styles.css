@@ -145,7 +145,11 @@ h1 em, h2 em { font-weight: 600; color: var(--rust); font-style: italic; }
 
 .product-track { display: flex; gap: 1.8rem; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 1rem; }
 .product-track::-webkit-scrollbar { display: none; }
-.product-card { min-width: min(100%, 1200px); display: grid; grid-template-columns: 1fr 1fr; gap: 2.2rem; align-items: center; scroll-snap-align: start; border-radius: var(--radius-l); padding: 2.1rem; background: linear-gradient(135deg, #fffdf7, #edf4e9 52%, #f2ded4); color: var(--ink); box-shadow: 0 24px 56px -20px rgba(11,43,34,.36), inset 0 1px 0 rgba(255,255,255,.9); }
+/* align-items:start, not center: now that .gallery-stage can grow as tall as it is wide
+   (see its own comment above), it's frequently taller than the text column, and centering
+   left equal empty gaps above and below the text — start keeps both columns flush with the
+   card's top edge instead, the same way an image and its caption normally align. */
+.product-card { min-width: min(100%, 1200px); display: grid; grid-template-columns: 1fr 1fr; gap: 2.2rem; align-items: start; scroll-snap-align: start; border-radius: var(--radius-l); padding: 2.1rem; background: linear-gradient(135deg, #fffdf7, #edf4e9 52%, #f2ded4); color: var(--ink); box-shadow: 0 24px 56px -20px rgba(11,43,34,.36), inset 0 1px 0 rgba(255,255,255,.9); }
 /* A container for .gallery-stage's own cqw unit below — lets the stage cap its height
    against its *own rendered width*, not just viewport size (see .gallery-stage). */
 .product-gallery { display: flex; flex-direction: column; gap: .7rem; container-type: inline-size; }
@@ -173,7 +177,12 @@ h1 em, h2 em { font-weight: 600; color: var(--rust); font-style: italic; }
 .gallery-nav:hover, .gallery-nav:focus-visible { transform: translateY(-50%) scale(1.06); }
 .gallery-nav-prev { left: .6rem; }
 .gallery-nav-next { right: .6rem; }
-.product-detail { min-width: 0; }
+/* Stretched to match the (often taller) gallery column's height, with its own content
+   flowed as a column so the "Ask about…" link can be pinned to the bottom via margin-top:
+   auto below — rather than leaving a plain dead gap under the text when the frame is
+   taller than the text needs, the layout reads as "content at top, action at bottom". */
+.product-detail { min-width: 0; align-self: stretch; display: flex; flex-direction: column; }
+.product-detail > .text-link { margin-top: auto; padding-top: 1rem; }
 .product-number { font: .65rem var(--mono); letter-spacing: .1em; color: var(--rust); text-transform: uppercase; }
 .product-detail h3 { font-size: clamp(1.9rem, 2.8vw, 2.8rem); line-height: .95; margin: .35rem 0 .5rem; }
 .product-detail > p:not(.product-number) { max-width: 430px; font-size: .92rem; line-height: 1.42; color: #426355; }
@@ -256,7 +265,10 @@ h1 em, h2 em { font-weight: 600; color: var(--rust); font-style: italic; }
   .site-menu a::after { background: var(--lime); }
   .site-menu.open { transform: none; }
   .nav-item { flex-direction: column; align-items: flex-start; width: 100%; }
-  .submenu-wrap { position: static; padding-top: 0; opacity: 1; visibility: visible; pointer-events: auto; }
+  /* transform:translateX(-50%) from the base rule still applies to a position:static box —
+     transform isn't gated by positioning scheme — so left unreset it shifted the whole
+     submenu (and its text) left by half its own width, clipping it off the screen edge. */
+  .submenu-wrap { position: static; transform: none; padding-top: 0; opacity: 1; visibility: visible; pointer-events: auto; }
   .submenu { position: static; transform: none; box-shadow: none; background: transparent; margin-top: .7rem; padding: 0 0 0 1.3rem; min-width: 0; }
   .submenu a { color: var(--cream); font: 500 1.1rem var(--sans); padding: .35rem 0; }
   .submenu a:hover, .submenu a:focus-visible { background: transparent; color: var(--lime); }

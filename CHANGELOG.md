@@ -2,6 +2,15 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.6.5] — 2026-09-16
+
+Fixes for two issues the user found by reviewing v1.6.4 directly (screenshots with the problem areas marked):
+
+- **Mobile Products submenu clipped off the left edge of the screen.** The v1.6.0 restructure into `.nav-item > .submenu-wrap > .submenu` reset several properties for the mobile breakpoint but missed `transform` — `.submenu-wrap`'s base-rule `transform: translateX(-50%)` (needed to center the desktop dropdown) still applied even though `position` was overridden to `static`, since `transform` isn't gated by positioning scheme. That shifted the whole mobile submenu block left by half its own width, clipping "Gloriosa Superba" / "Coconut Products" / "more products yet to come" down to their last few characters. Added `transform: none` to the mobile override.
+- **Empty gap floating in/around the product text column**, a direct side effect of v1.6.4's own fix: now that `.gallery-stage` can grow as tall as it is wide, it's often taller than the text column, and `.product-card`'s `align-items: center` centered the shorter text column inside that taller row — leaving equal, disconnected-looking gaps above *and* below the text. Changed to `align-items: start` (text now flush with the image's top edge, matching normal image+caption composition), then went a step further: `.product-detail` now stretches to match the image's full height and lays its content out as a column, with the "Ask about…" link pinned to the bottom via `margin-top: auto` — so the leftover space reads as intentional (content up top, call-to-action anchored at the bottom, both columns the same height) instead of a plain dead gap.
+
+Re-verified against everything already covered in v1.6.4 (large-monitor square-cap behavior, previously-tuned baseline sizes, horizontal-overflow fix) plus the single-column mobile/tablet layout, where the new stretch/flex rules turn out to be a no-op (each card occupies its own row there, so there's no taller sibling to stretch against) — confirmed no gap reappears between the subproduct list and the link at 700px width. No console errors.
+
 ## [1.6.4] — 2026-09-16
 
 Cross-viewport responsiveness audit of the whole site, prompted by the Products section breaking on browser resize. Tested widths from 320px to 3440px and heights from 568px to 1440px. Found and fixed two real bugs, both specific to large monitors:
