@@ -2,6 +2,12 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.6.6] — 2026-09-16
+
+Fixed the header "Products" submenu not landing correctly (`#products` in the URL worked fine, but clicking a family under Products didn't). The click handler fired two `scrollIntoView` calls back to back — one explicit scroll of the page to the top of `#products`, and `card.scrollIntoView({block:'nearest', inline:'start'})` to bring the chosen card into view within the family track. The second call's ancestor-walk isn't limited to the track: it can also scroll the *page's own vertical position*, so both calls ended up fighting over the same vertical scroll at once, landing somewhere neither one intended. Fixed by adding `scrollTrackToCard()`, which moves only `.product-track`'s own `scrollLeft` directly and never touches the document — the same technique `scrollGalleryToSlide()` already used for the inner photo galleries, now applied to the outer family track too (also used by the carousel prev/next buttons and autoplay's family-to-family transition, closing off the same latent race there as well, even though it wasn't visibly broken there since nothing else was competing for the vertical scroll at those call sites).
+
+Verified with the page's scroll behavior forced to instant (this test browser suspends real smooth-scroll animation while its tab isn't the active one, so instant substitution is the reliable way to check the final resting position): confirmed `scrollTrackToCard` never changes `window.scrollY`, so the two scrolls in the family-link handler can no longer race regardless of real-world timing. Re-confirmed wraparound (prev at the first family still correctly wraps to the last) is unaffected by the refactor. No console errors.
+
 ## [1.6.5] — 2026-09-16
 
 Fixes for two issues the user found by reviewing v1.6.4 directly (screenshots with the problem areas marked):

@@ -83,6 +83,17 @@ function syncProductIndex() {
   productIndex.textContent = String(closest.index + 1).padStart(2, '0');
 }
 
+// Scrolls only the outer family track to a card — not card.scrollIntoView(), which would
+// also walk up and can end up scrolling the page's own vertical position too. That's mostly
+// harmless on its own, but the header "Products" submenu handler also fires an explicit
+// scroll to the top of #products at the same moment — two competing smooth-scroll
+// animations both fighting over the vertical position land somewhere wrong. Mirrors
+// scrollGalleryToSlide below, which avoids the same ancestor-walk for the inner galleries.
+function scrollTrackToCard(card) {
+  const delta = card.getBoundingClientRect().left - track.getBoundingClientRect().left;
+  track.scrollTo({ left: track.scrollLeft + delta, behavior: 'smooth' });
+}
+
 document.querySelectorAll('.carousel-button').forEach((button) => {
   button.addEventListener('click', () => {
     stopAutoplay();
@@ -91,7 +102,7 @@ document.querySelectorAll('.carousel-button').forEach((button) => {
     const next = button.dataset.direction === 'next'
       ? (current + 1) % cards.length
       : (current - 1 + cards.length) % cards.length;
-    cards[next].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+    scrollTrackToCard(cards[next]);
   });
 });
 track.addEventListener('scroll', () => window.requestAnimationFrame(syncProductIndex), { passive: true });
@@ -111,7 +122,7 @@ document.querySelectorAll('[data-family-link]').forEach((link) => {
     const index = cards.findIndex((card) => card.dataset.family === link.dataset.familyLink);
     if (index === -1) return;
     document.getElementById('products').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    cards[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+    scrollTrackToCard(cards[index]);
     autoplayFamilyIndex = index;
     const family = productFamilies[index];
     const scroll = document.querySelector(`[data-gallery-scroll="${family}"]`);
@@ -273,7 +284,7 @@ function autoplayStep() {
 
   autoplayFamilyIndex = (autoplayFamilyIndex + 1) % productFamilies.length;
   const nextFamily = productFamilies[autoplayFamilyIndex];
-  cards[autoplayFamilyIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+  scrollTrackToCard(cards[autoplayFamilyIndex]);
   const nextScroll = document.querySelector(`[data-gallery-scroll="${nextFamily}"]`);
   const nextSlides = nextScroll ? [...nextScroll.querySelectorAll('.gallery-slide')] : [];
   if (nextScroll && nextSlides.length) scrollGalleryToSlide(nextScroll, nextSlides[0]);
