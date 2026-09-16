@@ -1,11 +1,11 @@
 // ===== Site settings — edit these before launch =====
 const CONFIG = {
-  businessEmail: 'YOUR-BUSINESS-EMAIL@example.com', // shown in the contact section and used as the enquiry recipient
-  phone: '+91 00000 00000', // shown as the phone / WhatsApp contact
-  address: 'Street, Town, District, State, PIN, India', // shown as the postal address
+  businessEmail: 'vcshasikumar@gmail.com', // shown in the contact section and used as the enquiry recipient
+  phone: '+91-9443311219', // shown as the phone / WhatsApp contact
+  address: 'Coimbatore, Tamil Nadu, India', // shown as the postal address
   // Free form-delivery service — see README.md "Sending enquiries by email" for setup steps.
   // Leave the placeholder below and the form will fall back to opening the visitor's email app instead.
-  web3FormsKey: 'YOUR-WEB3FORMS-ACCESS-KEY',
+  web3FormsKey: '302de0f9-3952-4527-a9cf-69b7faec6a60',
 };
 
 const menuButton = document.querySelector('.menu-toggle');

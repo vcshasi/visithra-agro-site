@@ -1,33 +1,32 @@
-# Visithra Agro Traders website — v1.6.8
+# Visithra Agro Traders website — v1.6.9
 
 A responsive, dependency-free single-page business website. Open `index.html` in a browser to preview it.
 
-## Before launch — edit `script.js`
+## Site settings — `script.js`
 
-Open the `CONFIG` object at the very top of `script.js` and replace the placeholders:
+The `CONFIG` object at the very top of `script.js` is already filled in and live:
 
 ```js
 const CONFIG = {
-  businessEmail: 'YOUR-BUSINESS-EMAIL@example.com',
-  phone: '+91 00000 00000',
-  address: 'Street, Town, District, State, PIN, India',
-  web3FormsKey: 'YOUR-WEB3FORMS-ACCESS-KEY',
+  businessEmail: 'vcshasikumar@gmail.com',
+  phone: '+91-9443311219',
+  address: 'Coimbatore, Tamil Nadu, India',
+  web3FormsKey: '302de0f9-3952-4527-a9cf-69b7faec6a60',
 };
 ```
 
-- `businessEmail`, `phone`, and `address` are shown directly in the Contact section.
-- `web3FormsKey` enables real email delivery from the contact form — see below. Until it is set, the form falls back to opening the visitor's own email app with the enquiry pre-filled.
+- `businessEmail`, `phone`, and `address` are shown directly in the Contact section — edit them here if any of these change.
+- `web3FormsKey` enables real email delivery from the contact form (see below). If it's ever cleared back to the placeholder `'YOUR-WEB3FORMS-ACCESS-KEY'`, the form falls back to opening the visitor's own email app with the enquiry pre-filled instead.
 
-## Sending enquiries by email (free options)
+## Sending enquiries by email
 
-The form is wired for **[Web3Forms](https://web3forms.com)** by default, because it needs no backend and no account sign-up beyond confirming your inbox:
+The form is wired for **[Web3Forms](https://web3forms.com)** — tested end-to-end (real submissions confirmed arriving) as of v1.6.9. It needs no backend and works identically on any static host, so no extra setup is needed on Netlify, Vercel, or elsewhere. To rotate the key or point it at a different inbox later:
 
 1. Go to web3forms.com and enter the email address that should receive enquiries.
-2. You'll be emailed an **Access Key** — copy it.
-3. Paste it into `web3FormsKey` in `script.js`.
-4. Done — submissions on the live site will arrive by email. The free tier covers normal small-business enquiry volumes.
+2. You'll be emailed a new **Access Key** — copy it.
+3. Paste it into `web3FormsKey` in `script.js`, replacing the current one.
 
-Other free options, if you'd rather use a different service:
+Other free options, if you'd rather switch services:
 
 | Service | Notes |
 | --- | --- |

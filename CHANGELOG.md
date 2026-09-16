@@ -2,6 +2,13 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.6.9] — 2026-09-16
+
+- **Contact form now delivers real email**, via Web3Forms (chosen after comparing it against Formspree, EmailJS, Netlify Forms, and a custom serverless-function + Resend approach — host-agnostic, already wired into the code, and the most generous free tier of the no-backend options; see `requests/v1.6.9-brief.md` for the full comparison). Filled in `CONFIG.businessEmail`, `CONFIG.phone`, `CONFIG.address`, and `CONFIG.web3FormsKey` in `script.js` with live values, replacing the placeholders.
+- **Fixed a real, separate bug found while testing the form**: the phone field's `pattern` attribute, `^[0-9+\-\s()]{7,20}$`, threw `Uncaught SyntaxError: Invalid regular expression ... /v: Invalid character in character class` the moment `checkValidity()` ran on it — the browser's regex engine now compiles HTML `pattern` attributes in Unicode-Sets (`v`) mode, which (unlike the older mode) requires literal `(` and `)` inside a character class to be escaped. Fixed by escaping them: `^[0-9+\-\s\(\)]{7,20}$` — valid under both the old and new regex modes, so this is safe across browsers regardless of which mode they use.
+
+Verified with two real, live submissions through the actual Web3Forms API (clearly marked as test submissions in the message body): both returned success, showed the "Thank you — your enquiry has been sent" status, and correctly reset the form afterward. Re-confirmed the phone pattern fix rejects invalid input (letters, too-short) and accepts valid formats (including with parentheses, e.g. `+1 (555) 123-4567`) without throwing. No other console errors.
+
 ## [1.6.8] — 2026-09-16
 
 Four issues found by the user testing very narrow browser windows, with screenshots:
