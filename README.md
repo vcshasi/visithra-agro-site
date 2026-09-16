@@ -1,4 +1,6 @@
-# Visithra Agro Traders website — v1.7.0
+# Visithra Agro Traders website — v1.7.1
+
+**Live at:** https://visithra-agro-site.visithra-agro-site.workers.dev
 
 A responsive, dependency-free single-page business website. Open `index.html` in a browser to preview it.
 
@@ -34,20 +36,21 @@ Other free options, if you'd rather switch services:
 | **[Netlify Forms](https://www.netlify.com/products/forms/)** | Free and built-in, but only works if you host on Netlify — add `data-netlify="true"` back to the `<form>` and deploy there instead of using Web3Forms. |
 | **[EmailJS](https://www.emailjs.com)** | Sends straight from your own Gmail/Outlook account client-side; more setup (service + template IDs) but no third-party inbox in the middle. |
 
-## Hosting — Cloudflare Pages
+## Hosting — Cloudflare
 
-This project is deployed on **[Cloudflare Pages](https://pages.cloudflare.com)** — free tier, no build step needed (this is plain HTML/CSS/JS), unlimited bandwidth, strong Europe/India edge coverage, and built-in DDoS/WAF protection on the free plan. A free `<project-name>.pages.dev` subdomain with automatic HTTPS is included; no separate domain purchase is required to go live.
+Deployed via the **Wrangler CLI** directly (no GitHub needed) — free tier, no build step (plain HTML/CSS/JS), unlimited bandwidth, strong Europe/India edge coverage, and built-in DDoS/WAF protection. Live at a free `*.workers.dev` subdomain with automatic HTTPS; no domain purchase required to be live.
 
-**Deploying:**
+**Deploying an update**, once logged in (`npx wrangler login`, one-time):
 
-1. Push this repo to GitHub (Cloudflare Pages deploys from a connected Git repo).
-2. In the Cloudflare dashboard: **Workers & Pages → Create → Pages → Connect to Git**, authorize the GitHub App, and select this repo.
-3. Build settings: **Framework preset: None**, **Build command:** (leave blank), **Build output directory:** `/`.
-4. Deploy. Cloudflare assigns a `*.pages.dev` URL immediately.
+```bash
+npx wrangler deploy
+```
 
-**Versioned deploys:** every push gets its own preview URL, and the dashboard's Deployments tab lets you roll back to any previous deploy with one click — this pairs naturally with the git-tag versioning below (a tag marks a point in history; its corresponding Cloudflare deployment stays available to re-promote).
+That's the whole command — it reads `wrangler.jsonc` (points at this repo's root as the asset directory) and `.assetsignore` (excludes `.git`, `.claude`, and internal docs from what actually gets served — **not** the same list as `.gitignore`; the asset upload does not read `.gitignore` at all, confirmed the hard way on the first deploy).
 
-**Security headers:** the `_headers` file in this repo (Cloudflare Pages reads it automatically) sets a strict Content-Security-Policy plus `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, and HSTS. It only allows the origins this site actually uses (Google Fonts, the Web3Forms API) — verified against a local test server before being relied on in production.
+**Versioned deploys:** `npx wrangler deployments list` / `npx wrangler versions list` show deployment history; rolling back is available from the Cloudflare dashboard (Workers & Pages → this project → Deployments).
+
+**Security headers:** the `_headers` file in this repo is read automatically at Cloudflare's edge and sets a strict Content-Security-Policy plus `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, and HSTS — confirmed present on the live deployment's actual response headers, not just assumed from the config.
 
 **Adding a real domain later:** truly free domains (e.g. `.tk`/`.ml`) are unreliable and can look untrustworthy for a business, so they aren't recommended. A `.com`/`.in` domain typically costs $8–15/year from a registrar such as [Porkbun](https://porkbun.com), [Namecheap](https://www.namecheap.com), or [Cloudflare Registrar](https://www.cloudflare.com/products/registrar/) (at-cost pricing) — Cloudflare Pages supports adding a custom domain for free once you have one, no migration needed.
 

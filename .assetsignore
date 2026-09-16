@@ -1,0 +1,17 @@
+# Controls what `wrangler deploy` uploads as static assets — separate from .gitignore,
+# and NOT automatically respected by the asset-upload step (confirmed: .git and .claude
+# were uploaded on the first deploy despite being in .gitignore). Everything here must stay
+# out of the publicly-served site: full git internals, internal dev docs, and tooling files.
+.git
+.claude
+.wrangler
+node_modules
+wrangler.jsonc
+.gitignore
+.assetsignore
+.dev.vars*
+.env*
+README.md
+CHANGELOG.md
+VERSIONING.md
+requests/

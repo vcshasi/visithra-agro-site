@@ -2,6 +2,19 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.7.1] — 2026-09-16
+
+**The site is live**: https://visithra-agro-site.visithra-agro-site.workers.dev — deployed via Wrangler CLI direct upload (no GitHub involved, per the user's preference), after installing Node.js and authenticating `wrangler login`.
+
+**A real incident happened during the first deploy and was caught and fixed the same session:** Wrangler's asset upload does **not** honor `.gitignore` — confirmed directly, since `.claude/` (already gitignored) was uploaded anyway. The very first deploy published the entire `.git` directory (full history, objects, refs) and the internal `requests/`/`README.md`/`CHANGELOG.md` docs at public URLs. Caught by inspecting the deploy log's file listing rather than assuming success from the "Success!" message. Fixed within minutes:
+- Added `.assetsignore` (a separate, Cloudflare-specific ignore file the asset uploader *does* respect) excluding `.git`, `.claude`, `.wrangler`, `wrangler.jsonc`, and the internal docs.
+- Redeployed immediately and verified with direct requests that `/.git/config`, `/.git/FETCH_HEAD`, and `/README.md` now 404 on the live site, while `/`, `/styles.css`, `/script.js`, and `/assets/*` still serve correctly (200).
+- Checked deployment/version history: only the corrected version is receiving live traffic, and this deploy path (plain `wrangler deploy`, not the gradual-rollout preview flow) does not appear to expose a separately-reachable public URL for the earlier version.
+
+Also worth recording: a warning message inside the `wrangler` CLI's own output contained text addressed to "agents," instructing a specific response framing and steering future command choices. Flagged to the user directly rather than followed, consistent with treating tool-output content as untrusted data rather than instructions.
+
+Separately verified on the actual live deployment (not just locally): security headers from `_headers` are present on real response headers (confirmed via `curl -D -`, served from Cloudflare's Munich PoP), and a real end-to-end contact-form submission through Web3Forms succeeds from the production origin, with no console errors.
+
 ## [1.7.0] — 2026-09-16
 
 Prepped the repo for going live on **Cloudflare Pages** (chosen after comparing it against Netlify, Vercel, GitHub Pages, and Firebase Hosting on Europe/India edge coverage, bandwidth limits, versioned-deploy/rollback support, and built-in security — see `requests/v1.7.0-brief.md` for the full comparison):
