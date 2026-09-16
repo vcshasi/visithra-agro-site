@@ -104,11 +104,12 @@ h1 em, h2 em { font-weight: 600; color: var(--rust); font-style: italic; }
 
 .products { background: radial-gradient(ellipse at 84% 3%, rgba(112,169,130,.7), transparent 29%), radial-gradient(ellipse at 13% 95%, rgba(196,99,70,.22), transparent 33%), linear-gradient(135deg, #114633, #092a22 66%); color: var(--cream); overflow: hidden; box-shadow: inset 0 1px 0 rgba(255,255,255,.1); padding-top: clamp(1.25rem, 2.4vw, 2rem); }
 .products .section-label { color: #d1e7ac; }
-.products-heading { display: grid; grid-template-columns: .7fr 2fr; gap: 2rem; align-items: end; margin-bottom: clamp(1.25rem, 2.4vw, 2rem); }
+.products-heading { display: grid; grid-template-columns: .7fr 2fr; gap: 2rem; align-items: end; margin-bottom: clamp(1rem, 2vw, 1.6rem); }
+.products-nav-group { display: flex; flex-direction: column; align-items: flex-start; gap: .5rem; }
 .product-index-label { color: #c3d5c0; font: .68rem var(--mono); letter-spacing: .08em; }
 .product-index-label b { color: var(--lime); font-weight: 400; }
-.product-pagination { display: flex; align-items: center; justify-content: center; gap: 1.1rem; margin: 1rem 0 0; }
-.carousel-button { height: 40px; width: 40px; border-radius: 50%; border: 1px solid rgba(255,255,255,.3); color: var(--cream); background: rgba(15,61,43,.55); backdrop-filter: blur(4px); font-size: 1.1rem; transition: background .2s, color .2s, transform .2s; }
+.product-pagination { display: flex; align-items: center; gap: .8rem; }
+.carousel-button { height: 34px; width: 34px; border-radius: 50%; border: 1px solid rgba(255,255,255,.3); color: var(--cream); background: rgba(15,61,43,.55); backdrop-filter: blur(4px); font-size: 1rem; transition: background .2s, color .2s, transform .2s; }
 .carousel-button:hover, .carousel-button:focus-visible { color: var(--forest); background: var(--lime); transform: scale(1.06); }
 
 .product-track { display: flex; gap: 1.8rem; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 1rem; }
@@ -133,10 +134,10 @@ h1 em, h2 em { font-weight: 600; color: var(--rust); font-style: italic; }
 .gallery-nav-next { right: .6rem; }
 .product-detail { min-width: 0; }
 .product-number { font: .65rem var(--mono); letter-spacing: .1em; color: var(--rust); text-transform: uppercase; }
-.product-detail h3 { font-size: clamp(1.9rem, 2.8vw, 2.8rem); line-height: .95; margin: .5rem 0 .7rem; }
-.product-detail > p:not(.product-number) { max-width: 430px; font-size: .92rem; line-height: 1.5; color: #426355; }
-.safety-note { margin: .7rem 0 0; padding: .55rem .72rem; max-width: 430px; border-left: 2px solid var(--rust); border-radius: 0 var(--radius-s) var(--radius-s) 0; background: rgba(217,92,49,.07); color: #7d442d; font-size: .71rem; line-height: 1.4; }
-.subproduct-list { list-style: none; margin: 1rem 0; padding: 0; border-top: 1px solid rgba(21,60,49,.2); }
+.product-detail h3 { font-size: clamp(1.9rem, 2.8vw, 2.8rem); line-height: .95; margin: .35rem 0 .5rem; }
+.product-detail > p:not(.product-number) { max-width: 430px; font-size: .92rem; line-height: 1.42; color: #426355; }
+.safety-note { margin: .5rem 0 0; padding: .45rem .65rem; max-width: 430px; border-left: 2px solid var(--rust); border-radius: 0 var(--radius-s) var(--radius-s) 0; background: rgba(217,92,49,.07); color: #7d442d; font-size: .71rem; line-height: 1.35; }
+.subproduct-list { list-style: none; margin: .7rem 0; padding: 0; border-top: 1px solid rgba(21,60,49,.2); }
 .subproduct-list li { display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 1rem; padding: .5rem 0; border-bottom: 1px solid rgba(21,60,49,.2); }
 .subproduct-name { font-size: .88rem; color: var(--ink); }
 .subproduct-desc { color: #60766c; font-size: .74rem; text-align: right; }
@@ -219,7 +220,6 @@ h1 em, h2 em { font-weight: 600; color: var(--rust); font-style: italic; }
   .principles article:last-child { border-bottom: 0; }
   .principles h3 { margin-top: 1.2rem; }
   .carousel-button { height: 36px; width: 36px; font-size: 1rem; }
-  .product-pagination { margin-top: 1.1rem; }
   .product-card { min-width: 90vw; }
   .products h2 { white-space: normal; }
   .form-row { grid-template-columns: 1fr; gap: 0; }

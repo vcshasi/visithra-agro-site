@@ -2,6 +2,13 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.5.2] — 2026-09-16
+
+- Fit the Products section to the screen without touching the photo frame or image size at all (both are pixel-identical to v1.4.5/v1.5.1) — per explicit instruction, the space was found elsewhere instead:
+  - Moved the family-switcher prev/next buttons and the "01 / 02" index off their own row below the product card and up next to "02 Our range", as a small stacked group in the heading's left column. This removes an entire row's worth of height from the bottom of the section, where nothing else was making use of it.
+  - Tightened the remaining heading and product-detail text spacing a little further (all in areas that don't affect the gallery column's width, so the photo frame's size couldn't be touched even indirectly).
+- Verified across a spread of viewport heights again: the whole product carousel (photo, text, and the family-switcher) now fits with a comfortable 34-149px to spare from 700px of viewport height up through 900px+; below ~700px it starts running out of room, since the photo frame's fixed size is now the hard floor by design.
+
 ## [1.5.1] — 2026-09-16
 
 - Reverted v1.5.0 in full: the user was not satisfied with it. `styles.css` restored exactly to its v1.4.5 content — the viewport-height-aware gallery frame sizing, the compact chip-style sub-product list, and the rebalanced product-card columns are all undone. The site now looks and behaves exactly as v1.4.5 did (only the version number is new, since v1.4.5's tag already points to the earlier commit). `git checkout v1.4.5` still works and reaches the same result directly, if ever needed.
