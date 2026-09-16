@@ -2,6 +2,10 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.4.3] — 2026-09-16
+
+- Restored "02 Our range"'s original position: a narrow left-hand column, bottom-aligned against the heading's last line, with "Naturally versatile. Carefully supplied." following in a wider column to its right — the grid layout used through v1.3.6 (`.products-heading` had been switched to a centered flex row in v1.4.0). Confirmed against a screenshot of the earlier version. The Products section still fits the viewport as it did in v1.4.2 — this only changed how the two pieces of text are arranged, not their size or the section's overall height.
+
 ## [1.4.2] — 2026-09-16
 
 - Made the Products and Contact sections fit fully inside a normal browser window when navigated to, the same way the hero section already does — verified by measuring actual rendered content against real viewport sizes (1440×816, 1366×768), not just eyeballing:

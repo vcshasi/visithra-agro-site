@@ -1,4 +1,4 @@
-# Visithra Agro Traders website — v1.4.2
+# Visithra Agro Traders website — v1.4.3
 
 A responsive, dependency-free single-page business website. Open `index.html` in a browser to preview it.
 
