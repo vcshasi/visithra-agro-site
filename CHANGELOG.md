@@ -2,6 +2,16 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.6.7] — 2026-09-16
+
+Follow-up to v1.6.6: the user reported the header Products submenu was still not landing correctly on their device — a screenshot showed the destination card overlapping with odd, misplaced-looking content mid-transition.
+
+Extensive testing here (including forcing the exact scenario of jumping from the Coconut card all the way back to Gloriosa, and forcing scroll behavior to instant to inspect the settled end-state deterministically) could not reproduce a wrong *final* resting position — every case landed with the correct family, the correct first photo, and the correct vertical position. That points at the *transition* itself rather than the destination: the click fired three independent smooth-scroll animations at the same instant (the page's vertical scroll to `#products`, the family track's horizontal scroll, and the newly-selected family's photo gallery resetting to its first image) — and three simultaneous smooth-scroll/transition animations sharing the same fixed, `backdrop-filter`-blurred header is exactly the kind of thing that can paint a torn or glitchy-looking frame while they're mid-flight on some browsers, even though each animation's own target was independently correct.
+
+Changed the header submenu handler to run the vertical scroll first and only start the horizontal track scroll and photo reset once it has genuinely finished — using the `scrollend` event (with a 700ms timeout as a fallback for browsers without it) rather than firing everything at once. `autoplayFamilyIndex`/`autoplayStopped` and starting autoplay itself don't involve any visual motion, so those still happen immediately on click, unaffected.
+
+Verified the sequenced flow still lands correctly (mobile and desktop, including the large-jump Coconut→Gloriosa case), confirmed the `scrollend`-driven handoff actually fires and completes within about a second, and re-confirmed no console errors.
+
 ## [1.6.6] — 2026-09-16
 
 Fixed the header "Products" submenu not landing correctly (`#products` in the URL worked fine, but clicking a family under Products didn't). The click handler fired two `scrollIntoView` calls back to back — one explicit scroll of the page to the top of `#products`, and `card.scrollIntoView({block:'nearest', inline:'start'})` to bring the chosen card into view within the family track. The second call's ancestor-walk isn't limited to the track: it can also scroll the *page's own vertical position*, so both calls ended up fighting over the same vertical scroll at once, landing somewhere neither one intended. Fixed by adding `scrollTrackToCard()`, which moves only `.product-track`'s own `scrollLeft` directly and never touches the document — the same technique `scrollGalleryToSlide()` already used for the inner photo galleries, now applied to the outer family track too (also used by the carousel prev/next buttons and autoplay's family-to-family transition, closing off the same latent race there as well, even though it wasn't visibly broken there since nothing else was competing for the vertical scroll at those call sites).

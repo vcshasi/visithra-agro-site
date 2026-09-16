@@ -121,15 +121,34 @@ document.querySelectorAll('[data-family-link]').forEach((link) => {
     link.blur();
     const index = cards.findIndex((card) => card.dataset.family === link.dataset.familyLink);
     if (index === -1) return;
-    document.getElementById('products').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    scrollTrackToCard(cards[index]);
+
     autoplayFamilyIndex = index;
-    const family = productFamilies[index];
-    const scroll = document.querySelector(`[data-gallery-scroll="${family}"]`);
-    const slides = scroll ? [...scroll.querySelectorAll('.gallery-slide')] : [];
-    if (scroll && slides.length) scrollGalleryToSlide(scroll, slides[0]);
     autoplayStopped = false;
     startAutoplay();
+
+    // Runs the horizontal track scroll (and the photo reset within it) only once the
+    // vertical scroll to #products has actually finished, rather than firing all three
+    // smooth-scroll animations at the same instant — even though each one's own target is
+    // independently correct (scrollTrackToCard never touches the page scroll), three
+    // simultaneous smooth-scroll/transition animations sharing the same fixed, blurred
+    // header is exactly the kind of thing that can paint a torn/glitchy-looking frame on
+    // some browsers while they're mid-flight. scrollend is the standard "a scroll finished"
+    // event; the timeout is just a fallback for the few browsers that lack it.
+    let settled = false;
+    function goToFamily() {
+      if (settled) return;
+      settled = true;
+      window.removeEventListener('scrollend', goToFamily);
+      clearTimeout(fallbackTimer);
+      scrollTrackToCard(cards[index]);
+      const family = productFamilies[index];
+      const scroll = document.querySelector(`[data-gallery-scroll="${family}"]`);
+      const slides = scroll ? [...scroll.querySelectorAll('.gallery-slide')] : [];
+      if (scroll && slides.length) scrollGalleryToSlide(scroll, slides[0]);
+    }
+    window.addEventListener('scrollend', goToFamily);
+    const fallbackTimer = setTimeout(goToFamily, 700);
+    document.getElementById('products').scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 });
 
