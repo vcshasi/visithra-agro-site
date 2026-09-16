@@ -1,3 +1,17 @@
+/* Self-hosted (not loaded from Google's CDN — see CHANGELOG.md for why): only the "latin"
+   unicode-range subset is kept, matching what a Google-served version would actually send an
+   English-language visitor's browser anyway. DM Sans and Playfair Display (normal) are variable
+   fonts — several font-weight declarations below intentionally point at the same file. */
+@font-face { font-family: 'DM Mono'; font-style: normal; font-weight: 400; font-display: swap; src: url('fonts/dm-mono-400.woff2') format('woff2'); }
+@font-face { font-family: 'DM Mono'; font-style: normal; font-weight: 500; font-display: swap; src: url('fonts/dm-mono-500.woff2') format('woff2'); }
+@font-face { font-family: 'DM Sans'; font-style: normal; font-weight: 400; font-display: swap; src: url('fonts/dm-sans-variable.woff2') format('woff2'); }
+@font-face { font-family: 'DM Sans'; font-style: normal; font-weight: 500; font-display: swap; src: url('fonts/dm-sans-variable.woff2') format('woff2'); }
+@font-face { font-family: 'DM Sans'; font-style: normal; font-weight: 600; font-display: swap; src: url('fonts/dm-sans-variable.woff2') format('woff2'); }
+@font-face { font-family: 'DM Sans'; font-style: normal; font-weight: 700; font-display: swap; src: url('fonts/dm-sans-variable.woff2') format('woff2'); }
+@font-face { font-family: 'Playfair Display'; font-style: italic; font-weight: 600; font-display: swap; src: url('fonts/playfair-display-italic-variable.woff2') format('woff2'); }
+@font-face { font-family: 'Playfair Display'; font-style: normal; font-weight: 600; font-display: swap; src: url('fonts/playfair-display-normal-variable.woff2') format('woff2'); }
+@font-face { font-family: 'Playfair Display'; font-style: normal; font-weight: 700; font-display: swap; src: url('fonts/playfair-display-normal-variable.woff2') format('woff2'); }
+
 :root {
   --ink: #153c31;
   --forest: #0b2b22;

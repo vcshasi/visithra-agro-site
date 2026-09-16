@@ -2,6 +2,19 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.8.0] — 2026-09-16
+
+Security hardening pass, working through a peer review's findings (items 1–5 and 8; items 6–7 are account-level/blocked-on-a-custom-domain and were deliberately held back):
+
+- **Self-hosted fonts** — removed Google Fonts' CDN entirely. Previously, every visitor's browser made a request straight to `fonts.googleapis.com`/`fonts.gstatic.com`, which (per EU courts, in a strict reading) logs their IP to Google without consent — a GDPR gray area, even if low-relevance for an India-based B2B trader. Downloaded the exact 5 font files actually in use (fetched Google's own served CSS with a real browser User-Agent to get `woff2` URLs, kept only the "latin" unicode-range subset — the same one an English-language visitor's browser would already be served, so no regression), added `@font-face` rules pointing at local `fonts/*.woff2` files, and removed the `<link>` tags from `index.html`. Simplified the CSP's `style-src`/`font-src` to `'self'` now that the external origins are gone.
+- **`maxlength` added to every contact-form text field** (name/company: 100, email: 254, phone: 20 — matching the existing pattern's own `{7,20}` range, message: 2000) — cheap hardening against oversized scripted submissions.
+- **Contact form's data-use note expanded**, naming Web3Forms as the third party that actually delivers the message and linking their privacy policy — addresses the "no privacy notice" finding without requiring a full standalone policy page for a form that only collects enquiry-handling data.
+- **Checked all 11 product photos for EXIF/GPS/device metadata** (`magick identify -verbose <file>` on every file, not a sample) — found none; they were already clean. Documented the check as a standing step in `README.md`'s "Product galleries" section so future photo additions get checked too, rather than assuming they're clean.
+- **Added `SECURITY.md`** — what's in place today, a placeholder section on why any future payment/checkout feature must use a hosted provider (Razorpay/Stripe) to stay out of PCI-DSS scope, and the account-level items (Web3Forms key domain-restriction, 2FA, HSTS preload) that aren't fixable from this repo. Linked from `README.md`.
+- **Web3Forms key domain-restriction** — flagged clearly (in `README.md` and `SECURITY.md`) as something only doable in the Web3Forms dashboard, not something fixable from here.
+
+Verified: fonts confirmed loading from the local origin (not Google) via `document.fonts` and the network log, computed `font-family` on real elements shows the actual webfonts (not a fallback), a live end-to-end contact-form submission still succeeds with the simplified CSP, `maxlength` attributes confirmed present via the DOM, no console errors.
+
 ## [1.7.3] — 2026-09-16
 
 Renamed the Cloudflare project from `visithra-agro-site` to `www`, in preparation for a cleaner combined URL once the account's `workers.dev` subdomain is also changed to `visithra-agro` (dashboard-only, not something Wrangler's CLI exposes — pending the user's action). Live at `https://www.visithra-agro-site.workers.dev` for now; will automatically become `https://www.visithra-agro.workers.dev` the moment the subdomain change is made, with no redeploy needed.

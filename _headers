@@ -1,8 +1,9 @@
 # Cloudflare Pages reads this file and applies these headers to every response at the edge.
 # https://developers.cloudflare.com/pages/configuration/headers/
 #
-# The site loads no inline <script>/<style> and no third-party origins beyond Google Fonts
-# (stylesheet + font files) and the Web3Forms API the contact form posts to — so the CSP
+# The site loads no inline <script>/<style> and, since fonts are now self-hosted (see
+# CHANGELOG.md — dropped Google Fonts' CDN so visitor IPs stop being logged to Google), the
+# only remaining third-party origin is the Web3Forms API the contact form posts to. The CSP
 # below can stay strict (no 'unsafe-inline', no wildcard origins) without breaking anything.
 /*
   X-Content-Type-Options: nosniff
@@ -10,4 +11,4 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'; frame-ancestors 'none'

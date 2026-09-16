@@ -5,11 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Visithra Agro Traders — a family-led agricultural trading business from southern India, now in its second generation, supplying responsibly sourced coconut and Gloriosa superba products." />
     <meta name="theme-color" content="#0b2b22" />
-    <meta name="version" content="1.7.3" />
+    <meta name="version" content="1.8.0" />
     <title>Visithra Agro Traders | From Our Fields to Your Business</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -171,14 +168,14 @@
             <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" />
             <p class="form-required-note"><span class="required-mark" aria-hidden="true">*</span> Required field</p>
             <div class="form-row">
-              <label>Your name<span class="required-mark" aria-hidden="true">*</span><input required name="name" type="text" autocomplete="name" placeholder="Full name" aria-describedby="err-name" /><span class="field-error" id="err-name" aria-live="polite"></span></label>
-              <label>Company<span class="required-mark" aria-hidden="true">*</span><input required name="company" type="text" autocomplete="organization" placeholder="Company name" aria-describedby="err-company" /><span class="field-error" id="err-company" aria-live="polite"></span></label>
+              <label>Your name<span class="required-mark" aria-hidden="true">*</span><input required name="name" type="text" autocomplete="name" maxlength="100" placeholder="Full name" aria-describedby="err-name" /><span class="field-error" id="err-name" aria-live="polite"></span></label>
+              <label>Company<span class="required-mark" aria-hidden="true">*</span><input required name="company" type="text" autocomplete="organization" maxlength="100" placeholder="Company name" aria-describedby="err-company" /><span class="field-error" id="err-company" aria-live="polite"></span></label>
             </div>
             <div class="form-row">
-              <label>Email<span class="required-mark" aria-hidden="true">*</span><input required name="email" type="email" autocomplete="email" placeholder="you@company.com" aria-describedby="err-email" /><span class="field-error" id="err-email" aria-live="polite"></span></label>
-              <label>Contact number<span class="required-mark" aria-hidden="true">*</span><input required name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="Phone or WhatsApp" pattern="^[0-9+\-\s\(\)]{7,20}$" aria-describedby="err-phone" /><span class="field-error" id="err-phone" aria-live="polite"></span></label>
+              <label>Email<span class="required-mark" aria-hidden="true">*</span><input required name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@company.com" aria-describedby="err-email" /><span class="field-error" id="err-email" aria-live="polite"></span></label>
+              <label>Contact number<span class="required-mark" aria-hidden="true">*</span><input required name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="Phone or WhatsApp" pattern="^[0-9+\-\s\(\)]{7,20}$" aria-describedby="err-phone" /><span class="field-error" id="err-phone" aria-live="polite"></span></label>
             </div>
-            <label>Location<span class="required-mark" aria-hidden="true">*</span><input required name="location" type="text" autocomplete="address-level2" placeholder="City, region or country" aria-describedby="err-location" /><span class="field-error" id="err-location" aria-live="polite"></span></label>
+            <label>Location<span class="required-mark" aria-hidden="true">*</span><input required name="location" type="text" autocomplete="address-level2" maxlength="100" placeholder="City, region or country" aria-describedby="err-location" /><span class="field-error" id="err-location" aria-live="polite"></span></label>
             <fieldset class="interest-field" aria-describedby="err-products">
               <legend>Product(s) of interest<span class="required-mark" aria-hidden="true">*</span></legend>
               <div class="chip-select">
@@ -191,8 +188,8 @@
               </div>
               <span class="field-error" id="err-products" aria-live="polite"></span>
             </fieldset>
-            <label>How can we help?<span class="required-mark" aria-hidden="true">*</span><textarea required name="message" rows="3" placeholder="Tell us about the product and quantity you need." aria-describedby="err-message"></textarea><span class="field-error" id="err-message" aria-live="polite"></span></label>
-            <div class="form-footer"><p>We’ll use these details only to respond to your enquiry.</p><button class="button button-dark" type="submit">Send enquiry <b aria-hidden="true">↗</b></button></div>
+            <label>How can we help?<span class="required-mark" aria-hidden="true">*</span><textarea required name="message" rows="3" maxlength="2000" placeholder="Tell us about the product and quantity you need." aria-describedby="err-message"></textarea><span class="field-error" id="err-message" aria-live="polite"></span></label>
+            <div class="form-footer"><p>We’ll only use these details to respond to your enquiry, and never share them with anyone else. Submissions are delivered securely via <a class="text-link" href="https://web3forms.com/privacy" target="_blank" rel="noopener">Web3Forms</a>.</p><button class="button button-dark" type="submit">Send enquiry <b aria-hidden="true">↗</b></button></div>
             <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
           </form>
         </div>
@@ -203,7 +200,7 @@
     <footer class="site-footer">
       <a class="brand" href="#home"><span class="brand-mark" aria-hidden="true">V</span><span>VISITHRA<span>AGRO <span class="brand-copy" aria-hidden="true">&copy;</span></span></span></a>
       <p>Quality products. Considered trade.</p>
-      <p>© <span id="year"></span> Visithra Agro Traders. All rights reserved. <span class="site-version">v1.7.3</span></p>
+      <p>© <span id="year"></span> Visithra Agro Traders. All rights reserved. <span class="site-version">v1.8.0</span></p>
     </footer>
     <script src="script.js"></script>
   </body>

@@ -1,4 +1,4 @@
-# Visithra Agro Traders website — v1.7.3
+# Visithra Agro Traders website — v1.8.0
 
 **Live at:** https://www.visithra-agro.workers.dev
 
@@ -27,6 +27,8 @@ The form is wired for **[Web3Forms](https://web3forms.com)** — tested end-to-e
 1. Go to web3forms.com and enter the email address that should receive enquiries.
 2. You'll be emailed a new **Access Key** — copy it.
 3. Paste it into `web3FormsKey` in `script.js`, replacing the current one.
+
+The key is meant to be public/client-side (it's shipped in `script.js` by design), but should be **domain-restricted** in the Web3Forms dashboard to this site's actual URL — otherwise anyone who reads the page source could lift it and relay spam through your account. This is an account setting on Web3Forms' side, not something set from this repo — see `SECURITY.md`.
 
 Other free options, if you'd rather switch services:
 
@@ -60,7 +62,16 @@ That's the whole command — it reads `wrangler.jsonc` (points at this repo's ro
 
 Each main product family (Gloriosa Superba Products, Coconut Products) has one photo gallery. To add product photos later, edit the `productGalleries` object in `script.js`: add an object with `src`, `alt`, and `caption` to the relevant `photos` list. Every photo displays in a uniform 4:3 frame (cropped to fill, whatever its original orientation) so the gallery looks consistent regardless of source photo size, with prev/next arrows appearing automatically when more than one photo is present.
 
+**Before adding a new photo, strip its metadata** — phone/camera photos routinely embed GPS coordinates, device model, and timestamps in EXIF data, which would otherwise ship to every site visitor. Checked and confirmed clean on all current photos (`magick identify -verbose <file> | grep -i "^  Profile"` shows nothing on any of them), but that won't be true automatically for new ones:
+```bash
+magick <new-photo.jpg> -strip <new-photo.jpg>
+```
+
 Existing image files in `assets/` are untouched by this release (including their `gloriossa-*` filenames) — only the on-page text was corrected to "Gloriosa". Replace the files directly once corrected/higher-resolution photos are available; file names can stay the same or be updated to match, just keep the `src` paths in `script.js` in sync.
+
+## Security
+
+Response headers, self-hosted fonts, form hardening, and what's still needed before any future payment feature: **[SECURITY.md](SECURITY.md)**.
 
 ## Versioning
 
