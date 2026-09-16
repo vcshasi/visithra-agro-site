@@ -2,6 +2,15 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.5.5] — 2026-09-16
+
+- Cross-browser compatibility pass so the site renders and behaves the same on Chrome, Firefox, Safari (desktop and iOS), and Edge — no visual or functional change on browsers that already support the modern CSS used here, only added safety nets for ones that don't:
+  - Added `-webkit-backdrop-filter` alongside every `backdrop-filter` (header, carousel buttons, gallery nav buttons, gallery photo counter) so the frosted-glass effect also renders on Safari versions that need the prefix, instead of silently falling back to a solid background.
+  - Added a `100vh`/`vh`-based fallback declared *before* the `svh`-based one on `.hero` and `.gallery-stage`, so browsers without `svh` support (an invalid unit would otherwise drop the whole `height`/`min-height` declaration) get a sane viewport-relative size instead of collapsing to content height.
+  - Added `-webkit-text-size-adjust`/`text-size-adjust: 100%` and `-webkit-tap-highlight-color: transparent` for consistent mobile text sizing and tap feedback across iOS Safari and Android Chrome.
+  - Added `appearance: none` to the base `button` reset so custom-styled buttons render identically instead of picking up each browser's native button chrome.
+- Verified no regression to the already-tuned Products/Contact "fits one screen" sizing: re-measured `.gallery-stage` and section heights at 700px, 816px, and mobile (375×812) viewport sizes — identical to the v1.5.4 figures, since Chromium already supports every modern feature involved and the fallback declarations are simply overridden by the cascade. No console errors, no horizontal overflow.
+
 ## [1.5.4] — 2026-09-16
 
 - Made the photo frame grow downward to fill more of the empty space beneath the product card on taller screens, instead of only growing with the card's width as it did in v1.5.2/v1.5.3. `.gallery-stage`'s height is now `min(48vw, 55svh)` — so it can grow well past what the width-only formula allowed when there's real vertical room (449px tall at 816px viewport height, up from 418px; 550px at 1000px viewport height), while automatically shrinking back down on short viewports, giving *more* safety margin there than before (51px to spare at a 700px-tall window, up from 32px).
