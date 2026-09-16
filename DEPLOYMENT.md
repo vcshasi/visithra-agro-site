@@ -2,6 +2,8 @@
 
 How to deploy this site to Cloudflare by hand, from a terminal, with no GitHub and no CI/CD. This is the exact procedure used to put the site live — follow it in order, and don't skip the verification step at the end. It exists because skipping it once already caused a real incident (see below).
 
+> **Shortcut:** `./deploy.sh` runs §2, §3 and §5 of this document in one go — pre-flight checks, deploy, then post-deploy verification — and refuses to deploy if any pre-flight check fails. It's a wrapper around this procedure, not a replacement for it: the steps below are what it automates, and remain the reference if the script needs changing or something goes wrong. Run `./deploy.sh --check-only`, `--verify-only`, or `--skip-verify` to run stages individually.
+
 ## 1. One-time machine setup
 
 Only needed the first time you deploy from a given computer.

@@ -2,6 +2,14 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.8.2] — 2026-09-16
+
+Added `deploy.sh` — a standalone build/deploy/verify script wrapping what `DEPLOYMENT.md` documents by hand. Runs pre-flight checks (required files present, `.assetsignore` still excluding `.git` and `.claude`, version consistent across `index.html`'s meta/footer and `README.md`, Web3Forms key not left as a placeholder, Node available), deploys via `wrangler`, then verifies the *live* site — that the real pages return 200, that `.git`/internal docs return 404, that the security headers actually arrive, and that the deployed version matches the working directory.
+
+Built to run both by hand and from a Claude Code session: never prompts, needs no TTY, finds Node even when a fresh shell hasn't picked it up on `PATH` yet, and signals outcome through exit codes (1 = pre-flight failed, 2 = deploy failed, 3 = verification failed) rather than only prose. Refuses to deploy at all if pre-flight fails. Excluded from the deploy itself via `.assetsignore`.
+
+Testing it surfaced a bug in the script's own Web3Forms placeholder check: the naive `grep` matched the placeholder string where it legitimately appears in `script.js`'s "is it configured yet?" comparison, not just as a config value — so a correctly-configured site failed pre-flight. Narrowed the check to the `CONFIG` assignment specifically. Also verified the failure path genuinely works by temporarily removing `.git` from `.assetsignore` and confirming the script caught it, refused to deploy, and exited non-zero — then restored it (confirmed via `git diff` that only the intended change remained).
+
 ## [1.8.1] — 2026-09-16
 
 Added `TODO.md` tracking three planned items: restricting the Web3Forms key to the live domain (already flagged in `SECURITY.md`; a dashboard action, not a code change), a feasibility analysis for live chat (WhatsApp click-to-chat vs. the WhatsApp Business API vs. a hosted chatbot widget — not scoped yet, just the options worth weighing when it's picked up), and replacing the homepage's CSS-drawn hero illustration with a practical photo. Linked from `README.md`; excluded from the public deploy via `.assetsignore`, matching the other internal docs.

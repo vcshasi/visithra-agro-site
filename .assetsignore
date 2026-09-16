@@ -11,6 +11,7 @@ wrangler.jsonc
 .assetsignore
 .dev.vars*
 .env*
+deploy.sh
 README.md
 CHANGELOG.md
 VERSIONING.md

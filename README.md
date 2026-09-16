@@ -1,4 +1,4 @@
-# Visithra Agro Traders website — v1.8.1
+# Visithra Agro Traders website — v1.8.2
 
 **Live at:** https://www.visithra-agro.workers.dev
 
@@ -45,6 +45,12 @@ Deployed via the **Wrangler CLI** directly (no GitHub needed) — free tier, no 
 Full step-by-step procedure, including the security incident from the first deploy and how it's now prevented: **[DEPLOYMENT.md](DEPLOYMENT.md)**.
 
 **Deploying an update**, once logged in (`npx wrangler login`, one-time):
+
+```bash
+./deploy.sh
+```
+
+`deploy.sh` runs pre-flight checks (required files present, `.assetsignore` still excluding `.git`, version consistent across `index.html`/`README.md`, Web3Forms key not a placeholder), deploys, then verifies the live site actually serves what it should — refusing to deploy if any pre-flight check fails. `--check-only` / `--verify-only` / `--skip-verify` run individual stages. The bare command underneath it is just:
 
 ```bash
 npx wrangler deploy
