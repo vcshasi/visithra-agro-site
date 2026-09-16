@@ -2,6 +2,11 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.5.4] — 2026-09-16
+
+- Made the photo frame grow downward to fill more of the empty space beneath the product card on taller screens, instead of only growing with the card's width as it did in v1.5.2/v1.5.3. `.gallery-stage`'s height is now `min(48vw, 55svh)` — so it can grow well past what the width-only formula allowed when there's real vertical room (449px tall at 816px viewport height, up from 418px; 550px at 1000px viewport height), while automatically shrinking back down on short viewports, giving *more* safety margin there than before (51px to spare at a 700px-tall window, up from 32px).
+- The inner padding between the photo and the card's edge is untouched (still the card's fixed 1.6rem padding on every side) — confirmed it stays visually consistent at every size, since it doesn't scale with the frame.
+
 ## [1.5.3] — 2026-09-16
 
 - Moved the family-switcher prev/next buttons from their own line above "02 Our range" to sit on the same line, to its right — between the label and "Naturally versatile...". Buttons and index text shrunk a little to sit proportionately next to the small label.
