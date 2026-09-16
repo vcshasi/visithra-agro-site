@@ -2,6 +2,11 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.5.8] — 2026-09-16
+
+- Gave the family-switcher prev/next buttons (`.carousel-button`) a rust-coloured tint and glow so they read clearly against the dark green Products background instead of blending into it: border and fill switched from a near-invisible translucent white/dark-green to a rust tint (`rgba(217,92,49,...)`, the site's existing accent colour, already used for "02" in the section label and other highlights), plus a soft `box-shadow` glow around the ring. The hover/focus state's lime swap now also glows to match, for a consistent, visible highlight in both states.
+- Purely a colour/shadow change — button size, position, and the "01 / 02" label are untouched.
+
 ## [1.5.7] — 2026-09-16
 
 - Renamed the Gloriosa Superba product family heading from "Gloriosa Superba Products" to "Gloriosa Superba" (dropped the redundant "Products" suffix); also updated the matching `name` field in `script.js`'s `productGalleries` data (used in the gallery's screen-reader label and empty-state text) to stay consistent.
