@@ -2,6 +2,12 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.3.6] — 2026-09-16
+
+- Reverted v1.3.5's viewport-height cap on the product gallery frames — it directly undid v1.3.3's fix for portrait photos filling their frame edge-to-edge (both changes were fighting over the same `height` property for opposite reasons), so photos briefly went back to pillarboxing ("cluttered") for both families. Gallery frame heights and product-card padding/text spacing are back to their v1.3.4 sizing — confirmed by measuring every current photo again: all 8 render width-constrained (edge-to-edge, letterboxed top/bottom) like before.
+- Instead of shrinking the product frame to fit the viewport, shrank the Products heading itself: "Naturally versatile. Carefully supplied." is now one line at a much smaller size (was a large 2-line heading), and the heading's grid column was widened to fit it. This keeps the actual product card at full, correct size while still moving it much higher up the page — it now starts right after the (compact) heading instead of ~450px further down.
+- Moved the product-family prev/next buttons again: v1.3.4 put them on the card's left/right edges, but at the card's real padding they landed almost on top of the *inner* per-photo gallery-nav buttons in the same spot — visibly overlapping/cluttered. They're now a single centered pagination row (prev arrow, "01/02", next arrow) below the whole card, with no shared space with the inner photo controls at all. Click behaviour is unchanged.
+
 ## [1.3.5] — 2026-09-16
 
 - Made the Products section fit within a typical browser viewport (verified down to 1280×720) when navigated to, instead of the heading and top padding pushing the actual product card mostly below the fold:
