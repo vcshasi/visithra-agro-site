@@ -75,7 +75,7 @@ track.addEventListener('scroll', () => window.requestAnimationFrame(syncProductI
 // have their own images or links. More photos can be added the same way as new ones arrive.
 const productGalleries = {
   gloriosa: {
-    name: 'Gloriosa Superba Products',
+    name: 'Gloriosa Superba',
     photos: [
       { src: 'assets/gloriosa-superba-field-landscape.jpg', alt: 'Wide landscape view of the Gloriosa Superba growing field with coconut palms in the background', caption: 'Gloriosa Superba — flowering field' },
       { src: 'assets/gloriosa-superba-flower-cluster-closeup-1.jpg', alt: 'Close-up cluster of vivid red and yellow Gloriosa Superba flowers', caption: 'Gloriosa Superba Seeds — flower cluster' },

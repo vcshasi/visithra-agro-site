@@ -2,6 +2,12 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.5.7] — 2026-09-16
+
+- Renamed the Gloriosa Superba product family heading from "Gloriosa Superba Products" to "Gloriosa Superba" (dropped the redundant "Products" suffix); also updated the matching `name` field in `script.js`'s `productGalleries` data (used in the gallery's screen-reader label and empty-state text) to stay consistent.
+- Brought the Coconut Products heading onto a single line — removed the forced `<br />` between "Coconut" and "Products" so it flows naturally instead of stacking as two lines. Confirmed it renders as one line (not wrapped) at both a typical desktop width and on mobile.
+- Made the family-switcher prev/next buttons bigger and easier to see: `.carousel-button` grew from 26px to 34px (mobile: 30px → 38px), with the arrow glyph scaled up to match. Left the "01 / 02" page-number label untouched, as requested. Re-verified the buttons still sit cleanly next to "02 Our range" without overlapping "Naturally versatile..." at the narrowest width tested (1366px), and confirmed the product frame's "fits one screen" sizing is unaffected (still 29px of margin at a 700px-tall window).
+
 ## [1.5.6] — 2026-09-16
 
 - Fixed a real gap below the product card: `.products` only ever overrode `padding-top` (a small `clamp(1.25rem, 2.4vw, 2rem)`), so `padding-bottom` was inheriting the much larger generic `.section-padded` value (up to 5.75rem / 92px at typical widths) — unlike `.contact`, which already had both overrides. Gave `.products` a matching `padding-bottom`, reclaiming that dead space.

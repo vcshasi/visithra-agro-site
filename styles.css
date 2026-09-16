@@ -109,7 +109,7 @@ h1 em, h2 em { font-weight: 600; color: var(--rust); font-style: italic; }
 .product-index-label { color: #c3d5c0; font: .68rem var(--mono); letter-spacing: .08em; }
 .product-index-label b { color: var(--lime); font-weight: 400; }
 .product-pagination { display: flex; align-items: center; gap: .6rem; }
-.carousel-button { height: 26px; width: 26px; border-radius: 50%; border: 1px solid rgba(255,255,255,.3); color: var(--cream); background: rgba(15,61,43,.55); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); font-size: .8rem; transition: background .2s, color .2s, transform .2s; }
+.carousel-button { height: 34px; width: 34px; border-radius: 50%; border: 1px solid rgba(255,255,255,.3); color: var(--cream); background: rgba(15,61,43,.55); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); font-size: 1rem; transition: background .2s, color .2s, transform .2s; }
 .carousel-button:hover, .carousel-button:focus-visible { color: var(--forest); background: var(--lime); transform: scale(1.06); }
 
 .product-track { display: flex; gap: 1.8rem; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 1rem; }
@@ -219,7 +219,7 @@ h1 em, h2 em { font-weight: 600; color: var(--rust); font-style: italic; }
   .principles article, .principles article + article { border-right: 0; border-bottom: 1px solid rgba(21,60,49,.18); padding: 1.4rem 0; }
   .principles article:last-child { border-bottom: 0; }
   .principles h3 { margin-top: 1.2rem; }
-  .carousel-button { height: 30px; width: 30px; font-size: .85rem; }
+  .carousel-button { height: 38px; width: 38px; font-size: 1.05rem; }
   .product-card { min-width: 90vw; }
   .products h2 { white-space: normal; }
   .form-row { grid-template-columns: 1fr; gap: 0; }
