@@ -2,6 +2,11 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.4.5] — 2026-09-16
+
+- Fixed the Products heading's uneven spacing — the gap above "02 Our range"/"Naturally versatile. Carefully supplied." (section padding-top + the heading's own top padding) was noticeably larger than the gap below it (just the heading's bottom padding) before the product card. Both gaps now come from the exact same `clamp()` expression, so they're pixel-identical at every viewport width (confirmed 32px/32px at both 1440×816 and 1366×768) instead of visually mismatched.
+- Trimmed that shared clamp's ceiling slightly (2.5rem → 2rem) and the pagination row's top margin (1.3rem → 1rem) to make room for the now-doubled gap without giving back the "fits in one screen" work from v1.4.2 — re-verified the section still fits fully inside the viewport at both sizes tested, with a comfortable margin (32-53px to spare), not just barely.
+
 ## [1.4.4] — 2026-09-16
 
 - Moved the product-family prev/next buttons off the card's left/right edges and into a single row below the card, together with the "01 / 02" page indicator (prev arrow, index, next arrow — centered, evenly spaced). Same click behaviour as always. This also freed up the mobile card padding that had been added only to keep those side buttons clear of the inner per-photo gallery-nav buttons.
