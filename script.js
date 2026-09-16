@@ -10,7 +10,9 @@ const CONFIG = {
 
 const menuButton = document.querySelector('.menu-toggle');
 const menu = document.querySelector('.site-menu');
-const menuLinks = document.querySelectorAll('.site-menu a');
+// The "Products" trigger no longer navigates anywhere on its own (it only reveals the
+// submenu), so it's excluded here — only real destinations close the mobile menu.
+const menuLinks = document.querySelectorAll('.site-menu > a, .nav-item .submenu a');
 
 function closeMenu() {
   menuButton.setAttribute('aria-expanded', 'false');
@@ -20,11 +22,34 @@ function closeMenu() {
 
 menuButton.addEventListener('click', () => {
   const isOpen = menuButton.getAttribute('aria-expanded') === 'true';
-  menuButton.setAttribute('aria-expanded', String(!isOpen));
-  menu.classList.toggle('open', !isOpen);
-  document.body.classList.toggle('menu-open', !isOpen);
+  const willOpen = !isOpen;
+  menuButton.setAttribute('aria-expanded', String(willOpen));
+  menu.classList.toggle('open', willOpen);
+  document.body.classList.toggle('menu-open', willOpen);
+  // Every time the mobile menu is (re)opened, make sure the Products submenu — which on
+  // mobile is always meant to be expanded — isn't still stuck force-closed from an earlier
+  // selection (see closeProductsSubmenu below; mobile has no hover/mouseleave to reset it).
+  if (willOpen) reopenProductsSubmenu();
 });
 menuLinks.forEach((link) => link.addEventListener('click', closeMenu));
+
+// "Products" is a label for the dropdown now, not a link — clicking it does nothing until
+// the visitor picks a specific family from the submenu.
+const productsNavItem = document.querySelector('.nav-item.has-submenu');
+const productsTrigger = productsNavItem.querySelector(':scope > a');
+productsTrigger.addEventListener('click', (event) => event.preventDefault());
+
+// Selecting a family visually force-closes the dropdown (it's otherwise purely
+// hover/focus-driven, so it would stay open under the pointer after a click) until the
+// visitor hovers/focuses "Products" again, so they can still come back for another product.
+function closeProductsSubmenu() {
+  productsNavItem.classList.add('submenu-closing');
+}
+function reopenProductsSubmenu() {
+  productsNavItem.classList.remove('submenu-closing');
+}
+productsNavItem.addEventListener('mouseenter', reopenProductsSubmenu);
+productsTrigger.addEventListener('focus', reopenProductsSubmenu);
 
 const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
@@ -73,15 +98,27 @@ track.addEventListener('scroll', () => window.requestAnimationFrame(syncProductI
 track.addEventListener('pointerdown', stopAutoplay);
 track.addEventListener('keydown', stopAutoplay);
 
-// Header "Products" submenu — jump straight to a family's card in the carousel.
+// Header "Products" submenu — jump straight to a family's card in the carousel and kick
+// off autoplay there. This is the one interaction that's meant to *start* autoplay rather
+// than stop it, so it deliberately skips the global "any click stops autoplay" listener
+// below (stopPropagation) instead of calling stopAutoplay().
 document.querySelectorAll('[data-family-link]').forEach((link) => {
   link.addEventListener('click', (event) => {
     event.preventDefault();
-    stopAutoplay();
+    event.stopPropagation();
+    closeProductsSubmenu();
+    link.blur();
     const index = cards.findIndex((card) => card.dataset.family === link.dataset.familyLink);
     if (index === -1) return;
     document.getElementById('products').scrollIntoView({ behavior: 'smooth', block: 'start' });
     cards[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+    autoplayFamilyIndex = index;
+    const family = productFamilies[index];
+    const scroll = document.querySelector(`[data-gallery-scroll="${family}"]`);
+    const slides = scroll ? [...scroll.querySelectorAll('.gallery-slide')] : [];
+    if (scroll && slides.length) scrollGalleryToSlide(scroll, slides[0]);
+    autoplayStopped = false;
+    startAutoplay();
   });
 });
 
@@ -203,10 +240,10 @@ Object.keys(productGalleries).forEach((family) => {
 // ===== Product section autoplay =====
 // Once the Products section is visible, automatically step through the current family's
 // photos one at a time; when a family's photos are exhausted, advance to the next family
-// (looping back to the first after the last), and keep repeating. Pauses while the section
-// is scrolled out of view, and stops for good the moment the visitor clicks anywhere on the
-// site (not just within the carousel — a genuine click signals they're now interacting with
-// the page, so the passive autoplay steps aside).
+// (looping back to the first after the last), and keep repeating. A click anywhere on the
+// site stops it — but only for the current visit to the section: scrolling away and back
+// (or picking a family from the header) gives autoplay a fresh start from wherever it left
+// off, rather than disabling it for the rest of the page visit.
 const AUTOPLAY_INTERVAL_MS = 3500;
 const productFamilies = Object.keys(productGalleries);
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -220,7 +257,6 @@ function stopAutoplay() {
     clearInterval(autoplayTimer);
     autoplayTimer = null;
   }
-  autoplayVisibilityObserver.disconnect();
 }
 
 function autoplayStep() {
@@ -244,7 +280,7 @@ function autoplayStep() {
 }
 
 function startAutoplay() {
-  if (autoplayStopped || autoplayTimer) return;
+  if (prefersReducedMotion || autoplayStopped || autoplayTimer) return;
   autoplayTimer = setInterval(autoplayStep, AUTOPLAY_INTERVAL_MS);
 }
 
@@ -257,14 +293,24 @@ function pauseAutoplay() {
 
 const autoplayVisibilityObserver = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
-    if (entry.isIntersecting) startAutoplay();
-    else pauseAutoplay();
+    if (entry.isIntersecting) {
+      // A fresh arrival at the section always gets to try autoplay again, even if an
+      // earlier visit was stopped by an interaction — only reduced-motion permanently
+      // opts out (startAutoplay's own guard keeps this a no-op for those visitors).
+      autoplayStopped = false;
+      startAutoplay();
+    } else {
+      pauseAutoplay();
+    }
   });
 }, { threshold: 0.4 });
 
-if (!autoplayStopped) autoplayVisibilityObserver.observe(document.getElementById('products'));
+if (!prefersReducedMotion) autoplayVisibilityObserver.observe(document.getElementById('products'));
 
-// Any click anywhere on the site — not just inside the carousel — stops autoplay for good.
+// Any click anywhere on the site — not just inside the carousel — stops autoplay for the
+// current visit to the section (the family-link handler above deliberately opts out of
+// this via stopPropagation, since choosing a family from the header is meant to start
+// autoplay, not stop it).
 document.addEventListener('click', stopAutoplay);
 
 // ===== Header scrollspy — highlight the nav link for whichever section is in view =====

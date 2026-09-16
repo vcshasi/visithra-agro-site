@@ -2,6 +2,15 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.6.2] — 2026-09-16
+
+- "Products" in the header no longer navigates on its own click — it's a label for the dropdown now; only choosing a family from the submenu (or waiting to hover it) goes anywhere.
+- Fixed the Products dropdown staying open after picking a family: since visibility is purely `:hover`/`:focus-within`-driven, clicking a link while the mouse is still resting on the dropdown left it visually open. A family selection now force-closes it (a `.submenu-closing` class overriding the hover styles via `!important`) until "Products" is hovered/focused again — so the visitor can return and pick a different product. Reset automatically whenever the mobile fullscreen menu is reopened, since touch has no hover/mouseleave to clear it otherwise.
+- Excluded the "Products" trigger from the set of links that auto-close the mobile menu, since it no longer represents a real destination — tapping it doesn't collapse the whole nav for no reason.
+- **Corrected the autoplay behaviour** per follow-up clarification — previous versions treated any click anywhere as a permanent, page-wide "autoplay is now off" switch. The intended behaviour is per-visit: a click stops autoplay only until the visitor leaves the Products section and comes back (scrolling away and returning, or picking a family from the header, both give it a fresh start from wherever it left off — family and photo position are preserved across pauses, only the "stopped by interaction" flag resets). Concretely:
+  - Selecting a family from the header dropdown now navigates there *and* starts autoplay from that specific family (previously it always assumed family 1, regardless of which one was actually picked, and — since it stopped autoplay entirely — never restarted it at all). This click deliberately bypasses the global "any click stops autoplay" listener (`stopPropagation`), since it's the one interaction meant to start autoplay rather than end it.
+  - The section's `IntersectionObserver` now clears the "stopped by interaction" flag every time the section comes back into view, rather than that flag being permanent for the rest of the page visit. `prefers-reduced-motion` is unaffected — it still opts out for good, enforced by a dedicated guard directly inside `startAutoplay()`.
+
 ## [1.6.1] — 2026-09-16
 
 - Highlighted the currently-viewed section's nav link (header scrollspy): an `IntersectionObserver` watching a thin band near the vertical centre of the viewport marks whichever of Home/Our story/Products/Contact is current with an `.active` class (rust text colour, permanent underline).
