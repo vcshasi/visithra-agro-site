@@ -2,6 +2,14 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.4.2] — 2026-09-16
+
+- Made the Products and Contact sections fit fully inside a normal browser window when navigated to, the same way the hero section already does — verified by measuring actual rendered content against real viewport sizes (1440×816, 1366×768), not just eyeballing:
+  - Both sections had inherited the same large, generic top *and bottom* section padding as every other section (previous rounds only ever trimmed the top). Gave both their own much smaller padding, top and bottom.
+  - **Products**: the product-detail text column (heading, description, safety note, sub-product list) had become the tallest part of the card once the photo frame was made compact in v1.4.0, so it hadn't shrunk along with everything else. Tightened its spacing again, plus the card's own padding and the small gaps around the heading/index label.
+  - **Contact**: the enquiry form was the limiting factor — tightened label spacing, input padding, the product-interest fieldset, and the status-message margin, and reduced the message textarea from 4 rows to 3 (still resizable by the visitor).
+  - Confirmed both sections now fit with 80-110px to spare at the two viewport sizes tested. Mobile is unaffected in spirit — like the hero section, it naturally needs more height once content stacks into a single column, which is expected mobile behaviour rather than a regression.
+
 ## [1.4.1] — 2026-09-16
 
 - Put "02 Our range" and "Naturally versatile. Carefully supplied." back on the same line (side by side, baseline-aligned), instead of v1.4.0's stacked/centered block — the label itself is unchanged, only its position relative to the heading.
