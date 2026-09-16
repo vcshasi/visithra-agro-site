@@ -2,6 +2,15 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.3.5] — 2026-09-16
+
+- Made the Products section fit within a typical browser viewport (verified down to 1280×720) when navigated to, instead of the heading and top padding pushing the actual product card mostly below the fold:
+  - Gave the Products heading its own, much smaller heading size (previously shared with the About section's large display heading), tightened its supporting paragraph, and shrunk the section's own top padding.
+  - The "01/02" family indicator's margins were tightened.
+  - Gallery frame heights (both families) are now capped by viewport height as well as viewport width (`min(vw, svh)` instead of a fixed pixel ceiling), so the frame doesn't grow past what the screen can actually show.
+  - Reduced the product card's own padding and tightened spacing in the text column (heading, description, safety note, sub-product list) so it doesn't become the limiting factor once the gallery got shorter.
+- On very short viewports (roughly under 700px tall) a little scrolling within the card may still be needed — that's an honest limit of fitting a photo, a regulatory description, and a sub-product list on screen at once without cutting content; everything from ~720px tall upward now fits with no scrolling. Mobile is unaffected in spirit (it already stacks photo above text, which needs more height by nature) but got the same size trims.
+
 ## [1.3.4] — 2026-09-16
 
 - Moved the product-family carousel's prev/next controls from a small "← 01/02 →" bar above the cards to full-size circular buttons on the left and right edges of the product-card frame itself, vertically centered — a more familiar, discoverable carousel pattern than a corner control bar. The "01/02" position indicator stays as a small label above the cards. No change to the underlying navigation logic — same buttons, same click behaviour, just repositioned.
