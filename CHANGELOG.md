@@ -2,6 +2,10 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.3.3] — 2026-09-16
+
+- Gave the Gloriosa Superba gallery its own taller frame (`clamp(340px, 64vw, 700px)` vs. Coconut's unchanged `clamp(260px, 46vw, 560px)`), so its portrait-oriented photos fill the frame edge-to-edge left-to-right, with the (now expected, matching Coconut's own look) empty space landing at top and bottom instead of on the sides. `object-fit: contain` alone can't do this — which side gets the empty space is decided by comparing the *frame's* own aspect ratio to the photo's, not by the `object-fit` value, so a portrait photo needed a taller frame, not a CSS tweak to the image itself. Coconut's frame and photos are unchanged.
+
 ## [1.3.2] — 2026-09-15
 
 - Removed 3 of the 8 Gloriosa Superba gallery photos that looked too blurry: the original `gloriossa-superba-seeds.jpg` and `gloriossa-superba-seeds-field.jpg` (the very first photos added to the site, back in v0.2.0/v0.3.0), plus one of the two new flower-cluster close-ups (`gloriosa-superba-flower-cluster-closeup-2.jpg`). Gallery is now 5 photos: field landscape, flower cluster close-up, ground-level field view, tuber, tuber drying shed.
