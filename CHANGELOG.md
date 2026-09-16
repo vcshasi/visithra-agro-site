@@ -2,6 +2,13 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.5.6] — 2026-09-16
+
+- Fixed a real gap below the product card: `.products` only ever overrode `padding-top` (a small `clamp(1.25rem, 2.4vw, 2rem)`), so `padding-bottom` was inheriting the much larger generic `.section-padded` value (up to 5.75rem / 92px at typical widths) — unlike `.contact`, which already had both overrides. Gave `.products` a matching `padding-bottom`, reclaiming that dead space.
+- Used the reclaimed room (plus the "fits one screen" budget generally) to grow the photo frame itself further: `.gallery-stage`'s height formula changed from `min(48vw, 55svh)` to `min(48vw, 60svh)` — 420px tall at a 700px-tall window (up from 385px, still with 29px of real margin to spare, the tightest case tested), 489.6px at 816px (up from 448.8px).
+- Widened the cream margin between the card's edge and the photo/gallery frame itself: `.product-card`'s padding increased from `1.6rem` to `2.1rem` (25.6px → 33.6px) on desktop layouts. Left the mobile (`max-width: 980px`) override at `1.6rem`, since mobile has much less width/height budget to spend on padding.
+- Verified across the full established test matrix (700, 816, 864, 1000px viewport heights, plus mobile 375×812): no horizontal overflow at any size, no overlap between the gallery and detail columns or clipped text, and the shortest window tested (700px tall) still keeps a genuine 29px margin below the card — not a knife-edge fit.
+
 ## [1.5.5] — 2026-09-16
 
 - Cross-browser compatibility pass so the site renders and behaves the same on Chrome, Firefox, Safari (desktop and iOS), and Edge — no visual or functional change on browsers that already support the modern CSS used here, only added safety nets for ones that don't:

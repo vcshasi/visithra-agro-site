@@ -102,7 +102,7 @@ h1 em, h2 em { font-weight: 600; color: var(--rust); font-style: italic; }
 .principles h3 { font-size: 1.4rem; margin: 2.4rem 0 .5rem; }
 .principles p { max-width: 250px; color: #456758; line-height: 1.55; font-size: .87rem; }
 
-.products { background: radial-gradient(ellipse at 84% 3%, rgba(112,169,130,.7), transparent 29%), radial-gradient(ellipse at 13% 95%, rgba(196,99,70,.22), transparent 33%), linear-gradient(135deg, #114633, #092a22 66%); color: var(--cream); overflow: hidden; box-shadow: inset 0 1px 0 rgba(255,255,255,.1); padding-top: clamp(1.25rem, 2.4vw, 2rem); }
+.products { background: radial-gradient(ellipse at 84% 3%, rgba(112,169,130,.7), transparent 29%), radial-gradient(ellipse at 13% 95%, rgba(196,99,70,.22), transparent 33%), linear-gradient(135deg, #114633, #092a22 66%); color: var(--cream); overflow: hidden; box-shadow: inset 0 1px 0 rgba(255,255,255,.1); padding-top: clamp(1.25rem, 2.4vw, 2rem); padding-bottom: clamp(1.25rem, 2.4vw, 2rem); }
 .products .section-label { color: #d1e7ac; }
 .products-heading { display: grid; grid-template-columns: .7fr 2fr; gap: 2rem; align-items: end; margin-bottom: clamp(1rem, 2vw, 1.6rem); }
 .products-nav-group { display: flex; flex-direction: row; align-items: center; gap: 1.1rem; }
@@ -114,9 +114,9 @@ h1 em, h2 em { font-weight: 600; color: var(--rust); font-style: italic; }
 
 .product-track { display: flex; gap: 1.8rem; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 1rem; }
 .product-track::-webkit-scrollbar { display: none; }
-.product-card { min-width: min(100%, 1200px); display: grid; grid-template-columns: 1fr 1fr; gap: 2.2rem; align-items: center; scroll-snap-align: start; border-radius: var(--radius-l); padding: 1.6rem; background: linear-gradient(135deg, #fffdf7, #edf4e9 52%, #f2ded4); color: var(--ink); box-shadow: 0 24px 56px -20px rgba(11,43,34,.36), inset 0 1px 0 rgba(255,255,255,.9); }
+.product-card { min-width: min(100%, 1200px); display: grid; grid-template-columns: 1fr 1fr; gap: 2.2rem; align-items: center; scroll-snap-align: start; border-radius: var(--radius-l); padding: 2.1rem; background: linear-gradient(135deg, #fffdf7, #edf4e9 52%, #f2ded4); color: var(--ink); box-shadow: 0 24px 56px -20px rgba(11,43,34,.36), inset 0 1px 0 rgba(255,255,255,.9); }
 .product-gallery { display: flex; flex-direction: column; gap: .7rem; }
-.gallery-stage { position: relative; height: min(48vw, 55vh); height: min(48vw, 55svh); min-height: 320px; overflow: hidden; border-radius: var(--radius-m); background: #406b49; box-shadow: inset 0 0 0 1px rgba(255,255,255,.35), 0 10px 26px -10px rgba(21,60,49,.35); }
+.gallery-stage { position: relative; height: min(48vw, 60vh); height: min(48vw, 60svh); min-height: 320px; overflow: hidden; border-radius: var(--radius-m); background: #406b49; box-shadow: inset 0 0 0 1px rgba(255,255,255,.35), 0 10px 26px -10px rgba(21,60,49,.35); }
 .gloriosa-card .gallery-stage { background: linear-gradient(140deg, #d8e6ba, #70a07b 72%, #c87863); }
 .coconut-card .gallery-stage { background: linear-gradient(140deg, #d8e7ac, #7e9f65 72%, #b77a58); }
 .gallery-scroll { display: flex; height: 100%; width: 100%; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
