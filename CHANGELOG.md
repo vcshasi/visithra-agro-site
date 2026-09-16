@@ -2,6 +2,13 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.5.0] — 2026-09-16
+
+- **Found and fixed the real reason the Products section kept overflowing despite earlier trimming**: the photo frame's height had been purely *width*-driven (`aspect-ratio: 4/3`) ever since v1.4.0's switch to a uniform cropped-photo treatment — it had no awareness of the viewport's actual *height* at all. On a wide-but-short browser window, it never shrank no matter how little vertical room was left, which is exactly what the screenshot showed. Replaced it with `height: min(40vw, 28svh)`, so the frame now scales down on short screens the same way the hero section's own sizing does, instead of staying a fixed size regardless.
+- **Redesigned the sub-product list** from a bordered, full-width row-per-item layout to a compact row of wrapped chips (name + short description stacked in each small tag). This is both more compact — meaningful for Coconut's 4 sub-products — and, subjectively, tidier and more modern-looking than a list of horizontal rules.
+- Rebalanced the product card's two columns (`1fr 1fr` → `.9fr 1.1fr`, gallery slightly narrower, text slightly wider) so the description wraps to fewer lines, and tightened the remaining text spacing (heading, description, safety note, card padding) further.
+- **Tested across a real range of viewport heights** this time, not just two — the section now fits with a comfortable margin from 700px of viewport height up through 900px+ (e.g. 78px to spare at 1600×750, 228px at 1920×900), and is only marginally short (9px) at a genuinely extreme 650px. Previous rounds had only confirmed two specific sizes, which is how the underlying width-only sizing issue went unnoticed.
+
 ## [1.4.5] — 2026-09-16
 
 - Fixed the Products heading's uneven spacing — the gap above "02 Our range"/"Naturally versatile. Carefully supplied." (section padding-top + the heading's own top padding) was noticeably larger than the gap below it (just the heading's bottom padding) before the product card. Both gaps now come from the exact same `clamp()` expression, so they're pixel-identical at every viewport width (confirmed 32px/32px at both 1440×816 and 1366×768) instead of visually mismatched.
