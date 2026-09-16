@@ -1,0 +1,140 @@
+# Manual Deployment Procedure
+
+How to deploy this site to Cloudflare by hand, from a terminal, with no GitHub and no CI/CD. This is the exact procedure used to put the site live — follow it in order, and don't skip the verification step at the end. It exists because skipping it once already caused a real incident (see below).
+
+## 1. One-time machine setup
+
+Only needed the first time you deploy from a given computer.
+
+1. **Install Node.js** (provides `npx`, which runs Wrangler without a separate global install):
+   ```bash
+   winget install --id OpenJS.NodeJS.LTS -e
+   ```
+   Open a **new** terminal afterwards — `PATH` is only picked up by new sessions, not ones already open.
+2. **Confirm it worked:**
+   ```bash
+   node --version
+   npm --version
+   ```
+3. **Log in to Cloudflare:**
+   ```bash
+   npx wrangler login
+   ```
+   This opens a browser window. Log in to (or create) your Cloudflare account and click **Allow**. Wrangler stores the resulting token locally (`~/.wrangler/config/default.toml` equivalent) — you won't need to log in again on this machine unless the token is revoked.
+4. **Confirm you're authenticated as the right account:**
+   ```bash
+   npx wrangler whoami
+   ```
+
+## 2. "Building" the artifact
+
+This project has **no build step**. It's plain HTML/CSS/JS with no framework, bundler, or compiler — the repository's working directory *is* the deployable artifact. "Building" here just means making sure that directory is actually in a correct, ready-to-ship state:
+
+- [ ] `index.html` — version bumped in both `<meta name="version">` and the footer `.site-version` span
+- [ ] `README.md` — title line version bumped
+- [ ] `CHANGELOG.md` — new entry added at the top describing this release
+- [ ] `requests/vX.Y.Z-brief.md` — written for this release
+- [ ] `script.js`'s `CONFIG` object — correct live values (business email, phone, address, Web3Forms key), not placeholders
+- [ ] `.assetsignore` present and current (see §4 — this is the one that matters most)
+- [ ] `_headers` present and correct (security headers — see `CHANGELOG.md` v1.7.0 for what it contains and why)
+
+There is nothing to `npm install`, nothing to compile, no `dist/` folder to generate. If any tooling is ever added later that *does* need a build step, this section needs updating before it's trustworthy again.
+
+## 3. Deploying
+
+From the project root:
+
+```bash
+npx wrangler deploy
+```
+
+That's it — one command. It reads `wrangler.jsonc` (points Wrangler at this directory as the asset source) and `.assetsignore` (controls what actually gets uploaded — see §4), then uploads and publishes. The output prints the live URL and a Version ID; note both somewhere (e.g. in your commit message or the changelog entry) so you know which deploy corresponds to which release.
+
+**First deploy on a brand new Cloudflare project only:** the project has to exist before `wrangler deploy` will target it —
+```bash
+npx wrangler pages project create <project-name> --production-branch=master
+```
+This is a one-time step per project, already done for this site (`visithra-agro-site`). Every deploy after that is just `wrangler deploy`.
+
+## 4. ⚠️ The `.gitignore` incident — read this before touching `.assetsignore`
+
+**What happened:** the very first deploy of this site uploaded the entire `.git` directory — full commit history, objects, refs, hooks — plus a stale `.claude` scratch folder, both publicly reachable at the live URL. Both were listed in `.gitignore`. Neither was supposed to be there.
+
+**Root cause:** Wrangler's static-asset upload (the `assets` mechanism used by `wrangler deploy` / Cloudflare's Workers-with-static-assets, which is what Cloudflare Pages now runs on) **does not read `.gitignore` at all.** `.gitignore` only controls what `git` tracks — it has no effect on what Wrangler decides to upload as a site asset. These are two completely separate ignore mechanisms that happen to use the same file syntax, and it is easy to wrongly assume one implies the other.
+
+**The fix:** a **separate** file, `.assetsignore`, placed in the project root (same directory as `wrangler.jsonc`). Wrangler's asset uploader *does* read this one. It uses the same gitignore-style pattern syntax, but it is a distinct file that must be maintained separately and kept in sync with `.gitignore` by hand — adding something to `.gitignore` does **not** automatically add it to `.assetsignore`.
+
+Current contents (keep this file and this list in sync if either changes):
+
+```
+.git
+.claude
+.wrangler
+node_modules
+wrangler.jsonc
+.gitignore
+.assetsignore
+.dev.vars*
+.env*
+README.md
+CHANGELOG.md
+VERSIONING.md
+requests/
+```
+
+**The rule going forward:** any time a new file or folder is added to this repo that should never be publicly served — secrets, internal docs, tooling config, anything version-control-internal — it must be added to **both** `.gitignore` and `.assetsignore`, as two separate edits. Adding it to only one is exactly how the incident happened.
+
+**How the incident was actually caught and fixed** (do this every time, not just when something feels wrong):
+1. The first deploy's own console output was read line by line rather than trusting the "✨ Success!" summary — it listed every uploaded file, and `.git/...` paths were visible in that list.
+2. `.assetsignore` was created with the exclusions above.
+3. `wrangler deploy` was re-run immediately.
+4. The fix was verified **by directly requesting the previously-exposed paths from the live URL**, not by assuming the redeploy fixed it:
+   ```bash
+   curl -s -o /dev/null -w "%{http_code}\n" https://<your-site>.workers.dev/.git/config
+   curl -s -o /dev/null -w "%{http_code}\n" https://<your-site>.workers.dev/.git/FETCH_HEAD
+   curl -s -o /dev/null -w "%{http_code}\n" https://<your-site>.workers.dev/README.md
+   ```
+   All three must return `404`. If any comes back `200`, the deploy is **not** done — `.assetsignore` is missing something, fix it and redeploy before moving on.
+5. Deployment history (`npx wrangler deployments list`) was checked to confirm the corrected version, not the exposed one, is the one actually receiving live traffic.
+
+## 5. Post-deploy verification checklist
+
+Run this after **every** deploy, no exceptions — this is what step 4 above should have been done the first time, and wasn't, until it caused a real problem.
+
+```bash
+# The real site loads:
+curl -s -o /dev/null -w "%{http_code}\n" https://<your-site>.workers.dev/            # expect 200
+curl -s -o /dev/null -w "%{http_code}\n" https://<your-site>.workers.dev/styles.css  # expect 200
+curl -s -o /dev/null -w "%{http_code}\n" https://<your-site>.workers.dev/script.js   # expect 200
+
+# Nothing that shouldn't be public is public:
+curl -s -o /dev/null -w "%{http_code}\n" https://<your-site>.workers.dev/.git/config   # expect 404
+curl -s -o /dev/null -w "%{http_code}\n" https://<your-site>.workers.dev/README.md     # expect 404
+
+# Security headers are actually being served (not just present in the _headers file):
+curl -sD - -o /dev/null https://<your-site>.workers.dev/ | grep -i "content-security-policy\|strict-transport"
+```
+
+Then, in an actual browser:
+- Load the live URL, open the console, confirm no errors
+- Submit a real test entry through the contact form (clearly mark it as a test in the message), confirm the success message shows, and confirm the email actually arrives
+
+Do not consider a deploy finished until all of the above pass.
+
+## 6. Rolling back
+
+```bash
+npx wrangler deployments list   # deployment history
+npx wrangler versions list      # version IDs
+```
+
+Rollback itself is done from the Cloudflare dashboard: **Workers & Pages → (this project) → Deployments → select an earlier version → Rollback**. There's no rollback subcommand in this Wrangler version for this deploy path — use the dashboard.
+
+## 7. Reference
+
+| File | Purpose |
+|---|---|
+| `wrangler.jsonc` | Tells Wrangler this is a static-assets project and where the asset directory is (`.`, the repo root) |
+| `.assetsignore` | Controls what gets **uploaded to Cloudflare** — separate from `.gitignore`, see §4 |
+| `.gitignore` | Controls what gets **committed to git** — does not affect deployment at all |
+| `_headers` | Security response headers, applied automatically at Cloudflare's edge (see `CHANGELOG.md` v1.7.0) |

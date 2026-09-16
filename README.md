@@ -1,4 +1,4 @@
-# Visithra Agro Traders website — v1.7.1
+# Visithra Agro Traders website — v1.7.2
 
 **Live at:** https://visithra-agro-site.visithra-agro-site.workers.dev
 
@@ -39,6 +39,8 @@ Other free options, if you'd rather switch services:
 ## Hosting — Cloudflare
 
 Deployed via the **Wrangler CLI** directly (no GitHub needed) — free tier, no build step (plain HTML/CSS/JS), unlimited bandwidth, strong Europe/India edge coverage, and built-in DDoS/WAF protection. Live at a free `*.workers.dev` subdomain with automatic HTTPS; no domain purchase required to be live.
+
+Full step-by-step procedure, including the security incident from the first deploy and how it's now prevented: **[DEPLOYMENT.md](DEPLOYMENT.md)**.
 
 **Deploying an update**, once logged in (`npx wrangler login`, one-time):
 

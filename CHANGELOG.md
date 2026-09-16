@@ -2,6 +2,10 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.7.2] — 2026-09-16
+
+Added `DEPLOYMENT.md` — "Manual Deployment Procedure": the full step-by-step process for deploying this site to Cloudflare by hand (one-time machine setup, the fact this project has no build step and what "artifact-ready" means for it instead, the exact `wrangler deploy` command, a post-deploy verification checklist), and a dedicated section documenting the v1.7.1 `.git`-exposure incident in full — what happened, the root cause (`.gitignore` is never read by Wrangler's asset upload; only `.assetsignore` is, and the two must be kept in sync by hand), and the standing rule this creates: anything added to `.gitignore` for a reason that also matters for deployment must be added to `.assetsignore` too, as a separate, deliberate edit. Linked from `README.md`'s hosting section.
+
 ## [1.7.1] — 2026-09-16
 
 **The site is live**: https://visithra-agro-site.visithra-agro-site.workers.dev — deployed via Wrangler CLI direct upload (no GitHub involved, per the user's preference), after installing Node.js and authenticating `wrangler login`.
