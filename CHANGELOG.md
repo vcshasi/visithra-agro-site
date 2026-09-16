@@ -2,12 +2,19 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.3.2] — 2026-09-15
+
+- Removed 3 of the 8 Gloriosa Superba gallery photos that looked too blurry: the original `gloriossa-superba-seeds.jpg` and `gloriossa-superba-seeds-field.jpg` (the very first photos added to the site, back in v0.2.0/v0.3.0), plus one of the two new flower-cluster close-ups (`gloriosa-superba-flower-cluster-closeup-2.jpg`). Gallery is now 5 photos: field landscape, flower cluster close-up, ground-level field view, tuber, tuber drying shed.
+- The removed files are only taken out of the gallery list in `script.js` — the image files themselves are left in `assets/`, untouched and still in git history, in case they're wanted again later.
+- Changed each gallery slide back to filling the full frame width (`object-fit: contain` on a 100%-width slide, rather than a slide sized to the photo's own width). Landscape photos already looked right either way; portrait photos were rendering as a narrow sliver with empty space either side instead of sitting in a consistent frame like the Coconut gallery's photos do. No cropping either way — this only changes how each photo is *positioned* within its frame, not the fixed-frame removal from v1.3.0.
+
 ## [1.3.1] — 2026-09-15
 
 - Fixed the contact form's Web3Forms submission getting stuck indefinitely (disabled button, "Sending…" shown forever) on a stalled network connection — it now times out after 15 seconds with a clear, actionable error message.
 - Fixed a stale validity state on the product-interest checkboxes after a successful submission resets the form.
 - Linked the product-interest checkboxes' error message via `aria-describedby` so screen reader users get it announced when focusing the group, not only at the moment it changes.
 - Corrected `README.md`'s title, which had read "v1.0.0" since that release despite every version since bumping the footer and `<meta name="version">`.
+- This patch was prepared by a peer review session in parallel with v1.3.2 below and merged in via fast-forward.
 
 ## [1.3.0] — 2026-09-15
 

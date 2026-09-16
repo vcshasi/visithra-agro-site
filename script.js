@@ -77,11 +77,8 @@ const productGalleries = {
   gloriosa: {
     name: 'Gloriosa Superba Products',
     photos: [
-      { src: 'assets/gloriossa-superba-seeds.jpg', alt: 'Gloriosa Superba flowering plants under palm trees', caption: 'Gloriosa Superba Seeds' },
-      { src: 'assets/gloriossa-superba-seeds-field.jpg', alt: 'Close-up of vivid red and yellow Gloriosa Superba flowers', caption: 'Gloriosa Superba Seeds — field view' },
       { src: 'assets/gloriosa-superba-field-landscape.jpg', alt: 'Wide landscape view of the Gloriosa Superba growing field with coconut palms in the background', caption: 'Gloriosa Superba — flowering field' },
       { src: 'assets/gloriosa-superba-flower-cluster-closeup-1.jpg', alt: 'Close-up cluster of vivid red and yellow Gloriosa Superba flowers', caption: 'Gloriosa Superba Seeds — flower cluster' },
-      { src: 'assets/gloriosa-superba-flower-cluster-closeup-2.jpg', alt: 'Another close-up cluster of Gloriosa Superba flowers in bloom', caption: 'Gloriosa Superba Seeds — flower cluster' },
       { src: 'assets/gloriosa-superba-flowers-ground-level.jpg', alt: 'Ground-level view of flowering Gloriosa Superba plants across the field', caption: 'Gloriosa Superba Seeds — flowering field' },
       { src: 'assets/gloriossa-superba-tuber-enhanced.png', alt: 'Gloriosa Superba tubers prepared for trade', caption: 'Gloriosa Superba Tuber' },
       { src: 'assets/gloriosa-superba-tuber-drying-shed-2.jpg', alt: 'Rows of freshly harvested Gloriosa Superba tubers drying at the storage shed', caption: 'Gloriosa Superba Tuber — harvested' },
