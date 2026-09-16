@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Visithra Agro Traders — a family-led agricultural trading business from southern India, now in its second generation, supplying responsibly sourced coconut and Gloriosa superba products." />
     <meta name="theme-color" content="#0b2b22" />
-    <meta name="version" content="1.6.0" />
+    <meta name="version" content="1.6.1" />
     <title>Visithra Agro Traders | From Our Fields to Your Business</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -19,7 +19,7 @@
     <header class="site-header">
       <a class="brand" href="#home" aria-label="Visithra Agro Traders home">
         <span class="brand-mark" aria-hidden="true">V</span>
-        <span>VISITHRA<span>AGRO</span></span>
+        <span>VISITHRA<span>AGRO <span class="brand-copy" aria-hidden="true">&copy;</span></span></span>
       </a>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu">
         <span class="sr-only">Open menu</span>
@@ -30,11 +30,13 @@
         <a href="#about">Our story</a>
         <div class="nav-item has-submenu">
           <a href="#products">Products</a>
-          <ul class="submenu" aria-label="Product families">
-            <li><a href="#products" data-family-link="gloriosa">Gloriosa Superba</a></li>
-            <li><a href="#products" data-family-link="coconut">Coconut Products</a></li>
-            <li class="submenu-note">More products yet to come</li>
-          </ul>
+          <div class="submenu-wrap">
+            <ul class="submenu" aria-label="Product families">
+              <li><a href="#products" data-family-link="gloriosa">Gloriosa Superba</a></li>
+              <li><a href="#products" data-family-link="coconut">Coconut Products</a></li>
+              <li class="submenu-note">More products yet to come</li>
+            </ul>
+          </div>
         </div>
         <a href="#contact">Contact</a>
       </nav>
@@ -109,7 +111,7 @@
             </div>
             <div class="product-detail">
               <p class="product-number">01 — Product family</p>
-              <h3>Gloriosa<br />Superba</h3>
+              <h3>Gloriosa Superba</h3>
               <p>A specialist botanical range supplied for regulated trade requirements. <em>Gloriosa superba</em> is recognised as a natural source of colchicine-related alkaloids used in pharmaceutical research and processing; regulated colchicine medicines are prescribed for conditions including gout.</p>
               <p class="safety-note">Trade supply only — not for direct consumption or self-medication.</p>
               <ul class="subproduct-list" aria-label="Gloriosa Superba sub-products">
@@ -199,9 +201,9 @@
     </main>
 
     <footer class="site-footer">
-      <a class="brand" href="#home"><span class="brand-mark" aria-hidden="true">V</span><span>VISITHRA<span>AGRO</span></span></a>
+      <a class="brand" href="#home"><span class="brand-mark" aria-hidden="true">V</span><span>VISITHRA<span>AGRO <span class="brand-copy" aria-hidden="true">&copy;</span></span></span></a>
       <p>Quality products. Considered trade.</p>
-      <p>© <span id="year"></span> Visithra Agro Traders. All rights reserved. <span class="site-version">v1.6.0</span></p>
+      <p>© <span id="year"></span> Visithra Agro Traders. All rights reserved. <span class="site-version">v1.6.1</span></p>
     </footer>
     <script src="script.js"></script>
   </body>

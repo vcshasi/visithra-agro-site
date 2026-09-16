@@ -37,20 +37,31 @@ button { cursor: pointer; -webkit-appearance: none; appearance: none; }
 
 .site-header { height: var(--header-h); display: flex; align-items: center; justify-content: space-between; padding: 0 var(--edge); border-bottom: 1px solid rgba(255,255,255,.82); position: fixed; z-index: 20; top: 0; left: 0; right: 0; background: linear-gradient(115deg, rgba(255,255,255,.93), rgba(234,246,235,.75) 52%, rgba(247,224,211,.6)); box-shadow: 0 10px 28px -10px rgba(11,43,34,.18), inset 0 1px 0 rgba(255,255,255,.85); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); }
 .brand { display: inline-flex; align-items: center; gap: .7rem; font: 700 .96rem/1 var(--sans); letter-spacing: .07em; }
-.brand > span:last-child span { display: block; color: var(--leaf); letter-spacing: .14em; font-size: .58rem; margin-top: .16rem; }
+.brand > span:last-child > span { display: block; color: var(--leaf); letter-spacing: .14em; font-size: .58rem; margin-top: .16rem; }
+.brand-copy { opacity: .7; letter-spacing: 0; }
 .brand-mark { width: 34px; height: 34px; border: 1px solid currentColor; border-radius: 50%; display: grid; place-items: center; font: 600 1.3rem/1 var(--serif); color: var(--rust); box-shadow: 0 3px 10px rgba(217,92,49,.24); }
 .site-menu { display: flex; gap: 2rem; align-items: center; font: 500 .76rem var(--mono); text-transform: uppercase; letter-spacing: .07em; }
 .site-menu a { position: relative; padding: .4rem 0; }
 .site-menu a::after { content: ""; position: absolute; height: 1px; left: 0; right: 0; bottom: 0; background: var(--rust); transform: scaleX(0); transform-origin: right; transition: transform .3s ease; }
 .site-menu a:hover::after, .site-menu a:focus-visible::after { transform: scaleX(1); transform-origin: left; }
+.site-menu a.active { color: var(--rust); }
+.site-menu a.active::after { transform: scaleX(1); transform-origin: left; }
 .nav-item { position: relative; display: flex; align-items: center; }
-.submenu { position: absolute; top: calc(100% + 14px); left: 50%; transform: translate(-50%, -6px); min-width: 220px; margin: 0; padding: .6rem; list-style: none; border-radius: var(--radius-m); background: linear-gradient(150deg, #fffdf7, #edf4e9); box-shadow: 0 20px 40px -16px rgba(11,43,34,.4), inset 0 1px 0 rgba(255,255,255,.9); opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .2s ease, transform .2s ease, visibility .2s; z-index: 25; }
-.nav-item:hover .submenu, .nav-item:focus-within .submenu { opacity: 1; visibility: visible; pointer-events: auto; transform: translate(-50%, 0); }
+/* .submenu-wrap starts flush (top:100%) against the trigger and its own box is sized by
+   the submenu card inside it, so the pointer stays over a *descendant* of .nav-item the
+   whole way from the "Products" link to the dropdown — including through the visual gap,
+   which lives here as padding, not as empty space outside the hoverable area. Splitting the
+   hover/position wrapper from the visible card (rather than putting the gap on .submenu
+   itself) is what stops the dropdown collapsing before the pointer reaches it. */
+.submenu-wrap { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); padding-top: 14px; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .2s ease, visibility .2s; z-index: 25; }
+.nav-item:hover .submenu-wrap, .nav-item:focus-within .submenu-wrap { opacity: 1; visibility: visible; pointer-events: auto; }
+.submenu { min-width: 220px; margin: 0; padding: .6rem; list-style: none; border-radius: var(--radius-m); background: linear-gradient(150deg, #fffdf7, #edf4e9); box-shadow: 0 20px 40px -16px rgba(11,43,34,.4), inset 0 1px 0 rgba(255,255,255,.9); transform: translateY(-6px); transition: transform .2s ease; }
+.nav-item:hover .submenu, .nav-item:focus-within .submenu { transform: translateY(0); }
 .submenu li + li { margin-top: .15rem; }
 .submenu a { display: block; padding: .5rem .7rem; border-radius: var(--radius-s); color: var(--ink); font: 500 .74rem var(--sans); text-transform: none; letter-spacing: 0; transition: background .2s, color .2s; }
 .submenu a::after { content: none; }
 .submenu a:hover, .submenu a:focus-visible { background: var(--sand); color: var(--rust-dark); }
-.submenu-note { padding: .5rem .7rem; font: 500 .66rem var(--mono); text-transform: uppercase; letter-spacing: .04em; color: #8a988e; }
+.submenu-note { padding: .5rem .7rem; font: 500 .66rem var(--mono); text-transform: none; letter-spacing: .02em; color: #8a988e; }
 .menu-toggle { display: none; background: transparent; border: 0; padding: .6rem 0 .6rem .6rem; width: 42px; }
 .menu-toggle i { display: block; height: 1px; margin: 5px 0; background: var(--ink); transition: transform .25s ease; }
 
@@ -117,8 +128,13 @@ h1 em, h2 em { font-weight: 600; color: var(--rust); font-style: italic; }
 .product-index-label { color: #c3d5c0; font: .68rem var(--mono); letter-spacing: .08em; }
 .product-index-label b { color: var(--lime); font-weight: 400; }
 .product-pagination { display: flex; align-items: center; gap: .6rem; }
-.carousel-button { height: 34px; width: 34px; border-radius: 50%; border: 1px solid rgba(217,92,49,.65); color: var(--cream); background: rgba(217,92,49,.2); box-shadow: 0 0 0 1px rgba(217,92,49,.1), 0 0 16px -1px rgba(217,92,49,.65); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); font-size: 1rem; transition: background .2s, color .2s, transform .2s, box-shadow .2s; }
-.carousel-button:hover, .carousel-button:focus-visible { color: var(--forest); background: var(--lime); border-color: var(--lime); box-shadow: 0 0 0 1px rgba(217,235,156,.15), 0 0 20px -1px rgba(217,235,156,.85); transform: scale(1.06); }
+/* .carousel-button (family switcher) and .gallery-nav (photo prev/next) share one glow
+   treatment so the two nav-button types look and behave the same everywhere in Products. */
+.carousel-button, .gallery-nav { border: 1px solid rgba(217,92,49,.65); color: var(--cream); background: rgba(217,92,49,.2); box-shadow: 0 0 0 1px rgba(217,92,49,.1), 0 0 16px -1px rgba(217,92,49,.65); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); transition: background .2s, color .2s, border-color .2s, transform .2s, box-shadow .2s; }
+.carousel-button:hover, .carousel-button:focus-visible,
+.gallery-nav:hover, .gallery-nav:focus-visible { color: var(--forest); background: var(--lime); border-color: var(--lime); box-shadow: 0 0 0 1px rgba(217,235,156,.15), 0 0 20px -1px rgba(217,235,156,.85); }
+.carousel-button { height: 34px; width: 34px; border-radius: 50%; font-size: 1rem; }
+.carousel-button:hover, .carousel-button:focus-visible { transform: scale(1.06); }
 
 .product-track { display: flex; gap: 1.8rem; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 1rem; }
 .product-track::-webkit-scrollbar { display: none; }
@@ -136,8 +152,8 @@ h1 em, h2 em { font-weight: 600; color: var(--rust); font-style: italic; }
 .gallery-empty span { font: 2.1rem/.8 var(--serif); }
 .gallery-empty strong { font: 600 1.3rem var(--serif); }
 .gallery-empty small { max-width: 190px; font-size: .72rem; line-height: 1.5; color: #c4d7b4; }
-.gallery-nav { position: absolute; top: 50%; z-index: 3; height: 32px; width: 32px; border-radius: 50%; border: 1px solid rgba(255,255,255,.55); color: #fff; background: rgba(8,30,22,.6); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); box-shadow: 0 2px 10px rgba(0,0,0,.4); font-size: 1rem; line-height: 1; cursor: pointer; transform: translateY(-50%); transition: background .2s, transform .2s; }
-.gallery-nav:hover, .gallery-nav:focus-visible { background: rgba(217,92,49,.9); }
+.gallery-nav { position: absolute; top: 50%; z-index: 3; height: 34px; width: 34px; border-radius: 50%; font-size: 1rem; line-height: 1; cursor: pointer; transform: translateY(-50%); }
+.gallery-nav:hover, .gallery-nav:focus-visible { transform: translateY(-50%) scale(1.06); }
 .gallery-nav-prev { left: .6rem; }
 .gallery-nav-next { right: .6rem; }
 .product-detail { min-width: 0; }
@@ -193,7 +209,7 @@ h1 em, h2 em { font-weight: 600; color: var(--rust); font-style: italic; }
 
 .site-footer { background: linear-gradient(135deg, #123b2e, #08241d); color: #e4edcc; padding: 2rem var(--edge); display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: center; gap: 1rem; box-shadow: 0 -14px 34px -18px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.08); }
 .site-footer .brand-mark { color: var(--lime); }
-.site-footer .brand > span:last-child span { color: #aec887; }
+.site-footer .brand > span:last-child > span { color: #aec887; }
 .site-footer p { margin: 0; font: .65rem var(--mono); letter-spacing: .04em; color: #b8c8ae; }
 .site-footer p:nth-child(2) { text-align: center; }
 .site-footer p:nth-child(3) { text-align: right; }
@@ -223,7 +239,8 @@ h1 em, h2 em { font-weight: 600; color: var(--rust); font-style: italic; }
   .site-menu a::after { background: var(--lime); }
   .site-menu.open { transform: none; }
   .nav-item { flex-direction: column; align-items: flex-start; width: 100%; }
-  .submenu { position: static; opacity: 1; visibility: visible; pointer-events: auto; transform: none; box-shadow: none; background: transparent; margin-top: .7rem; padding: 0 0 0 1.3rem; min-width: 0; }
+  .submenu-wrap { position: static; padding-top: 0; opacity: 1; visibility: visible; pointer-events: auto; }
+  .submenu { position: static; transform: none; box-shadow: none; background: transparent; margin-top: .7rem; padding: 0 0 0 1.3rem; min-width: 0; }
   .submenu a { color: var(--cream); font: 500 1.1rem var(--sans); padding: .35rem 0; }
   .submenu a:hover, .submenu a:focus-visible { background: transparent; color: var(--lime); }
   .submenu-note { color: rgba(228,237,204,.55); padding: .35rem 0; }
@@ -236,7 +253,7 @@ h1 em, h2 em { font-weight: 600; color: var(--rust); font-style: italic; }
   .principles article, .principles article + article { border-right: 0; border-bottom: 1px solid rgba(21,60,49,.18); padding: 1.4rem 0; }
   .principles article:last-child { border-bottom: 0; }
   .principles h3 { margin-top: 1.2rem; }
-  .carousel-button { height: 38px; width: 38px; font-size: 1.05rem; }
+  .carousel-button, .gallery-nav { height: 38px; width: 38px; font-size: 1.05rem; }
   .product-card { min-width: 90vw; }
   .products h2 { white-space: normal; }
   .form-row { grid-template-columns: 1fr; gap: 0; }

@@ -62,9 +62,10 @@ document.querySelectorAll('.carousel-button').forEach((button) => {
   button.addEventListener('click', () => {
     stopAutoplay();
     const current = Number(productIndex.textContent) - 1;
+    // Wraps around at either end instead of stopping dead at the first/last family.
     const next = button.dataset.direction === 'next'
-      ? Math.min(current + 1, cards.length - 1)
-      : Math.max(current - 1, 0);
+      ? (current + 1) % cards.length
+      : (current - 1 + cards.length) % cards.length;
     cards[next].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
   });
 });
@@ -186,13 +187,15 @@ Object.keys(productGalleries).forEach((family) => {
   scroll.addEventListener('pointerdown', stopAutoplay);
   prevButton.addEventListener('click', () => {
     stopAutoplay();
+    // Wraps around to the last photo instead of stopping dead at the first.
     const slides = [...scroll.querySelectorAll('.gallery-slide')];
-    scrollGalleryToSlide(scroll, slides[Math.max(closestGallerySlideIndex(scroll) - 1, 0)]);
+    scrollGalleryToSlide(scroll, slides[(closestGallerySlideIndex(scroll) - 1 + slides.length) % slides.length]);
   });
   nextButton.addEventListener('click', () => {
     stopAutoplay();
+    // Wraps around to the first photo instead of stopping dead at the last.
     const slides = [...scroll.querySelectorAll('.gallery-slide')];
-    scrollGalleryToSlide(scroll, slides[Math.min(closestGallerySlideIndex(scroll) + 1, slides.length - 1)]);
+    scrollGalleryToSlide(scroll, slides[(closestGallerySlideIndex(scroll) + 1) % slides.length]);
   });
   renderGallery(family);
 });
@@ -201,8 +204,9 @@ Object.keys(productGalleries).forEach((family) => {
 // Once the Products section is visible, automatically step through the current family's
 // photos one at a time; when a family's photos are exhausted, advance to the next family
 // (looping back to the first after the last), and keep repeating. Pauses while the section
-// is scrolled out of view, and stops for good the moment the visitor manually interacts with
-// the carousel (nav buttons, dragging/scrolling a gallery or the family track, arrow keys).
+// is scrolled out of view, and stops for good the moment the visitor clicks anywhere on the
+// site (not just within the carousel — a genuine click signals they're now interacting with
+// the page, so the passive autoplay steps aside).
 const AUTOPLAY_INTERVAL_MS = 3500;
 const productFamilies = Object.keys(productGalleries);
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -259,6 +263,30 @@ const autoplayVisibilityObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.4 });
 
 if (!autoplayStopped) autoplayVisibilityObserver.observe(document.getElementById('products'));
+
+// Any click anywhere on the site — not just inside the carousel — stops autoplay for good.
+document.addEventListener('click', stopAutoplay);
+
+// ===== Header scrollspy — highlight the nav link for whichever section is in view =====
+const navLinksBySection = {
+  home: document.querySelector('.site-menu a[href="#home"]'),
+  about: document.querySelector('.site-menu a[href="#about"]'),
+  products: document.querySelector('.nav-item.has-submenu > a[href="#products"]'),
+  contact: document.querySelector('.site-menu a[href="#contact"]'),
+};
+const sectionObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (!entry.isIntersecting) return;
+    const activeLink = navLinksBySection[entry.target.id];
+    if (!activeLink) return;
+    Object.values(navLinksBySection).forEach((link) => link && link.classList.remove('active'));
+    activeLink.classList.add('active');
+  });
+}, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+Object.keys(navLinksBySection).forEach((id) => {
+  const section = document.getElementById(id);
+  if (section) sectionObserver.observe(section);
+});
 
 document.getElementById('year').textContent = new Date().getFullYear();
 

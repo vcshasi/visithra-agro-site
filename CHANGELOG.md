@@ -2,6 +2,17 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.6.1] — 2026-09-16
+
+- Highlighted the currently-viewed section's nav link (header scrollspy): an `IntersectionObserver` watching a thin band near the vertical centre of the viewport marks whichever of Home/Our story/Products/Contact is current with an `.active` class (rust text colour, permanent underline).
+- **Fixed the Products dropdown collapsing before it could be used:** the 14px visual gap between "Products" and the dropdown card sat outside both elements' hoverable boxes, so moving the mouse down into the list broke `:hover` and closed it first. Split the hover/positioning box (`.submenu-wrap`, now flush against the trigger with zero gap, sized to match the dropdown exactly) from the visible card (`.submenu`, pushed down visually via the wrapper's padding) — the pointer now stays over a `.nav-item` descendant continuously from the trigger to any item in the list.
+- "More products yet to come" no longer forced to uppercase (`text-transform: none`) — shows in its natural sentence case.
+- Family carousel-buttons and gallery photo nav buttons now wrap around at either end (next past the last goes to the first, prev before the first goes to the last) instead of stopping dead.
+- Autoplay now stops for good on **any** click anywhere on the site, not just inside the Products section — added a `document`-level click listener alongside the existing carousel-specific ones.
+- Gallery photo nav buttons (`.gallery-nav`) now share the exact same rust-glow border/fill/hover treatment as the family carousel-buttons, and both are sized 34px (38px on mobile) — uniform look and feel across both button types, as requested.
+- "Gloriosa Superba" no longer force-broken onto two lines, matching the single-line treatment "Coconut Products" already got in v1.5.7.
+- Added a small © mark next to "AGRO" in the brand wordmark (header and footer, since they share the same markup). Caught and fixed a knock-on bug from this: the existing `.brand > span:last-child span` (descendant) selector also matched the new © span and force-`display:block`'d it onto its own line — narrowed to `.brand > span:last-child > span` (direct child) so it only targets the "AGRO" label as intended.
+
 ## [1.6.0] — 2026-09-16
 
 - Added a "Home" link (→ the hero section) to the header nav, placed first, ahead of "Our story".
