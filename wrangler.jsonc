@@ -2,6 +2,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "www",
   "compatibility_date": "2026-09-15",
+  "workers_dev": false,
   "observability": {
     "enabled": true
   },

@@ -2,6 +2,14 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.8.4] — 2026-09-21
+
+Fixed a regression introduced by v1.8.3's own deploy: `npx wrangler deploy` silently **re-enabled** the `*.workers.dev` route the user had deliberately disabled via the dashboard after the custom domain went live. Root cause — Wrangler defaults `workers_dev` to `true` whenever it's absent from `wrangler.jsonc`; a dashboard-side toggle doesn't persist across a CLI deploy, and Wrangler printed a warning about this at deploy time that was easy to miss among the rest of its output. Confirmed the regression with a direct request (`www.visithra-agro.workers.dev` → `200`) immediately after the v1.8.3 deploy, not assumed from the warning text alone.
+
+Fixed by pinning `"workers_dev": false` in `wrangler.jsonc`, so the setting lives in version control instead of a dashboard toggle that a redeploy can silently override. Also added two `deploy.sh` checks so this class of regression is caught automatically going forward rather than requiring a human to notice the warning: a pre-flight check that `wrangler.jsonc` still has `workers_dev: false`, and a post-deploy verification check that `www.visithra-agro.workers.dev` is actually not serving `200`.
+
+Verified: redeployed, confirmed `workers.dev` now returns a non-200 response, and both `visithra-agro.in` and `www.visithra-agro.in` still serve correctly (re-ran the full checklist from `DEPLOYMENT.md` §5, not just the new check).
+
 ## [1.8.3] — 2026-09-21
 
 **Custom domain live:** the site now serves from `visithra-agro.in` (and `www.visithra-agro.in`) instead of `*.workers.dev`. Domain registered at GoDaddy; DNS delegated to Cloudflare by pointing GoDaddy's nameservers at Cloudflare's, then both the apex and `www` attached to the existing Worker as Cloudflare Custom Domains. The old `www.visithra-agro.workers.dev` route has been deliberately disabled — all traffic now goes through the custom domain.

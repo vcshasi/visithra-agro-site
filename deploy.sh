@@ -71,6 +71,14 @@ preflight() {
     && bad "script.js still has the placeholder Web3Forms key — the form would not deliver" \
     || ok "Web3Forms key is set"
 
+  # v1.8.3's deploy silently re-enabled the workers.dev route the user had deliberately
+  # disabled, because Wrangler defaults workers_dev to true whenever it is absent from the
+  # config — it does not remember a dashboard-side toggle across a CLI deploy. Fixed in v1.8.4
+  # by pinning it in wrangler.jsonc; this check keeps it from silently regressing again.
+  grep -q '"workers_dev": *false' wrangler.jsonc \
+    && ok "wrangler.jsonc pins workers_dev: false" \
+    || bad "wrangler.jsonc is missing 'workers_dev: false' — deploy would re-enable *.workers.dev"
+
   ensure_node && ok "npx available ($(node --version 2>/dev/null))" \
               || bad "node/npx not found — install Node.js (see DEPLOYMENT.md §1)"
 
@@ -124,6 +132,14 @@ verify() {
   [ -n "$live_v" ] && [ "$live_v" = "$local_v" ] \
     && ok "live version $live_v matches local" \
     || bad "live version '$live_v' != local '$local_v'"
+
+  # The old workers.dev route was deliberately disabled once the custom domain went live
+  # (v1.8.4) — confirm it's staying off rather than assuming wrangler_dev:false in the config
+  # actually took effect on the deployed worker.
+  code=$(curl -s --max-time 20 -o /dev/null -w '%{http_code}' "https://www.visithra-agro.workers.dev/")
+  [ "$code" != "200" ] \
+    && ok "workers.dev route -> $code (disabled, as intended)" \
+    || bad "workers.dev route -> 200 (should be disabled — traffic should only go through the custom domain)"
 
   # The www alias is a separate Cloudflare Custom Domain, not a DNS redirect to the apex —
   # it can drift independently (e.g. one Custom Domain gets removed but not the other), so
