@@ -1,6 +1,6 @@
-# Visithra Agro Traders website — v1.8.2
+# Visithra Agro Traders website — v1.8.3
 
-**Live at:** https://www.visithra-agro.workers.dev
+**Live at:** https://visithra-agro.in (`www.visithra-agro.in` also works)
 
 A responsive, dependency-free single-page business website. Open `index.html` in a browser to preview it.
 
@@ -40,7 +40,7 @@ Other free options, if you'd rather switch services:
 
 ## Hosting — Cloudflare
 
-Deployed via the **Wrangler CLI** directly (no GitHub needed) — free tier, no build step (plain HTML/CSS/JS), unlimited bandwidth, strong Europe/India edge coverage, and built-in DDoS/WAF protection. Live at a free `*.workers.dev` subdomain with automatic HTTPS; no domain purchase required to be live.
+Deployed via the **Wrangler CLI** directly (no GitHub needed) — free tier, no build step (plain HTML/CSS/JS), unlimited bandwidth, strong Europe/India edge coverage, and built-in DDoS/WAF protection. Served on the custom domain `visithra-agro.in` (both apex and `www`) with automatic HTTPS via Cloudflare's edge; the free `*.workers.dev` subdomain that hosted the site before the domain went live has been deliberately disabled — all traffic now goes through the custom domain.
 
 Full step-by-step procedure, including the security incident from the first deploy and how it's now prevented: **[DEPLOYMENT.md](DEPLOYMENT.md)**.
 
@@ -62,7 +62,7 @@ That's the whole command — it reads `wrangler.jsonc` (points at this repo's ro
 
 **Security headers:** the `_headers` file in this repo is read automatically at Cloudflare's edge and sets a strict Content-Security-Policy plus `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, and HSTS — confirmed present on the live deployment's actual response headers, not just assumed from the config.
 
-**Adding a real domain later:** truly free domains (e.g. `.tk`/`.ml`) are unreliable and can look untrustworthy for a business, so they aren't recommended. A `.com`/`.in` domain typically costs $8–15/year from a registrar such as [Porkbun](https://porkbun.com), [Namecheap](https://www.namecheap.com), or [Cloudflare Registrar](https://www.cloudflare.com/products/registrar/) (at-cost pricing) — Cloudflare Pages supports adding a custom domain for free once you have one, no migration needed.
+**Custom domain:** `visithra-agro.in`, registered via GoDaddy, with GoDaddy left as registrar but nameservers pointed at Cloudflare so Cloudflare manages DNS and issues the certificate. Full setup steps, plus a real incident hit while connecting it, are in `DEPLOYMENT.md` §8. Note: `.in` is a NIXI-governed ccTLD with mandatory WHOIS contact verification — no privacy/proxy service is available for it at any registrar, unlike `.com`.
 
 ## Product galleries
 

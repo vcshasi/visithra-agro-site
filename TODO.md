@@ -4,7 +4,7 @@ Planned work not yet started. Not a spec for any of these — just tracking that
 
 ## 1. Restrict the Web3Forms key to the live domain
 
-Already flagged as pending in `SECURITY.md` and `README.md`'s "Sending enquiries by email" section — this is a Web3Forms **dashboard** setting (web3forms.com → this form's settings → domain restriction), not a code change, so it can't be done from this repo. Listed here too so it doesn't get lost.
+Already flagged as pending in `SECURITY.md` and `README.md`'s "Sending enquiries by email" section — this is a Web3Forms **dashboard** setting (web3forms.com → this form's settings → domain restriction), not a code change, so it can't be done from this repo. **Checked (2026-09): this is a Pro-tier feature, not available on the current free plan.** Options: accept the risk at free tier (revisit if spam actually appears), upgrade to Pro, or switch form services. Not urgent enough to act on unprompted — listed here so the decision doesn't get lost.
 
 ## 2. Feasibility analysis: live chat (WhatsApp integration or a chatbot)
 

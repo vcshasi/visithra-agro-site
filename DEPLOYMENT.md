@@ -145,7 +145,22 @@ The live URL is `<project-name>.<account-subdomain>.workers.dev` — two indepen
 
 **Changing the account's `workers.dev` subdomain** (the second segment): this is account-wide (affects every Worker on the account, not just this one) and is **dashboard-only** — Wrangler has no CLI command for it (confirmed: `wrangler --help` has no `subdomain` entry). Go to `https://dash.cloudflare.com/<account-id>/workers/subdomain`, signed in as the account owner. No redeploy is needed afterward — the new subdomain applies immediately to all existing workers' URLs, including any that were renamed before the subdomain change.
 
-## 8. Reference
+## 8. Connecting a custom domain (done for `visithra-agro.in`)
+
+This is the procedure actually used to move the live site from `*.workers.dev` onto `visithra-agro.in`, registered separately at GoDaddy.
+
+1. **Add the domain to Cloudflare:** dashboard → **Add a domain** → enter the domain → Free plan → Cloudflare scans existing DNS records → it hands back two nameservers unique to your account (e.g. `xxxx.ns.cloudflare.com`, `yyyy.ns.cloudflare.com`).
+2. **Point the registrar's nameservers at Cloudflare:** at GoDaddy, Domain → DNS → Nameservers → "I'll use my own nameservers" → enter the two from step 1, replacing GoDaddy's defaults. Registrar stays GoDaddy; only DNS authority moves to Cloudflare. Wait for the zone to show **Active** in Cloudflare (usually 10–30 min).
+3. **Attach the domain to the Worker:** Workers & Pages → the worker → Settings → Domains & Routes → Add → Custom Domain → enter the domain. Repeat for the `www` subdomain as a second Custom Domain on the same worker, so both work without a separate redirect rule.
+4. **Verify** with the checklist in §5, run against the new domain(s) — do not stop at the dashboard showing "Active"; request the actual pages and headers.
+
+### ⚠️ Two incidents hit while doing this — read before repeating
+
+**Nameserver typo silently rejected as "update failed."** When entering the two Cloudflare nameservers at the registrar, a one-character typo (`cloudfare.com` instead of `cloudflare.com`) produced a generic "Your attempt to update nameservers has failed" error with no indication of *what* was wrong. The registrar's own per-field message ("this nameserver isn't registered") was the actual clue. **Lesson:** when a nameserver update is rejected, re-read each entered value character-by-character against what Cloudflare's dashboard actually displays, rather than assuming the failure is environmental.
+
+**Adding the apex as a Custom Domain failed with "already has externally managed DNS records."** The domain had just been registered, and the registrar (GoDaddy) had auto-provisioned a placeholder "Website Builder" site for it, wiring the apex via leftover `A` records (parking-page IPs) plus a `_domainconnect` CNAME (GoDaddy's own DNS auto-configuration protocol) that Cloudflare's initial zone scan (step 1 above) imported as real records. These blocked Cloudflare's Custom Domain feature from claiming the apex name, and — more subtly — **DNS for the apex kept resolving to a genuine Cloudflare IP range even after nameservers were correctly switched, but served GoDaddy's Website Builder placeholder content, not this site**, because GoDaddy's Website Builder product is itself fronted by Cloudflare (a different zone/config, not this one), so a "Cloudflare IP" alone did not prove "our Worker." **Fix:** in the zone's DNS → Records, delete the leftover `A` records for the apex and the `_domainconnect` CNAME (and any stray `www` CNAME pointing to the apex), then retry adding the Custom Domain. **Lesson, consistent with §4's:** a `200` status code and a "Cloudflare"-looking IP address are not proof the *right* thing is being served — fetch the actual response body and check it's genuinely this site's HTML (e.g. `grep` for a string unique to this site, and confirm the CSP header is this repo's own policy, not some other CSP), not just that *a* page loaded.
+
+## 9. Reference
 
 | File | Purpose |
 |---|---|

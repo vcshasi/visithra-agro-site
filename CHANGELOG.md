@@ -2,6 +2,18 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.8.3] — 2026-09-21
+
+**Custom domain live:** the site now serves from `visithra-agro.in` (and `www.visithra-agro.in`) instead of `*.workers.dev`. Domain registered at GoDaddy; DNS delegated to Cloudflare by pointing GoDaddy's nameservers at Cloudflare's, then both the apex and `www` attached to the existing Worker as Cloudflare Custom Domains. The old `www.visithra-agro.workers.dev` route has been deliberately disabled — all traffic now goes through the custom domain.
+
+Two real problems hit and fixed while connecting it, documented in `DEPLOYMENT.md` §8 so they're not repeated:
+- A one-character typo entering Cloudflare's nameservers at the registrar (`cloudfare.com` vs. `cloudflare.com`) produced a generic "update failed" error; the registrar's per-field message was the actual clue.
+- The freshly-registered domain had a GoDaddy-auto-provisioned "Website Builder" placeholder site wired to the apex via leftover DNS records (`A` records plus a `_domainconnect` CNAME), imported into the Cloudflare zone during its initial scan. This both blocked adding the apex as a Custom Domain, and — more subtly — kept serving GoDaddy's placeholder content from a genuine Cloudflare IP address even after nameservers were correctly switched, because GoDaddy's Website Builder product is itself fronted by Cloudflare under a different zone. A `200` and a Cloudflare-looking IP were not proof the right site was being served; only fetching the actual response body (and checking the CSP header matched this repo's own policy, not GoDaddy's) caught it. Fixed by deleting the leftover records and retrying.
+
+Verified post-migration with real requests, not the dashboard's "Active" status: response body matches this site's content (not GoDaddy's), CSP/HSTS/X-Frame-Options headers match this repo's `_headers` exactly, `.git/config`/`README.md`/`deploy.sh` all 404, `/styles.css`/`/script.js` 200, live version matches the working directory — checked on both `visithra-agro.in` and `www.visithra-agro.in` independently, and re-confirmed with fresh requests (not cached) after the fix.
+
+Also updated: `deploy.sh`'s `SITE_URL` now points at the custom domain (the old `workers.dev` URL it verified against is disabled and would always fail), and it now separately verifies the `www` alias rather than assuming it mirrors the apex. `SECURITY.md`: HSTS preload submission is no longer blocked (needs a deliberate decision — preload-list inclusion is effectively permanent — so not done as part of this release); Web3Forms key domain-restriction confirmed to be a Pro-only feature, not available on the current free plan, noted as an accepted risk pending volume/cost review rather than left as an open question.
+
 ## [1.8.2] — 2026-09-16
 
 Added `deploy.sh` — a standalone build/deploy/verify script wrapping what `DEPLOYMENT.md` documents by hand. Runs pre-flight checks (required files present, `.assetsignore` still excluding `.git` and `.claude`, version consistent across `index.html`'s meta/footer and `README.md`, Web3Forms key not left as a placeholder, Node available), deploys via `wrangler`, then verifies the *live* site — that the real pages return 200, that `.git`/internal docs return 404, that the security headers actually arrive, and that the deployed version matches the working directory.

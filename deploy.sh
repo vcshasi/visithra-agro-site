@@ -19,7 +19,8 @@
 set -uo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")" || exit 1
 
-SITE_URL="https://www.visithra-agro.workers.dev"
+SITE_URL="https://visithra-agro.in"
+SITE_URL_WWW="https://www.visithra-agro.in"
 problems=0
 
 say()  { printf '%s\n' "$*"; }
@@ -124,6 +125,22 @@ verify() {
     && ok "live version $live_v matches local" \
     || bad "live version '$live_v' != local '$local_v'"
 
+  # The www alias is a separate Cloudflare Custom Domain, not a DNS redirect to the apex —
+  # it can drift independently (e.g. one Custom Domain gets removed but not the other), so
+  # check it actually serves the same site rather than assuming it follows the apex.
+  say ""
+  say "Verifying $SITE_URL_WWW"
+  code=$(curl -s --max-time 20 -o /dev/null -w '%{http_code}' "$SITE_URL_WWW/")
+  if [ "$code" = "200" ]; then
+    ok "/ -> 200"
+    www_v=$(curl -s --max-time 20 "$SITE_URL_WWW/" | grep -o 'name="version" content="[^"]*"' | sed 's/.*content="//; s/"//')
+    [ "$www_v" = "$local_v" ] \
+      && ok "www version $www_v matches local" \
+      || bad "www version '$www_v' != local '$local_v'"
+  else
+    bad "/ -> $code (expected 200)"
+  fi
+
   [ "$problems" -eq 0 ]
 }
 
@@ -136,7 +153,7 @@ case "${1:-}" in
   --verify-only)
     ensure_node >/dev/null 2>&1
     verify || { say ""; say "Verification FAILED."; exit 3; }
-    say ""; say "Verified. $SITE_URL is serving the expected content."
+    say ""; say "Verified. $SITE_URL and $SITE_URL_WWW are serving the expected content."
     ;;
   --skip-verify)
     preflight || { say ""; say "Pre-flight FAILED ($problems problem(s)). Not deploying."; exit 1; }
@@ -148,7 +165,7 @@ case "${1:-}" in
     deploy || { say ""; say "Deploy FAILED."; exit 2; }
     problems=0
     verify || { say ""; say "Deployed, but verification FAILED — check the output above."; exit 3; }
-    say ""; say "Done. $SITE_URL is live and verified."
+    say ""; say "Done. $SITE_URL (and $SITE_URL_WWW) is live and verified."
     ;;
   *)
     sed -n '3,20p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
