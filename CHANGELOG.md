@@ -2,6 +2,18 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.10.0] — 2026-09-22
+
+**Business email switched to a custom domain address**: `businessEmail` is now `info@visithra-agro.in` (Zoho Mail, free plan), replacing the personal Gmail address that had been a placeholder since the site launched. Zoho's MX/SPF records were added to Cloudflare DNS as **DNS only** (not proxied — Zoho needs to see its own mail-server records directly, not Cloudflare's proxy IPs) and confirmed resolving correctly (`mx.zoho.eu` etc., SPF `include:zohomail.eu`) before this release shipped, though actual mailbox delivery can only be confirmed by the account holder sending a real test message.
+
+**Phone numbers now line up.** With two differently-sized region labels ("India" vs "Germany"), the previous flex-based row layout meant each number's starting position depended on its own badge's width — the numbers themselves weren't vertically aligned. `.phone-list`/`.addr-list` are now CSS grids with `.phone-row`/`.addr-row` set to `display: contents`, which promotes each row's cells (badge, value, actions) into the shared grid directly — so the badge column's width is the same across every row (sized to the longest label), and every number/address now starts at an identical x-position regardless of its own label's length. Verified via `getBoundingClientRect()` at desktop, 375px, and 320px widths: no overflow at any of them, so the fixed-width grid needed no separate mobile fallback.
+
+**A small flag icon next to each phone region** (India and Germany, matching the second number's region label — an EU flag was tried first while the region was still labelled "Europe", swapped out once the label changed to a specific country) — hand-drawn inline SVG (not a third-party icon font or image, keeping the CSP unchanged), circular via CSS `border-radius` + `overflow: hidden` on a wrapping span cropping a rectangular 3:2 flag (`preserveAspectRatio="...slice"`), rather than an SVG `<clipPath>` with an `id` — avoids any risk of duplicate-ID collisions if a region is ever repeated.
+
+**A second business address** — `CONFIG.address` (a single string) is now `CONFIG.addresses` (a list), currently India (Coimbatore, unchanged) and a new Germany entry (Nuremberg). Rendered with the same region-badge treatment as the phone numbers for visual consistency, reusing the same alignment grid (without flags — only asked for on the phone numbers, and a plain text region label reads clearly enough for two country-level address labels rather than city/region names).
+
+Refactored `.phone-region` → the shared `.region-badge`, since the same badge is now used for both phone and address rows.
+
 ## [1.9.0] — 2026-09-21
 
 **Two regional phone numbers, each reachable by call or WhatsApp.** The Contact section's single "Phone / WhatsApp" line is now a list — `CONFIG.phones` in `script.js` takes a `{ region, number }` entry per line, currently India (`+91-9443311219`) and Europe (`+49-15511371259`). Each renders as a region badge, the number as a `tel:` link, and two small icon buttons (a call icon and a WhatsApp icon) that make explicit — rather than merely implied by a shared "Phone / WhatsApp" label — that the same number reaches both channels.

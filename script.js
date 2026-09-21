@@ -1,13 +1,18 @@
 // ===== Site settings — edit these before launch =====
 const CONFIG = {
-  businessEmail: 'vcshasikumar@gmail.com', // shown in the contact section and used as the enquiry recipient
+  businessEmail: 'info@visithra-agro.in', // shown in the contact section and used as the enquiry recipient
   // Shown as call + WhatsApp contacts. `number` is used for both tel: and wa.me links —
   // wa.me needs the country code with no '+', spaces, or dashes, which is derived automatically.
+  // `flag` picks the icon next to the region badge — see FLAG_ICONS below for the supported keys.
   phones: [
-    { region: 'India', number: '+91-9443311219' },
-    { region: 'Europe', number: '+49-15511371259' },
+    { region: 'India', flag: 'in', number: '+91-9443311219' },
+    { region: 'Germany', flag: 'de', number: '+49-15511371259' },
   ],
-  address: 'Coimbatore, Tamil Nadu, India', // shown as the postal address
+  // Shown as postal addresses — one row per entry, in the order given.
+  addresses: [
+    { region: 'India', address: 'Coimbatore, Tamil Nadu, India' },
+    { region: 'Germany', address: 'Nuremberg, Germany' },
+  ],
   // Free form-delivery service — see README.md "Sending enquiries by email" for setup steps.
   // Leave the placeholder below and the form will fall back to opening the visitor's email app instead.
   web3FormsKey: '302de0f9-3952-4527-a9cf-69b7faec6a60',
@@ -383,15 +388,25 @@ emailLink.href = `mailto:${CONFIG.businessEmail}`;
 const ICON_CALL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6.6 10.8c1.2 2.4 3.2 4.4 5.6 5.6l1.9-1.9c.3-.3.7-.4 1.1-.3 1.2.4 2.5.6 3.8.6.6 0 1 .4 1 1V19c0 .6-.4 1-1 1C10.9 20 4 13.1 4 4.6c0-.6.4-1 1-1h3.2c.6 0 1 .4 1 1 0 1.3.2 2.6.6 3.8.1.4 0 .8-.3 1.1L6.6 10.8Z"/></svg>';
 const ICON_WHATSAPP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.7-1.2A9 9 0 1 0 12 3Z"/><path d="M8.6 9c.2-.5.4-.5.7-.5h.4c.2 0 .4 0 .5.4l.6 1.3c.1.2 0 .5-.1.6l-.4.5c-.2.2-.2.4 0 .6.5.9 1.3 1.7 2.2 2.2.2.2.4.2.6 0l.5-.4c.2-.2.4-.2.6-.1l1.3.6c.3.1.4.3.4.5v.4c0 .3-.1.5-.5.7-.8.3-1.7.2-2.8-.4-1.3-.6-2.5-1.9-3.2-3.2-.6-1.1-.7-2-.4-2.8Z" fill="currentColor" stroke="none"/></svg>';
 
+// Small circular flag badges next to each region label. Drawn as a rectangular flag inside
+// a 3:2 viewBox with preserveAspectRatio="...slice" so a plain CSS border-radius + overflow
+// on the wrapping <span> crops it into a circle — no <clipPath>/id needed, so nothing breaks
+// if a region is ever duplicated (e.g. a second India number).
+const FLAG_ICONS = {
+  in: '<svg viewBox="0 0 3 2" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><rect width="3" height="2" fill="#fff"/><rect width="3" height=".667" fill="#FF9933"/><rect width="3" height=".667" y="1.333" fill="#138808"/><circle cx="1.5" cy="1" r=".22" fill="none" stroke="#0b2b84" stroke-width=".05"/><circle cx="1.5" cy="1" r=".06" fill="#0b2b84"/></svg>',
+  de: '<svg viewBox="0 0 3 2" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><rect width="3" height=".667" fill="#000"/><rect width="3" height=".667" y=".667" fill="#DD0000"/><rect width="3" height=".667" y="1.333" fill="#FFCE00"/></svg>',
+};
+const flagBadge = (flag) => (flag && FLAG_ICONS[flag] ? `<span class="flag-badge" aria-hidden="true">${FLAG_ICONS[flag]}</span>` : '');
+
 const phoneList = document.getElementById('contact-phones');
-CONFIG.phones.forEach(({ region, number }) => {
+CONFIG.phones.forEach(({ region, flag, number }) => {
   const telHref = `tel:${number.replace(/\s/g, '')}`;
   const waHref = `https://wa.me/${number.replace(/\D/g, '')}`;
 
   const row = document.createElement('div');
   row.className = 'phone-row';
   row.innerHTML = `
-    <span class="phone-region">${region}</span>
+    <span class="region-badge">${flagBadge(flag)}${region}</span>
     <a class="phone-number" href="${telHref}">${number}</a>
     <span class="phone-actions">
       <a class="icon-btn" href="${telHref}" aria-label="Call ${region} number ${number}">${ICON_CALL}</a>
@@ -401,7 +416,16 @@ CONFIG.phones.forEach(({ region, number }) => {
   phoneList.appendChild(row);
 });
 
-document.getElementById('contact-address').textContent = CONFIG.address;
+const addressList = document.getElementById('contact-addresses');
+CONFIG.addresses.forEach(({ region, address }) => {
+  const row = document.createElement('div');
+  row.className = 'addr-row';
+  row.innerHTML = `
+    <span class="region-badge">${region}</span>
+    <address>${address}</address>
+  `;
+  addressList.appendChild(row);
+});
 
 // ===== Contact form =====
 const form = document.getElementById('contact-form');

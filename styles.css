@@ -219,14 +219,24 @@ h1 em, h2 em { font-weight: 600; color: var(--rust); font-style: italic; }
 .contact-direct a, .contact-direct address { font-weight: 600; font-style: normal; transition: color .2s; }
 .contact-direct a:hover, .contact-direct a:focus-visible { color: var(--rust); }
 
-/* Phone / WhatsApp: one row per number (region badge + number + call/WhatsApp icon
-   buttons). .phone-region overrides the uppercase-mono label styling meant for the
-   "Email"/"Phone / WhatsApp" field labels above, which .contact-direct > div span would
-   otherwise also apply to it as a descendant span. */
-.phone-list { display: grid; gap: .5rem; }
-.phone-row { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem .6rem; }
-.contact-direct .phone-region { display: inline-block; font: 600 .72rem var(--sans); letter-spacing: 0; text-transform: none; color: var(--ink); background: var(--sand); padding: .15rem .55rem; border-radius: 999px; margin-bottom: 0; }
-.phone-actions { display: inline-flex; gap: .4rem; margin-left: auto; }
+/* Phone / WhatsApp and Address: one row per entry (region badge + value [+ actions]).
+   .phone-list/.addr-list define shared grid columns and .phone-row/.addr-row use
+   display:contents so their children become direct grid items of the list — that's what
+   makes the region badge column the same width in every row (sized to the longest label,
+   "Germany"), which in turn lines up every number/address at the same starting position
+   regardless of how long its own region label is. .region-badge overrides the uppercase-mono
+   label styling meant for the "Email"/"Phone / WhatsApp"/"Address" field labels above, which
+   .contact-direct > div span would otherwise also apply to it as a descendant span. No
+   narrow-screen fallback needed — checked down to 320px and the grid never overflows, since
+   .phone-number/address simply sit left-aligned within their own (generous) 1fr column
+   rather than being forced to any particular width. */
+.phone-list { display: grid; grid-template-columns: max-content 1fr auto; align-items: center; gap: .5rem 1rem; }
+.addr-list { display: grid; grid-template-columns: max-content 1fr; align-items: start; gap: .5rem 1rem; }
+.phone-row, .addr-row { display: contents; }
+.contact-direct .region-badge { display: inline-flex; align-items: center; gap: .35rem; font: 600 .72rem var(--sans); letter-spacing: 0; text-transform: none; color: var(--ink); background: var(--sand); padding: .15rem .55rem; border-radius: 999px; margin-bottom: 0; white-space: nowrap; }
+.flag-badge { display: inline-flex; width: 15px; height: 15px; border-radius: 50%; overflow: hidden; flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,.15); }
+.flag-badge svg { width: 100%; height: 100%; display: block; }
+.phone-actions { display: inline-flex; gap: .4rem; }
 .contact-direct .icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(21,60,49,.18); color: var(--leaf); flex: none; transition: color .2s, background-color .2s, border-color .2s; }
 .contact-direct .icon-btn svg { width: 16px; height: 16px; display: block; }
 .contact-direct .icon-btn:hover, .contact-direct .icon-btn:focus-visible { background: var(--lime); border-color: var(--leaf); color: var(--rust); }

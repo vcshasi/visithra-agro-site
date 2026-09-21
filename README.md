@@ -1,4 +1,4 @@
-# Visithra Agro Traders website — v1.9.0
+# Visithra Agro Traders website — v1.10.0
 
 **Live at:** https://visithra-agro.in (`www.visithra-agro.in` also works)
 
@@ -10,17 +10,22 @@ The `CONFIG` object at the very top of `script.js` is already filled in and live
 
 ```js
 const CONFIG = {
-  businessEmail: 'vcshasikumar@gmail.com',
+  businessEmail: 'info@visithra-agro.in',
   phones: [
-    { region: 'India', number: '+91-9443311219' },
-    { region: 'Europe', number: '+49-15511371259' },
+    { region: 'India', flag: 'in', number: '+91-9443311219' },
+    { region: 'Germany', flag: 'de', number: '+49-15511371259' },
   ],
-  address: 'Coimbatore, Tamil Nadu, India',
+  addresses: [
+    { region: 'India', address: 'Coimbatore, Tamil Nadu, India' },
+    { region: 'Germany', address: 'Nuremberg, Germany' },
+  ],
   web3FormsKey: '302de0f9-3952-4527-a9cf-69b7faec6a60',
 };
 ```
 
-- `businessEmail`, `phones`, and `address` are shown directly in the Contact section — edit them here if any of these change. `phones` is a list, so a region can be added or removed freely — each one is rendered with both a **Call** and a **WhatsApp** icon link. `number` must include the country code; the WhatsApp link is derived from it automatically (digits only, no `+`/spaces/dashes, per `wa.me`'s own requirement) so it never needs entering separately.
+- `businessEmail`, `phones`, and `addresses` are shown directly in the Contact section — edit them here if any of these change. Both `phones` and `addresses` are lists, so a region can be added or removed freely.
+- Each phone entry is rendered with a region badge (with the flag given by `flag` — currently `'in'` and `'de'` are the two icons defined, see `FLAG_ICONS` in `script.js` to add another), the number, and both a **Call** and a **WhatsApp** icon link. `number` must include the country code; the WhatsApp link is derived from it automatically (digits only, no `+`/spaces/dashes, per `wa.me`'s own requirement) so it never needs entering separately.
+- Business email is on **Zoho Mail** (custom domain, `info@visithra-agro.in`) — MX/SPF records live in Cloudflare DNS, set to **DNS only** (not proxied), since Zoho needs to see the real records, not Cloudflare's proxy IPs.
 - `web3FormsKey` enables real email delivery from the contact form (see below). If it's ever cleared back to the placeholder `'YOUR-WEB3FORMS-ACCESS-KEY'`, the form falls back to opening the visitor's own email app with the enquiry pre-filled instead.
 
 ## Sending enquiries by email
