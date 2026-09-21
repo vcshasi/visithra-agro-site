@@ -2,6 +2,16 @@
 
 All notable website updates are tracked here using semantic versions. Every release is also tagged in git (`git tag`), so any version can be restored with `git checkout vX.Y.Z`.
 
+## [1.9.0] — 2026-09-21
+
+**Two regional phone numbers, each reachable by call or WhatsApp.** The Contact section's single "Phone / WhatsApp" line is now a list — `CONFIG.phones` in `script.js` takes a `{ region, number }` entry per line, currently India (`+91-9443311219`) and Europe (`+49-15511371259`). Each renders as a region badge, the number as a `tel:` link, and two small icon buttons (a call icon and a WhatsApp icon) that make explicit — rather than merely implied by a shared "Phone / WhatsApp" label — that the same number reaches both channels.
+
+The WhatsApp link (`https://wa.me/<digits>`) is derived from `number` automatically (stripping everything but digits, since `wa.me` requires the country code with no `+`/spaces/dashes) rather than needing a second, separately-maintained field that could drift out of sync with the display number.
+
+Icons are hand-drawn inline SVG (a phone-handset outline and a speech-bubble-with-handset glyph), styled with `currentColor` so they pick up the site's own palette (`--leaf` at rest, `--rust` on hover/focus, matching every other link in the Contact section) rather than importing WhatsApp's brand green — deliberately generic rather than a reproduction of WhatsApp's trademarked logo, since the site is linking to the service, not representing itself as WhatsApp. No new CSP allowance was needed: the icons are inline markup (not external images) and `wa.me` is a plain link navigation, which Content-Security-Policy doesn't govern.
+
+Verified via computed styles and DOM inspection (screenshots were unreliable in the test harness used this session — a recurring `document.visibilityState`/rendering issue, not specific to this change): both rows render with correct `tel:`/`wa.me` hrefs, digits-only WhatsApp numbers, `aria-label`s naming the region and number for each icon, the region-badge override beats the pre-existing label styling it would otherwise inherit, the hover rule's specificity resolves as intended, and neither row overflows at 375px mobile width.
+
 ## [1.8.4] — 2026-09-21
 
 Fixed a regression introduced by v1.8.3's own deploy: `npx wrangler deploy` silently **re-enabled** the `*.workers.dev` route the user had deliberately disabled via the dashboard after the custom domain went live. Root cause — Wrangler defaults `workers_dev` to `true` whenever it's absent from `wrangler.jsonc`; a dashboard-side toggle doesn't persist across a CLI deploy, and Wrangler printed a warning about this at deploy time that was easy to miss among the rest of its output. Confirmed the regression with a direct request (`www.visithra-agro.workers.dev` → `200`) immediately after the v1.8.3 deploy, not assumed from the warning text alone.

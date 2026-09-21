@@ -1,4 +1,4 @@
-# Visithra Agro Traders website — v1.8.4
+# Visithra Agro Traders website — v1.9.0
 
 **Live at:** https://visithra-agro.in (`www.visithra-agro.in` also works)
 
@@ -11,13 +11,16 @@ The `CONFIG` object at the very top of `script.js` is already filled in and live
 ```js
 const CONFIG = {
   businessEmail: 'vcshasikumar@gmail.com',
-  phone: '+91-9443311219',
+  phones: [
+    { region: 'India', number: '+91-9443311219' },
+    { region: 'Europe', number: '+49-15511371259' },
+  ],
   address: 'Coimbatore, Tamil Nadu, India',
   web3FormsKey: '302de0f9-3952-4527-a9cf-69b7faec6a60',
 };
 ```
 
-- `businessEmail`, `phone`, and `address` are shown directly in the Contact section — edit them here if any of these change.
+- `businessEmail`, `phones`, and `address` are shown directly in the Contact section — edit them here if any of these change. `phones` is a list, so a region can be added or removed freely — each one is rendered with both a **Call** and a **WhatsApp** icon link. `number` must include the country code; the WhatsApp link is derived from it automatically (digits only, no `+`/spaces/dashes, per `wa.me`'s own requirement) so it never needs entering separately.
 - `web3FormsKey` enables real email delivery from the contact form (see below). If it's ever cleared back to the placeholder `'YOUR-WEB3FORMS-ACCESS-KEY'`, the form falls back to opening the visitor's own email app with the enquiry pre-filled instead.
 
 ## Sending enquiries by email

@@ -1,7 +1,12 @@
 // ===== Site settings — edit these before launch =====
 const CONFIG = {
   businessEmail: 'vcshasikumar@gmail.com', // shown in the contact section and used as the enquiry recipient
-  phone: '+91-9443311219', // shown as the phone / WhatsApp contact
+  // Shown as call + WhatsApp contacts. `number` is used for both tel: and wa.me links —
+  // wa.me needs the country code with no '+', spaces, or dashes, which is derived automatically.
+  phones: [
+    { region: 'India', number: '+91-9443311219' },
+    { region: 'Europe', number: '+49-15511371259' },
+  ],
   address: 'Coimbatore, Tamil Nadu, India', // shown as the postal address
   // Free form-delivery service — see README.md "Sending enquiries by email" for setup steps.
   // Leave the placeholder below and the form will fall back to opening the visitor's email app instead.
@@ -370,9 +375,32 @@ document.getElementById('year').textContent = new Date().getFullYear();
 const emailLink = document.getElementById('contact-email');
 emailLink.textContent = CONFIG.businessEmail;
 emailLink.href = `mailto:${CONFIG.businessEmail}`;
-const phoneLink = document.getElementById('contact-phone');
-phoneLink.textContent = CONFIG.phone;
-phoneLink.href = `tel:${CONFIG.phone.replace(/\s/g, '')}`;
+
+// Two small line icons (not brand logos) marking a number as reachable by call or by
+// WhatsApp — kept monochrome/currentColor so they follow the site's own palette rather
+// than importing WhatsApp's brand green, matching the site's existing icon-free, typographic
+// style as closely as an icon can.
+const ICON_CALL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6.6 10.8c1.2 2.4 3.2 4.4 5.6 5.6l1.9-1.9c.3-.3.7-.4 1.1-.3 1.2.4 2.5.6 3.8.6.6 0 1 .4 1 1V19c0 .6-.4 1-1 1C10.9 20 4 13.1 4 4.6c0-.6.4-1 1-1h3.2c.6 0 1 .4 1 1 0 1.3.2 2.6.6 3.8.1.4 0 .8-.3 1.1L6.6 10.8Z"/></svg>';
+const ICON_WHATSAPP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.7-1.2A9 9 0 1 0 12 3Z"/><path d="M8.6 9c.2-.5.4-.5.7-.5h.4c.2 0 .4 0 .5.4l.6 1.3c.1.2 0 .5-.1.6l-.4.5c-.2.2-.2.4 0 .6.5.9 1.3 1.7 2.2 2.2.2.2.4.2.6 0l.5-.4c.2-.2.4-.2.6-.1l1.3.6c.3.1.4.3.4.5v.4c0 .3-.1.5-.5.7-.8.3-1.7.2-2.8-.4-1.3-.6-2.5-1.9-3.2-3.2-.6-1.1-.7-2-.4-2.8Z" fill="currentColor" stroke="none"/></svg>';
+
+const phoneList = document.getElementById('contact-phones');
+CONFIG.phones.forEach(({ region, number }) => {
+  const telHref = `tel:${number.replace(/\s/g, '')}`;
+  const waHref = `https://wa.me/${number.replace(/\D/g, '')}`;
+
+  const row = document.createElement('div');
+  row.className = 'phone-row';
+  row.innerHTML = `
+    <span class="phone-region">${region}</span>
+    <a class="phone-number" href="${telHref}">${number}</a>
+    <span class="phone-actions">
+      <a class="icon-btn" href="${telHref}" aria-label="Call ${region} number ${number}">${ICON_CALL}</a>
+      <a class="icon-btn" href="${waHref}" target="_blank" rel="noopener" aria-label="WhatsApp ${region} number ${number}">${ICON_WHATSAPP}</a>
+    </span>
+  `;
+  phoneList.appendChild(row);
+});
+
 document.getElementById('contact-address').textContent = CONFIG.address;
 
 // ===== Contact form =====

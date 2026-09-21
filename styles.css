@@ -218,6 +218,18 @@ h1 em, h2 em { font-weight: 600; color: var(--rust); font-style: italic; }
 .contact-direct > div span { display: block; font: 500 .65rem var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--leaf); margin-bottom: .3rem; }
 .contact-direct a, .contact-direct address { font-weight: 600; font-style: normal; transition: color .2s; }
 .contact-direct a:hover, .contact-direct a:focus-visible { color: var(--rust); }
+
+/* Phone / WhatsApp: one row per number (region badge + number + call/WhatsApp icon
+   buttons). .phone-region overrides the uppercase-mono label styling meant for the
+   "Email"/"Phone / WhatsApp" field labels above, which .contact-direct > div span would
+   otherwise also apply to it as a descendant span. */
+.phone-list { display: grid; gap: .5rem; }
+.phone-row { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem .6rem; }
+.contact-direct .phone-region { display: inline-block; font: 600 .72rem var(--sans); letter-spacing: 0; text-transform: none; color: var(--ink); background: var(--sand); padding: .15rem .55rem; border-radius: 999px; margin-bottom: 0; }
+.phone-actions { display: inline-flex; gap: .4rem; margin-left: auto; }
+.contact-direct .icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(21,60,49,.18); color: var(--leaf); flex: none; transition: color .2s, background-color .2s, border-color .2s; }
+.contact-direct .icon-btn svg { width: 16px; height: 16px; display: block; }
+.contact-direct .icon-btn:hover, .contact-direct .icon-btn:focus-visible { background: var(--lime); border-color: var(--leaf); color: var(--rust); }
 .contact-form { padding-top: .2rem; }
 .form-required-note { margin: 0 0 .7rem; color: #6d8577; font: .68rem var(--mono); letter-spacing: .04em; text-transform: uppercase; }
 .required-mark { color: var(--rust); margin-left: .2em; }
